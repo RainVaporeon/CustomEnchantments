@@ -1,0 +1,4 @@
+name: CustomEnchantments
+version: '${project.version}'
+main: io.github.rainvaporeon.customenchantments.CustomEnchantments
+api-version: '1.20'
