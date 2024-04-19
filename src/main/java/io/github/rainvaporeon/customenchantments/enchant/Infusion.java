@@ -85,4 +85,15 @@ public abstract class Infusion {
     public Set<EnchantmentTarget> infusionTarget() {
         return EnumSet.allOf(EnchantmentTarget.class);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Infusion) return this.getIdentifier().equals(((Infusion) obj).getIdentifier());
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getIdentifier().hashCode();
+    }
 }

@@ -13,6 +13,4 @@ public abstract class BaseCommand extends Command {
     protected BaseCommand(String name, String description, String usageMessage, List<String> aliases) {
         super(name, description, usageMessage, aliases);
     }
-
-    public abstract BaseCommand getInstance();
 }

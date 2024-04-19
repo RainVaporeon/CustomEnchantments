@@ -1,17 +1,18 @@
 package io.github.rainvaporeon.customenchantments.commands;
 
+import com.google.common.collect.Lists;
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionManager;
 import io.github.rainvaporeon.customenchantments.util.Permission;
 import io.github.rainvaporeon.customenchantments.util.TabCompletionUtils;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
-import io.github.rainvaporeon.fishutils.action.ActionResult;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
 import java.util.List;
 
 public class GiveInfusionCommand extends BaseCommand {
@@ -19,8 +20,7 @@ public class GiveInfusionCommand extends BaseCommand {
         super(name);
     }
 
-    @Override
-    public BaseCommand getInstance() {
+    public static BaseCommand getInstance() {
         return new GiveInfusionCommand("giveinfusion");
     }
 
@@ -36,12 +36,18 @@ public class GiveInfusionCommand extends BaseCommand {
             return true;
         }
         boolean overrideInfusionCap = strings.length >= 3 && Boolean.parseBoolean(strings[2]);
-        ActionResult<Integer> level = ActionResult.run(() -> Integer.parseInt(strings[1]));
-        if (level.isSuccessful()) {
-            boolean exceedsCap = level.getReturnValue() > infusion.getMaxLevel();
+        int level;
+        try {
+            level = Integer.parseInt(strings[1]);
+        } catch (NumberFormatException ex) {
+            /* swallow */
+            level = -1;
+        }
+        if (level >= 0) {
+            boolean exceedsCap = level > infusion.getMaxLevel();
             if (exceedsCap && !overrideInfusionCap) {
                 commandSender.sendMessage("This infusion can only have a maximum level of " + infusion.getMaxLevel() + "" +
-                        ", and " + level.getReturnValue() + " is outside of its range!");
+                        ", and " + level + " is outside of its range!");
                 return false;
             } else {
                 Player player = commandSender.getServer().getPlayerExact(commandSender.getName());
@@ -50,7 +56,7 @@ public class GiveInfusionCommand extends BaseCommand {
                     return false;
                 }
                 ItemStack handItem = player.getInventory().getItemInMainHand();
-                return InfusionUtils.applyInfusion(handItem, infusion.getIdentifier(), level.getReturnValue());
+                return InfusionUtils.applyInfusion(handItem, infusion.getIdentifier(), level);
             }
         } else {
             commandSender.sendMessage("Invalid level " + strings[1] + " provided!");
@@ -60,11 +66,14 @@ public class GiveInfusionCommand extends BaseCommand {
 
     @Override
     public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
-        return switch (args.length) {
-            case 1 -> TabCompletionUtils.startsWith(args[0], InfusionManager.getInfusionIdentifiers());
-            case 3 -> TabCompletionUtils.startsWith(args[2], "true", "false");
-            default -> List.of();
-        };
+        switch (args.length) {
+            case 1:
+                return TabCompletionUtils.startsWith(args[0], InfusionManager.getInfusionIdentifiers());
+            case 3:
+                return TabCompletionUtils.startsWith(args[2], "true", "false");
+            default:
+                return Collections.emptyList();
+        }
     }
 
     @Override
