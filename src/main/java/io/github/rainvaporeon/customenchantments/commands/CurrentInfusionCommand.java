@@ -31,7 +31,11 @@ public class CurrentInfusionCommand extends BaseCommand {
         PlayerInventory inventory = player.getInventory();
         sender.sendMessage("Here's the individual infusion stat you have:");
         for (EquipmentSlot slot : EquipmentSlot.values()) {
-            sender.sendMessage("Slot " + slot + ": ");
+            sender.sendMessage(Component.text()
+                    .color(NamedTextColor.GRAY)
+                    .content("Slot ")
+                    .append(Component.text(slot.name()).color(NamedTextColor.AQUA))
+                    .append(Component.text(":").color(NamedTextColor.GRAY)));
             for (Map.Entry<Infusion, Integer> infusionInfo : InfusionUtils.getAllInfusions(inventory.getItem(slot)).entrySet()) {
                 TextComponent.Builder component = Component.text()
                         .color(NamedTextColor.AQUA).content(infusionInfo.getKey().getName())
