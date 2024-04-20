@@ -30,7 +30,7 @@ public final class InfusionUtils {
         if (infusion == null) return false;
         NBTItem item = new NBTItem(stack);
         if (InfusionUtils.getInfusion(stack, infusion) > 0) removeInfusionData(item, identifier);
-        InfusionLoreUtils.removeLore(stack, infusion);
+        InfusionLoreUtils.removeLoreNBT(item, infusion);
         item.getCompoundList(INFUSION_IDENTIFIER_KEY).addCompound(infusion.getNBT(level));
         InfusionLoreUtils.applyLoreNBT(item, infusion, level);
         item.applyNBT(stack);

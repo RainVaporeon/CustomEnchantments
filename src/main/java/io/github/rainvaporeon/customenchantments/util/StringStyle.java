@@ -14,8 +14,9 @@ public class StringStyle {
         Iterator<RomanNumeral> it = Arrays.stream(RomanNumeral.values()).iterator();
         while (it.hasNext()) {
             RomanNumeral numeral = it.next();
-            while ((number -= numeral.value()) > numeral.value()) {
+            while (number >= numeral.value()) {
                 builder.append(numeral);
+                number -= numeral.value();
             }
         }
         return builder.toString();
