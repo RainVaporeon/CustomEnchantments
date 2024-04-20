@@ -60,7 +60,7 @@ public class CurrentInfusionCommand extends BaseCommand {
             }
             sender.sendMessage(builder);
         }
-        sender.sendMessage(Component.text().color(NamedTextColor.YELLOW).content("You can hover over the infusion to see their effects."));
+        sender.sendMessage(Component.text().color(NamedTextColor.YELLOW).content("You can hover over the infusion name to see their effects."));
         return true;
     }
 
