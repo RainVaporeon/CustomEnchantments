@@ -8,14 +8,12 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;
-import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class CurrentInfusionCommand extends BaseCommand {
@@ -36,12 +34,9 @@ public class CurrentInfusionCommand extends BaseCommand {
             sender.sendMessage("Slot " + slot + ": ");
             for (Map.Entry<Infusion, Integer> infusionInfo : InfusionUtils.getAllInfusions(inventory.getItem(slot)).entrySet()) {
                 TextComponent.Builder component = Component.text()
-                        .color(NamedTextColor.AQUA)
-                        .content(infusionInfo.getKey().getName())
-                        .content(" ")
-                        .color(NamedTextColor.GRAY)
-                        .content("(" + infusionInfo.getKey().getIdentifier() + ")")
-                        .content(" Level " + infusionInfo.getValue());
+                        .content(infusionInfo.getKey().getName()).color(NamedTextColor.AQUA)
+                        .append(Component.text(" (" + infusionInfo.getKey().getIdentifier() + ")").color(NamedTextColor.GRAY))
+                        .append(Component.text(" Level " + infusionInfo.getValue()).color(NamedTextColor.GRAY));
                 String desc = infusionInfo.getKey().getDescription();
                 if (desc.isEmpty()) continue;
                 component.style(Style.style().hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(desc))).build());
@@ -54,14 +49,14 @@ public class CurrentInfusionCommand extends BaseCommand {
             if (level == 0) continue;
 
             TextComponent.Builder builder = Component.text()
-                    .color(NamedTextColor.AQUA)
-                    .content(infusion.getName())
-                    .color(NamedTextColor.GRAY)
-                    .content(" (" + infusion.getIdentifier() + ") Level " + level);
+                    .content(infusion.getName()).color(NamedTextColor.AQUA)
+                    .append(Component.text(" (" + infusion.getIdentifier() + ") Level " + level).color(NamedTextColor.GRAY));
 
             String extendedDescription = infusion.getExtendedDescription(level);
             if (extendedDescription != null) {
-                builder.style(Style.style().hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(extendedDescription))).build());
+                builder.style(Style
+                        .style()
+                        .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(extendedDescription))).build());
             }
             sender.sendMessage(builder);
         }
