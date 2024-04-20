@@ -59,6 +59,10 @@ public class RemoveInfusionCommand extends BaseCommand {
             player.getInventory().setItemInMainHand(handItem);
             return true;
         } else {
+            if (InfusionManager.getInfusionById(strings[0]) != null) {
+                commandSender.sendMessage("This infusion does not exist on this item!");
+                return true;
+            }
             commandSender.sendMessage("Failed to remove this infusion. Does the identifier " + strings[0] + " exist?");
             return false;
         }

@@ -81,15 +81,29 @@ public abstract class Infusion {
         return null;
     }
 
+    /**
+     * Gets the infusion's description
+     * @return the infusion description; cannot be null
+     * @see Infusion#getExtendedDescription(int)
+     */
     public String getDescription() {
         return "";
     }
 
-    public String getDescription(CommandSender sender) {
-        return "";
-    }
-
+    /**
+     * Gets the maximum level for this infusion
+     * @return the max level
+     */
     public abstract int getMaxLevel();
+
+    /**
+     * Gets extended description for this infusion at given level
+     * @param level the level
+     * @return describing this infusion's functionality at this level
+     */
+    public @Nullable String getExtendedDescription(int level) {
+        return null;
+    }
 
     public ReadWriteNBT getNBT(int level) {
         ReadWriteNBT compound = NBT.createNBTObject();

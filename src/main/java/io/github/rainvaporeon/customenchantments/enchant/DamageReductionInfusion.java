@@ -1,6 +1,7 @@
 package io.github.rainvaporeon.customenchantments.enchant;
 
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,6 +29,17 @@ public class DamageReductionInfusion extends Infusion {
     @Override
     public Listener getListener() {
         return new DamageReductionListener();
+    }
+
+    @Override
+    public String getDescription() {
+        return "Reduces incoming damage by (0.96^level)";
+    }
+
+    @Nullable
+    @Override
+    public String getExtendedDescription(int level) {
+        return "Damage reduced by " + Math.pow(0.96, level) + ".";
     }
 
     class DamageReductionListener implements Listener {
