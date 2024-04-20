@@ -118,4 +118,9 @@ public class GiveInfusionCommand extends BaseCommand {
             sender.sendMessage("The maximum level for this infusion is " + infusion.getMaxLevel());
         }
     }
+
+    @Override
+    public boolean testPermission(@NotNull CommandSender target) {
+        return target.hasPermission(Permission.of(this.getName()));
+    }
 }

@@ -36,7 +36,7 @@ public class DamageReductionInfusion extends Infusion {
             if (!(event.getEntity() instanceof Player)) return;
             Player player = (Player) event.getEntity();
             int total = InfusionUtils.accumulateInfusionLevelOf(player, DamageReductionInfusion.this);
-            event.setDamage(Math.max(0, event.getDamage() * (1 - 0.05 * total)));
+            event.setDamage(Math.max(0, event.getDamage() * Math.pow(0.96, total)));
         }
     }
 }
