@@ -39,7 +39,7 @@ public class DamageReductionInfusion extends Infusion {
     @Nullable
     @Override
     public String getExtendedDescription(int level) {
-        return "Damage reduced by " + Math.pow(0.96, level) + ".";
+        return String.format("Damage reduced by %.1f%%.", Math.pow(0.96, level) * 100);
     }
 
     class DamageReductionListener implements Listener {

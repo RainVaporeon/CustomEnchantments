@@ -4,6 +4,8 @@ import io.github.rainvaporeon.customenchantments.enchant.Infusion;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionManager;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -33,22 +35,37 @@ public class CurrentInfusionCommand extends BaseCommand {
         for (EquipmentSlot slot : EquipmentSlot.values()) {
             sender.sendMessage("Slot " + slot + ": ");
             for (Map.Entry<Infusion, Integer> infusionInfo : InfusionUtils.getAllInfusions(inventory.getItem(slot)).entrySet()) {
-                sender.sendMessage("Infusion " + infusionInfo.getKey().getName() + " (" + infusionInfo.getKey().getIdentifier() + ") Level " + infusionInfo.getValue());
+                TextComponent.Builder component = Component.text()
+                        .color(NamedTextColor.AQUA)
+                        .content(infusionInfo.getKey().getName())
+                        .content(" ")
+                        .color(NamedTextColor.GRAY)
+                        .content("(" + infusionInfo.getKey().getIdentifier() + ")")
+                        .content(" Level " + infusionInfo.getValue());
                 String desc = infusionInfo.getKey().getDescription();
                 if (desc.isEmpty()) continue;
-                sender.sendMessage(Component.text().color(NamedTextColor.GRAY).style(Style.style().decorate(TextDecoration.ITALIC).build()).content(desc));
+                component.style(Style.style().hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(desc))).build());
+                sender.sendMessage(component);
             }
         }
         sender.sendMessage("Here's the total accumulated infusion that you have:");
         for (Infusion infusion : InfusionManager.getInfusions()) {
             int level = InfusionUtils.accumulateInfusionLevelOf(player, infusion);
             if (level == 0) continue;
-            sender.sendMessage(infusion.getName() + " (" + infusion.getIdentifier() + "): Level " + level);
+
+            TextComponent.Builder builder = Component.text()
+                    .color(NamedTextColor.AQUA)
+                    .content(infusion.getName())
+                    .color(NamedTextColor.GRAY)
+                    .content(" (" + infusion.getIdentifier() + ") Level " + level);
+
             String extendedDescription = infusion.getExtendedDescription(level);
             if (extendedDescription != null) {
-                sender.sendMessage(Component.text().color(NamedTextColor.GRAY).style(Style.style().decorate(TextDecoration.ITALIC).build()).content(extendedDescription));
+                builder.style(Style.style().hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(extendedDescription))).build());
             }
+            sender.sendMessage(builder);
         }
+        sender.sendMessage(Component.text().color(NamedTextColor.YELLOW).content("You can hover over the infusion to see their effects."));
         return true;
     }
 
