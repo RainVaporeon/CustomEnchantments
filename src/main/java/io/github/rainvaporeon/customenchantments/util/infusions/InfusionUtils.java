@@ -6,6 +6,7 @@ import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import io.github.rainvaporeon.customenchantments.CustomEnchantments;
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
 import io.github.rainvaporeon.customenchantments.util.PlayerInventoryUtils;
+import io.github.rainvaporeon.customenchantments.util.enums.Result;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.EnchantmentTarget;
@@ -88,5 +89,11 @@ public final class InfusionUtils {
                 .filter(rw -> rw.getString(Infusion.INFUSION_ID).equals(type.getIdentifier()))
                 .findFirst().orElse(null);
         return nbt == null ? 0 : nbt.getInteger(Infusion.INFUSION_LEVEL);
+    }
+
+    public static Result testInfusion(ItemStack stack, Infusion infusion) {
+        if (stack == null || infusion == null) return Result.FAIL;
+        if (infusion.infusionTarget().stream().anyMatch(target -> target.includes(stack))) return Result.SUCCESSFUL;
+        return Result.INCOMPATIBLE_TARGET;
     }
 }

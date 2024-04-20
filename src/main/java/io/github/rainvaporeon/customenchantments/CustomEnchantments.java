@@ -4,6 +4,7 @@ import io.github.rainvaporeon.customenchantments.commands.CurrentInfusionCommand
 import io.github.rainvaporeon.customenchantments.commands.GiveInfusionCommand;
 import io.github.rainvaporeon.customenchantments.commands.ListInfusionCommand;
 import io.github.rainvaporeon.customenchantments.commands.RemoveInfusionCommand;
+import io.github.rainvaporeon.customenchantments.enchant.BrutalizeInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.DamageReductionInfusion;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionManager;
 import org.bukkit.plugin.Plugin;
@@ -24,6 +25,7 @@ public final class CustomEnchantments extends JavaPlugin {
         this.getServer().getCommandMap().register(FALLBACK_PREFIX, new CurrentInfusionCommand());
         this.getServer().getCommandMap().register(FALLBACK_PREFIX, RemoveInfusionCommand.getInstance());
         InfusionManager.registerInfusion(new DamageReductionInfusion());
+        InfusionManager.registerInfusion(new BrutalizeInfusion());
     }
 
     @Override

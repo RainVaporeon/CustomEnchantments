@@ -3,6 +3,7 @@ package io.github.rainvaporeon.customenchantments.commands;
 import com.google.common.collect.Lists;
 import io.github.rainvaporeon.customenchantments.CustomEnchantments;
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
+import io.github.rainvaporeon.customenchantments.util.enums.Result;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionManager;
 import io.github.rainvaporeon.customenchantments.util.Permission;
 import io.github.rainvaporeon.customenchantments.util.TabCompletionUtils;
@@ -74,6 +75,13 @@ public class GiveInfusionCommand extends BaseCommand {
                     return false;
                 }
                 ItemStack handItem = player.getInventory().getItemInMainHand();
+                Result test = InfusionUtils.testInfusion(handItem, infusion);
+                if (test != Result.SUCCESSFUL) {
+                    commandSender.sendMessage("This item is incompatible with this infusion!");
+                    commandSender.sendMessage("This infusion is only compatible with: " + infusion.infusionTarget());
+                    return false;
+                }
+
                 if (InfusionUtils.applyInfusion(handItem, infusion.getIdentifier(), level)) {
                     commandSender.sendMessage("Successfully applied this infusion!");
                     player.getInventory().setItemInMainHand(handItem);
