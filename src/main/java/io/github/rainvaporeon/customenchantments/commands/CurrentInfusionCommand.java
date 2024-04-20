@@ -34,7 +34,7 @@ public class CurrentInfusionCommand extends BaseCommand {
             sender.sendMessage("Slot " + slot + ": ");
             for (Map.Entry<Infusion, Integer> infusionInfo : InfusionUtils.getAllInfusions(inventory.getItem(slot)).entrySet()) {
                 TextComponent.Builder component = Component.text()
-                        .content(infusionInfo.getKey().getName()).color(NamedTextColor.AQUA)
+                        .color(NamedTextColor.AQUA).content(infusionInfo.getKey().getName())
                         .append(Component.text(" (" + infusionInfo.getKey().getIdentifier() + ")").color(NamedTextColor.GRAY))
                         .append(Component.text(" Level " + infusionInfo.getValue()).color(NamedTextColor.GRAY));
                 String desc = infusionInfo.getKey().getDescription();
@@ -49,7 +49,7 @@ public class CurrentInfusionCommand extends BaseCommand {
             if (level == 0) continue;
 
             TextComponent.Builder builder = Component.text()
-                    .content(infusion.getName()).color(NamedTextColor.AQUA)
+                    .color(NamedTextColor.AQUA).content(infusion.getName())
                     .append(Component.text(" (" + infusion.getIdentifier() + ") Level " + level).color(NamedTextColor.GRAY));
 
             String extendedDescription = infusion.getExtendedDescription(level);
