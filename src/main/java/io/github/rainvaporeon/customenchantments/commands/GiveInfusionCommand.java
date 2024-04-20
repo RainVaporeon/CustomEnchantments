@@ -1,6 +1,7 @@
 package io.github.rainvaporeon.customenchantments.commands;
 
 import com.google.common.collect.Lists;
+import io.github.rainvaporeon.customenchantments.CustomEnchantments;
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionManager;
 import io.github.rainvaporeon.customenchantments.util.Permission;
@@ -12,8 +13,10 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
 
 public class GiveInfusionCommand extends BaseCommand {
     protected GiveInfusionCommand(String name) {
@@ -25,7 +28,22 @@ public class GiveInfusionCommand extends BaseCommand {
     }
 
     @Override
+    public @NotNull String getName() {
+        return "giveinfusion";
+    }
+
+    @Override
     public boolean execute(CommandSender commandSender, String s, String[] strings) {
+        try {
+            return execute0(commandSender, strings);
+        } catch (Exception ex) {
+            commandSender.sendMessage("An internal error had occurred whilst executing this command.");
+            CustomEnchantments.PLUGIN.getLogger().log(Level.SEVERE, "Exception whilst using " + s + " with args " + Arrays.toString(strings) + ": ", ex);
+            return false;
+        }
+    }
+
+    private boolean execute0(CommandSender commandSender, String[] strings) {
         if (strings.length == 0) {
             sendHelp(commandSender);
             return true;
@@ -56,7 +74,14 @@ public class GiveInfusionCommand extends BaseCommand {
                     return false;
                 }
                 ItemStack handItem = player.getInventory().getItemInMainHand();
-                return InfusionUtils.applyInfusion(handItem, infusion.getIdentifier(), level);
+                if (InfusionUtils.applyInfusion(handItem, infusion.getIdentifier(), level)) {
+                    commandSender.sendMessage("Successfully applied this infusion!");
+                    player.getInventory().setItemInMainHand(handItem);
+                    return true;
+                } else {
+                    commandSender.sendMessage("Failed to apply this infusion. Does the identifier " + infusion.getIdentifier() + " exist?");
+                    return false;
+                }
             }
         } else {
             commandSender.sendMessage("Invalid level " + strings[1] + " provided!");

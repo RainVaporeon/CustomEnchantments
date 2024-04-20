@@ -96,4 +96,9 @@ public abstract class Infusion {
     public int hashCode() {
         return this.getIdentifier().hashCode();
     }
+
+    @Override
+    public String toString() {
+        return this.getName() + "(" + this.getIdentifier() + ")";
+    }
 }
