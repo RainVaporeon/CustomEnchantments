@@ -19,6 +19,7 @@ public final class InfusionManager {
 
     public static boolean registerInfusion(Infusion base) {
         if (infusions.contains(base)) return false;
+        validateInfusion(base);
         Listener listener = base.getListener();
         if (listener != null) Bukkit.getPluginManager().registerEvents(listener, CustomEnchantments.PLUGIN);
         CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, "Registered infusion " + base);
@@ -43,5 +44,9 @@ public final class InfusionManager {
 
     public static @Nullable Infusion getInfusionById(String identifier) {
         return infusions.stream().filter(i -> i.getIdentifier().equals(identifier)).findFirst().orElse(null);
+    }
+
+    private static void validateInfusion(Infusion infusion) {
+        if (infusion.getIdentifier().contains(" ")) throw new IllegalArgumentException("infusion " + infusion + " has illegal identifier " + infusion.getIdentifier());
     }
 }
