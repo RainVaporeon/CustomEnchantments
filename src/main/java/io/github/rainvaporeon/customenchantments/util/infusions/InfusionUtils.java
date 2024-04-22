@@ -68,6 +68,7 @@ public final class InfusionUtils {
         Set<EquipmentSlot> allowedSlots = infusion.applicableSlots();
         List<ItemStack> applicableList = PlayerInventoryUtils.collectFromSlot(inventory, allowedSlots);
         applicableList.removeIf(item -> targetSet.stream().noneMatch(e -> e.includes(item)));
+        applicableList.removeIf(item -> item == null || item.isEmpty());
         return applicableList.stream().mapToInt(is -> InfusionUtils.getInfusion(is, infusion)).sum();
     }
 

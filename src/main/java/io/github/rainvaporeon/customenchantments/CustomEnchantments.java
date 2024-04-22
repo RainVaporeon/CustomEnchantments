@@ -4,7 +4,7 @@ import io.github.rainvaporeon.customenchantments.commands.*;
 import io.github.rainvaporeon.customenchantments.enchant.buff.combat.BleedingInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.buff.combat.BloodRushInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.buff.combat.BrutalizeInfusion;
-import io.github.rainvaporeon.customenchantments.enchant.buff.misc.KnowledgeBoostInfusion;
+import io.github.rainvaporeon.customenchantments.enchant.buff.misc.EnlightenedInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.buff.protection.*;
 import io.github.rainvaporeon.customenchantments.enchant.debuff.CumbersomeInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.debuff.RepairFragilityInfusion;
@@ -57,15 +57,14 @@ public final class CustomEnchantments extends JavaPlugin {
                 new BloodRushInfusion()
         );
 
+        /* Unrelated buff */
+        InfusionManager.registerInfusions(
+                new EnlightenedInfusion()
+        );
+
         /* Debuff-related combat infusion */
         InfusionManager.registerInfusions(
                 new CumbersomeInfusion()
-        );
-
-        /* Unrelated buff */
-
-        InfusionManager.registerInfusions(
-                new KnowledgeBoostInfusion()
         );
 
         /* Unrelated debuff */

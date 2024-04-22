@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.jetbrains.annotations.Nullable;
 
-public class KnowledgeBoostInfusion extends Infusion {
+public class EnlightenedInfusion extends Infusion {
     @Override
     public String getIdentifier() {
         return "enlightened";
@@ -44,7 +44,7 @@ public class KnowledgeBoostInfusion extends Infusion {
         @EventHandler
         public void onExperienceGain(PlayerExpChangeEvent event) {
             int amount = event.getAmount();
-            int level = InfusionUtils.accumulateInfusionLevelOf(event.getPlayer(), KnowledgeBoostInfusion.this);
+            int level = InfusionUtils.accumulateInfusionLevelOf(event.getPlayer(), EnlightenedInfusion.this);
             double amplifier = 1 + 0.02 * level;
             event.setAmount((int) Math.round(amount * amplifier));
         }
