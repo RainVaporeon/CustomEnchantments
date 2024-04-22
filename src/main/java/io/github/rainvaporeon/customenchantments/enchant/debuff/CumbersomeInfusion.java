@@ -49,6 +49,12 @@ public class CumbersomeInfusion extends DebuffInfusion {
         return 1;
     }
 
+    @Nullable
+    @Override
+    public Listener getListener() {
+        return new DamageListener();
+    }
+
     class DamageListener implements Listener {
         @EventHandler(priority = EventPriority.LOWEST)
         public void onDamage(EntityDamageByEntityEvent event) {
