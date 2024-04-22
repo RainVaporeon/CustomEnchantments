@@ -1,6 +1,7 @@
 package io.github.rainvaporeon.customenchantments;
 
 import io.github.rainvaporeon.customenchantments.commands.*;
+import io.github.rainvaporeon.customenchantments.enchant.buff.combat.BleedingInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.buff.combat.BloodRushInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.buff.combat.BrutalizeInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.buff.protection.*;
@@ -48,6 +49,7 @@ public final class CustomEnchantments extends JavaPlugin {
         /* Buff-related combat infusion */
         InfusionManager.registerInfusions(
                 new BrutalizeInfusion(),
+                new BleedingInfusion(),
                 new BloodRushInfusion()
         );
 

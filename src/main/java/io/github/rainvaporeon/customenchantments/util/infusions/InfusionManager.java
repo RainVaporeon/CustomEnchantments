@@ -32,7 +32,7 @@ public final class InfusionManager {
     }
 
     public static Set<Infusion> getInfusions() {
-        return new LinkedHashSet<>(infusions);
+        return infusions;
     }
 
     public static List<String> getInfusionIdentifiers() {
