@@ -6,6 +6,7 @@ import io.github.rainvaporeon.customenchantments.commands.ListInfusionCommand;
 import io.github.rainvaporeon.customenchantments.commands.RemoveInfusionCommand;
 import io.github.rainvaporeon.customenchantments.enchant.buff.combat.BrutalizeInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.buff.protection.*;
+import io.github.rainvaporeon.customenchantments.enchant.debuff.CumbersomeInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.debuff.protection.*;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionManager;
 import org.bukkit.plugin.Plugin;
@@ -25,10 +26,20 @@ public final class CustomEnchantments extends JavaPlugin {
         this.getServer().getCommandMap().register(FALLBACK_PREFIX, ListInfusionCommand.getInstance());
         this.getServer().getCommandMap().register(FALLBACK_PREFIX, new CurrentInfusionCommand());
         this.getServer().getCommandMap().register(FALLBACK_PREFIX, RemoveInfusionCommand.getInstance());
-        InfusionManager.registerInfusion(new DamageReductionInfusion());
-        InfusionManager.registerInfusion(new BrutalizeInfusion());
 
+        /* Buff-related combat infusion */
         InfusionManager.registerInfusions(
+                new BrutalizeInfusion()
+        );
+
+        /* Debuff-related combat infusion */
+        InfusionManager.registerInfusions(
+                new CumbersomeInfusion()
+        );
+
+        /* Buff-related defensive infusion */
+        InfusionManager.registerInfusions(
+                new DamageReductionInfusion(),
                 new MeleeResistanceInfusion(),
                 new ProjectileResistanceInfusion(),
                 new BlastResistanceInfusion(),
@@ -36,6 +47,7 @@ public final class CustomEnchantments extends JavaPlugin {
                 new MagicResistanceInfusion()
         );
 
+        /* Debuff-related defensive infusion */
         InfusionManager.registerInfusions(
                 new MeleeFragilityInfusion(),
                 new ProjectileFragilityInfusion(),
