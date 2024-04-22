@@ -6,6 +6,7 @@ import io.github.rainvaporeon.customenchantments.enchant.buff.combat.BloodRushIn
 import io.github.rainvaporeon.customenchantments.enchant.buff.combat.BrutalizeInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.buff.protection.*;
 import io.github.rainvaporeon.customenchantments.enchant.debuff.CumbersomeInfusion;
+import io.github.rainvaporeon.customenchantments.enchant.debuff.RepairFragilityInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.debuff.protection.*;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionManager;
 import org.bukkit.plugin.Plugin;
@@ -56,6 +57,11 @@ public final class CustomEnchantments extends JavaPlugin {
         /* Debuff-related combat infusion */
         InfusionManager.registerInfusions(
                 new CumbersomeInfusion()
+        );
+
+        /* Unrelated debuff */
+        InfusionManager.registerInfusions(
+                new RepairFragilityInfusion()
         );
     }
 
