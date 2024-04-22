@@ -24,21 +24,27 @@ public final class InfusionLoreUtils {
 
     public static void removeLoreNBT(NBTItem item, Infusion infusion) {
         NBTList<String> lore = item.getOrCreateCompound("display").getStringList("Lore");
+        lore.removeIf(c -> infusion.getClearingPattern().test(c));
+    }
+
+    private static void removeAllLoreNBT(NBTItem item) {
+        NBTList<String> lore = item.getOrCreateCompound("display").getStringList("Lore");
         lore.removeIf(c -> {
-            CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, "Trying to remove lore line " + c + " for infusion " + infusion.getIdentifier());
-            boolean ok = infusion.getClearingPattern().test(c);
-            if (ok) {
-                CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, "Removed line " + c);
+            for (Infusion infusion : InfusionManager.getInfusions()) {
+                if (infusion.getClearingPattern().test(c)) return true;
             }
-            return ok;
+            return false;
         });
     }
 
     public static void applySortedLoreNBT(ItemStack stack) {
         NBTItem item = new NBTItem(stack);
-        for (Map.Entry<Infusion, Integer> entry : InfusionUtils.getAllInfusions(stack).entrySet()) {
-            removeLoreNBT(item, entry.getKey());
-            applyLoreNBT(item, entry.getKey(), entry.getValue());
+        removeAllLoreNBT(item);
+        for (Infusion infusion : InfusionManager.getInfusions()) {
+            int level = InfusionUtils.getInfusion(stack, infusion);
+            if (level != 0) {
+                applyLoreNBT(item, infusion, level);
+            }
         }
         item.applyNBT(stack);
     }
