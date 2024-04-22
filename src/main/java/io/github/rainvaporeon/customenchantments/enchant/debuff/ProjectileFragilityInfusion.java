@@ -1,5 +1,6 @@
 package io.github.rainvaporeon.customenchantments.enchant.debuff;
 
+import io.github.rainvaporeon.customenchantments.enchant.DebuffInfusion;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

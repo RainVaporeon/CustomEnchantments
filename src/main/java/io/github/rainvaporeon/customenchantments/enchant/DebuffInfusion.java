@@ -1,6 +1,5 @@
-package io.github.rainvaporeon.customenchantments.enchant.debuff;
+package io.github.rainvaporeon.customenchantments.enchant;
 
-import io.github.rainvaporeon.customenchantments.enchant.Infusion;
 import net.kyori.adventure.text.format.NamedTextColor;
 
 public abstract class DebuffInfusion extends Infusion {
