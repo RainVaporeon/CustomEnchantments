@@ -49,18 +49,22 @@ public class GiveInfusionCommand extends BaseCommand {
             return true;
         }
         Infusion infusion = InfusionManager.getInfusionById(strings[0]);
-        if (strings.length == 1 || infusion == null) {
-            this.sendQueryHelp(commandSender, infusion);
+        if (infusion == null) {
+            sendHelp(commandSender);
             return true;
         }
-        boolean overrideInfusionCap = strings.length >= 3 && Boolean.parseBoolean(strings[2]);
         int level;
-        try {
-            level = Integer.parseInt(strings[1]);
-        } catch (NumberFormatException ex) {
-            /* swallow */
-            level = -1;
+        if (strings.length == 1) {
+            level = 1;
+        } else {
+            try {
+                level = Integer.parseInt(strings[1]);
+            } catch (NumberFormatException ex) {
+                /* swallow */
+                level = -1;
+            }
         }
+        boolean overrideInfusionCap = strings.length >= 3 && Boolean.parseBoolean(strings[2]);
         if (level >= 0) {
             boolean exceedsCap = level > infusion.getMaxLevel();
             if (exceedsCap && !overrideInfusionCap) {
