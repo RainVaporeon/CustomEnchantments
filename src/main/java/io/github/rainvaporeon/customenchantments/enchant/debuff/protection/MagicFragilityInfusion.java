@@ -1,4 +1,4 @@
-package io.github.rainvaporeon.customenchantments.enchant.debuff;
+package io.github.rainvaporeon.customenchantments.enchant.debuff.protection;
 
 import io.github.rainvaporeon.customenchantments.enchant.DebuffInfusion;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
@@ -9,15 +9,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.jetbrains.annotations.Nullable;
 
-public class BlastFragilityInfusion extends DebuffInfusion {
+public class MagicFragilityInfusion extends DebuffInfusion {
     @Override
     public String getIdentifier() {
-        return "blast_fragility";
+        return "magic_fragility";
     }
 
     @Override
     public String getName() {
-        return "Blast Fragility";
+        return "Magic Fragility";
     }
 
     @Override
@@ -27,13 +27,13 @@ public class BlastFragilityInfusion extends DebuffInfusion {
 
     @Override
     public String getDescription() {
-        return "Take (1.1^level) more damage from explosions.";
+        return "Take (1.1^level) more damage from magic.";
     }
 
     @Nullable
     @Override
     public String getExtendedDescription(int level) {
-        return String.format("Take %.1f%% more blast damage.", Math.pow(1.1, level) * 100);
+        return String.format("Take %.1f%% more magic damage.", Math.pow(1.1, level) * 100);
     }
 
     @Nullable
@@ -48,8 +48,8 @@ public class BlastFragilityInfusion extends DebuffInfusion {
             if (!(event.getEntity() instanceof Player)) return;
             Player player = (Player) event.getEntity();
             EntityDamageEvent.DamageCause cause = event.getCause();
-            if (cause != EntityDamageEvent.DamageCause.ENTITY_EXPLOSION && cause != EntityDamageEvent.DamageCause.BLOCK_EXPLOSION) return;
-            int level = InfusionUtils.accumulateInfusionLevelOf(player, BlastFragilityInfusion.this);
+            if (cause != EntityDamageEvent.DamageCause.MAGIC) return;
+            int level = InfusionUtils.accumulateInfusionLevelOf(player, MagicFragilityInfusion.this);
             event.setDamage(event.getDamage() * Math.pow(1.1, level));
         }
     }

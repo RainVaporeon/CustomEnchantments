@@ -6,7 +6,7 @@ import io.github.rainvaporeon.customenchantments.commands.ListInfusionCommand;
 import io.github.rainvaporeon.customenchantments.commands.RemoveInfusionCommand;
 import io.github.rainvaporeon.customenchantments.enchant.buff.combat.BrutalizeInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.buff.protection.*;
-import io.github.rainvaporeon.customenchantments.enchant.debuff.*;
+import io.github.rainvaporeon.customenchantments.enchant.debuff.protection.*;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionManager;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;

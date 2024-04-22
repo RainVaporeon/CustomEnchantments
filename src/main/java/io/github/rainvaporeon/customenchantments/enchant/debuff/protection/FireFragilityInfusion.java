@@ -1,4 +1,4 @@
-package io.github.rainvaporeon.customenchantments.enchant.debuff;
+package io.github.rainvaporeon.customenchantments.enchant.debuff.protection;
 
 import io.github.rainvaporeon.customenchantments.enchant.DebuffInfusion;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
