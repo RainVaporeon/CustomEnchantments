@@ -3,6 +3,7 @@ package io.github.rainvaporeon.customenchantments.enchant.debuff;
 import io.github.rainvaporeon.customenchantments.enchant.DebuffInfusion;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.inventory.ItemStack;
@@ -52,7 +53,7 @@ public class RepairFragilityInfusion extends DebuffInfusion {
     }
 
     class AnvilListener implements Listener {
-        @EventHandler
+        @EventHandler(priority = EventPriority.HIGH)
         public void onAnvilPrepare(PrepareAnvilEvent event) {
             ItemStack left = event.getInventory().getFirstItem();
             ItemStack right = event.getInventory().getSecondItem();
