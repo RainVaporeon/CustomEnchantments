@@ -26,17 +26,6 @@ public final class CustomEnchantments extends JavaPlugin {
         this.getServer().getCommandMap().register(FALLBACK_PREFIX, RemoveInfusionCommand.getInstance());
         this.getServer().getCommandMap().register(FALLBACK_PREFIX, UpdateItemCommand.getInstance());
 
-        /* Buff-related combat infusion */
-        InfusionManager.registerInfusions(
-                new BrutalizeInfusion(),
-                new BloodRushInfusion()
-        );
-
-        /* Debuff-related combat infusion */
-        InfusionManager.registerInfusions(
-                new CumbersomeInfusion()
-        );
-
         /* Buff-related defensive infusion */
         InfusionManager.registerInfusions(
                 new DamageReductionInfusion(),
@@ -54,6 +43,17 @@ public final class CustomEnchantments extends JavaPlugin {
                 new BlastFragilityInfusion(),
                 new FireFragilityInfusion(),
                 new MagicFragilityInfusion()
+        );
+
+        /* Buff-related combat infusion */
+        InfusionManager.registerInfusions(
+                new BrutalizeInfusion(),
+                new BloodRushInfusion()
+        );
+
+        /* Debuff-related combat infusion */
+        InfusionManager.registerInfusions(
+                new CumbersomeInfusion()
         );
     }
 

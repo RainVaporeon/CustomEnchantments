@@ -1,6 +1,6 @@
 package io.github.rainvaporeon.customenchantments.enchant.buff.combat;
 
-import io.github.rainvaporeon.customenchantments.enchant.Infusion;
+import io.github.rainvaporeon.customenchantments.enchant.SpecialInfusion;
 import io.github.rainvaporeon.customenchantments.status.Bleeding;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
 import io.github.rainvaporeon.customenchantments.util.particles.Particles;
@@ -12,7 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.jetbrains.annotations.Nullable;
 
-public class BleedingInfusion extends Infusion {
+public class BleedingInfusion extends SpecialInfusion {
     @Override
     public String getIdentifier() {
         return "bleeding";

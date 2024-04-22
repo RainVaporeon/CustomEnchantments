@@ -1,6 +1,6 @@
 package io.github.rainvaporeon.customenchantments.enchant.buff.combat;
 
-import io.github.rainvaporeon.customenchantments.enchant.Infusion;
+import io.github.rainvaporeon.customenchantments.enchant.SpecialInfusion;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -10,7 +10,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.Nullable;
 
-public class BloodRushInfusion extends Infusion {
+public class BloodRushInfusion extends SpecialInfusion {
     @Override
     public String getIdentifier() {
         return "blood_rush";

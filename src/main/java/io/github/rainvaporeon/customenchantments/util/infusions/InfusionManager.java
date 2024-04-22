@@ -15,12 +15,12 @@ public final class InfusionManager {
     private static final LinkedHashSet<Infusion> infusions = new LinkedHashSet<>();
 
     public static boolean registerInfusion(Infusion base) {
-        if (infusions.contains(base)) return false;
         validateInfusion(base);
         Listener listener = base.getListener();
         if (listener != null) Bukkit.getPluginManager().registerEvents(listener, CustomEnchantments.PLUGIN);
         CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, "Registered infusion " + base);
-        return infusions.add(base);
+        infusions.addLast(base);
+        return true;
     }
 
     public static void registerInfusions(Infusion... infusions) {
@@ -32,7 +32,7 @@ public final class InfusionManager {
     }
 
     public static Set<Infusion> getInfusions() {
-        return Collections.unmodifiableSet(infusions);
+        return new LinkedHashSet<>(infusions);
     }
 
     public static List<String> getInfusionIdentifiers() {
@@ -49,6 +49,7 @@ public final class InfusionManager {
 
     private static void validateInfusion(Infusion infusion) {
         if (infusion.getIdentifier().contains(" ")) throw new IllegalArgumentException("infusion " + infusion + " has illegal identifier " + infusion.getIdentifier());
+        if (infusions.contains(infusion)) throw new IllegalArgumentException("re-registered " + infusion + " twice!");
         Infusion duplicate = getInfusionById(infusion.getIdentifier());
         if (duplicate != null) {
             throw new IllegalArgumentException("Infusion " + infusion + " has duplicate ID with " + duplicate + "!");
