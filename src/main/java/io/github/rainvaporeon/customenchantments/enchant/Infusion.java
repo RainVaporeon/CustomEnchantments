@@ -74,9 +74,7 @@ public abstract class Infusion {
         };
     }
 
-    public @Nullable Listener getListener() {
-        return null;
-    }
+    public abstract @Nullable Listener getListener();
 
     /**
      * Gets the infusion's description

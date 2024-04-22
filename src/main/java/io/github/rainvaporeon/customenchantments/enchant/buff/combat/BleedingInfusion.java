@@ -38,6 +38,12 @@ public class BleedingInfusion extends Infusion {
         return String.format("Enemies hit with a critical hit loses %.1f%% HP/s for 3 second", Math.sqrt(level));
     }
 
+    @Nullable
+    @Override
+    public Listener getListener() {
+        return new DamageListener();
+    }
+
     class DamageListener implements Listener {
 
         @EventHandler
