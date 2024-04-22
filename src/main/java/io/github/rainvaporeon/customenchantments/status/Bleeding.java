@@ -1,6 +1,7 @@
 package io.github.rainvaporeon.customenchantments.status;
 
 import com.destroystokyo.paper.event.server.ServerTickEndEvent;
+import com.destroystokyo.paper.event.server.ServerTickStartEvent;
 import io.github.rainvaporeon.customenchantments.util.particles.Particles;
 import io.github.rainvaporeon.customenchantments.util.particles.Sounds;
 import org.bukkit.Bukkit;
@@ -27,10 +28,11 @@ public final class Bleeding implements Listener {
     }
 
     @EventHandler
-    public void onTick(ServerTickEndEvent event) {
+    public void onTick(ServerTickStartEvent event) {
         bleedingMap.forEach((entity, info) -> {
             if (--info.expirationTime <= 0 || entity.isDead()) {
-                bleedingMap.remove(entity); return;
+                bleedingMap.remove(entity);
+                return;
             }
             if (info.expirationTime % 20 == 0) {
                 Particles.playBleedingParticle(entity);

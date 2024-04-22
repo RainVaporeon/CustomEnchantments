@@ -54,7 +54,7 @@ public class CumbersomeInfusion extends DebuffInfusion {
     }
 
     class DamageListener implements Listener {
-        @EventHandler(priority = EventPriority.LOWEST)
+        @EventHandler(priority = EventPriority.HIGH)
         public void onDamage(EntityDamageByEntityEvent event) {
             if (!(event.getDamager() instanceof Player)) return;
             if (!(event.getEntity() instanceof LivingEntity)) return;
