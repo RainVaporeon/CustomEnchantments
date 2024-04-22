@@ -8,7 +8,9 @@ import io.github.rainvaporeon.customenchantments.enchant.buff.protection.*;
 import io.github.rainvaporeon.customenchantments.enchant.debuff.CumbersomeInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.debuff.RepairFragilityInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.debuff.protection.*;
+import io.github.rainvaporeon.customenchantments.status.Bleeding;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionManager;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -63,6 +65,8 @@ public final class CustomEnchantments extends JavaPlugin {
         InfusionManager.registerInfusions(
                 new RepairFragilityInfusion()
         );
+
+        Bukkit.getPluginManager().registerEvents(Bleeding.getInstance(), this);
     }
 
     @Override

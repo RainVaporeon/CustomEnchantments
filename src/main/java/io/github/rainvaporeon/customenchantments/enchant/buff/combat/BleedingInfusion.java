@@ -37,7 +37,7 @@ public class BleedingInfusion extends SpecialInfusion {
     @Nullable
     @Override
     public String getExtendedDescription(int level) {
-        return String.format("Enemies hit with a critical hit loses %.1f%% HP/s for 3 second", Math.sqrt(level));
+        return String.format("Enemies hit with a critical hit loses %.1f HP/s for 3 second", Math.sqrt(level));
     }
 
     @Nullable
@@ -55,8 +55,6 @@ public class BleedingInfusion extends SpecialInfusion {
             if (!event.isCritical()) return;
             int level = InfusionUtils.accumulateInfusionLevelOf((Player) event.getDamager(), BleedingInfusion.this);
             if (level == 0) return;
-            Particles.playBleedingParticle(event.getEntity());
-            Sounds.playBlockBreakSound(event.getEntity());
             Bleeding.applyBleeding((LivingEntity) event.getEntity(), 3, level);
         }
     }

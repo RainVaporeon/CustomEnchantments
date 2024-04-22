@@ -1,6 +1,8 @@
 package io.github.rainvaporeon.customenchantments.status;
 
 import com.destroystokyo.paper.event.server.ServerTickEndEvent;
+import io.github.rainvaporeon.customenchantments.util.particles.Particles;
+import io.github.rainvaporeon.customenchantments.util.particles.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
@@ -16,6 +18,10 @@ public final class Bleeding implements Listener {
 
     private Bleeding() {}
 
+    public static Bleeding getInstance() {
+        return INSTANCE;
+    }
+
     public static void applyBleeding(LivingEntity entity, int seconds, int amplifier) {
         INSTANCE.bleedingMap.put(entity, new BleedingInfo(seconds, Math.sqrt(amplifier)));
     }
@@ -27,6 +33,8 @@ public final class Bleeding implements Listener {
                 bleedingMap.remove(entity); return;
             }
             if (info.expirationTime % 20 == 0) {
+                Particles.playBleedingParticle(entity);
+                Sounds.playBlockBreakSound(entity);
                 entity.damage(info.damage);
             }
         });
