@@ -41,6 +41,14 @@ public class CurrentInfusionCommand extends BaseCommand {
                         .color(NamedTextColor.AQUA).content(infusionInfo.getKey().getName())
                         .append(Component.text(" (" + infusionInfo.getKey().getIdentifier() + ")").color(NamedTextColor.GRAY))
                         .append(Component.text(" Level " + infusionInfo.getValue()).color(NamedTextColor.GRAY));
+
+                if (!infusionInfo.getKey().applicableSlots().contains(slot)) {
+                    component.append(
+                            Component.text(" (Not applicable for slot)")
+                                    .color(NamedTextColor.RED)
+                    );
+                }
+
                 String desc = infusionInfo.getKey().getDescription();
                 if (desc.isEmpty()) continue;
                 component.style(Style.style().hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(desc))).build());

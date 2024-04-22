@@ -6,6 +6,7 @@ import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import io.github.rainvaporeon.customenchantments.CustomEnchantments;
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
 import io.github.rainvaporeon.customenchantments.util.PlayerInventoryUtils;
+import io.github.rainvaporeon.customenchantments.util.enums.InfusionTarget;
 import io.github.rainvaporeon.customenchantments.util.enums.Result;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -63,7 +64,7 @@ public final class InfusionUtils {
 
     public static int accumulateInfusionLevelOf(Player entity, Infusion infusion) {
         PlayerInventory inventory = entity.getInventory();
-        Set<EnchantmentTarget> targetSet = infusion.infusionTarget();
+        Set<InfusionTarget> targetSet = infusion.infusionTarget();
         Set<EquipmentSlot> allowedSlots = infusion.applicableSlots();
         List<ItemStack> applicableList = PlayerInventoryUtils.collectFromSlot(inventory, allowedSlots);
         applicableList.removeIf(item -> targetSet.stream().noneMatch(e -> e.includes(item)));

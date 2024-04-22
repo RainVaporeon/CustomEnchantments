@@ -1,6 +1,7 @@
 package io.github.rainvaporeon.customenchantments.enchant.buff.combat;
 
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
+import io.github.rainvaporeon.customenchantments.util.enums.InfusionTarget;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Player;
@@ -49,11 +50,6 @@ public class BrutalizeInfusion extends Infusion {
     @Override
     public Set<EquipmentSlot> applicableSlots() {
         return EnumSet.of(EquipmentSlot.HAND, EquipmentSlot.OFF_HAND);
-    }
-
-    @Override
-    public Set<EnchantmentTarget> infusionTarget() {
-        return EnumSet.of(EnchantmentTarget.WEAPON, EnchantmentTarget.TOOL, EnchantmentTarget.TRIDENT);
     }
 
     class CriticalHitListener implements Listener {

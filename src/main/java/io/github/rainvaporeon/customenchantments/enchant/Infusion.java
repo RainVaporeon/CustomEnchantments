@@ -5,9 +5,9 @@ import com.google.gson.JsonParser;
 import de.tr7zw.nbtapi.NBT;
 import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import io.github.rainvaporeon.customenchantments.util.StringStyle;
+import io.github.rainvaporeon.customenchantments.util.enums.InfusionTarget;
 import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.EquipmentSlot;
 
@@ -126,8 +126,8 @@ public abstract class Infusion {
      * The target of this infusion
      * @return a set of target this infusion may be applied on
      */
-    public Set<EnchantmentTarget> infusionTarget() {
-        return EnumSet.allOf(EnchantmentTarget.class);
+    public Set<InfusionTarget> infusionTarget() {
+        return EnumSet.allOf(InfusionTarget.class);
     }
 
     @Override
