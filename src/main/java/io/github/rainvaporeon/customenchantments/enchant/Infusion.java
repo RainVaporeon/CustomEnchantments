@@ -3,15 +3,10 @@ package io.github.rainvaporeon.customenchantments.enchant;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import de.tr7zw.nbtapi.NBT;
-import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import io.github.rainvaporeon.customenchantments.util.StringStyle;
 import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.Style;
-import net.kyori.adventure.text.format.TextColor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.EquipmentSlot;
@@ -79,9 +74,7 @@ public abstract class Infusion {
         };
     }
 
-    public @Nullable Listener getListener() {
-        return null;
-    }
+    public abstract @Nullable Listener getListener();
 
     /**
      * Gets the infusion's description
@@ -97,6 +90,17 @@ public abstract class Infusion {
      * @return the max level
      */
     public abstract int getMaxLevel();
+
+    /**
+     * Gets the maximum effective level for this infusion
+     * @return the maximum effective level
+     * @implNote when implementing the level cap, it'll be
+     * important to also edit {@link Infusion#getExtendedDescription(int)}
+     * accordingly, as well as handle the capped numbers separately.
+     */
+    public int getMaxEffectiveLevel() {
+        return Integer.MAX_VALUE;
+    }
 
     /**
      * Gets extended description for this infusion at given level
