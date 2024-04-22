@@ -56,6 +56,13 @@ public class CurrentInfusionCommand extends BaseCommand {
                     .color(NamedTextColor.AQUA).content(infusion.getName())
                     .append(Component.text(" (" + infusion.getIdentifier() + ") Level " + level).color(NamedTextColor.GRAY));
 
+            if (infusion.getMaxEffectiveLevel() != Integer.MAX_VALUE && level >= infusion.getMaxEffectiveLevel()) {
+                builder.append(
+                        Component.text(" (Capped at level " + infusion.getMaxEffectiveLevel() + ")")
+                                .color(NamedTextColor.YELLOW)
+                );
+            }
+
             String extendedDescription = infusion.getExtendedDescription(level);
             if (extendedDescription != null) {
                 builder.style(Style

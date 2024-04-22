@@ -26,6 +26,10 @@ public final class InfusionManager {
         return infusions.add(base);
     }
 
+    public static void registerInfusions(Infusion... infusions) {
+        for (Infusion infusion : infusions) registerInfusion(infusion);
+    }
+
     public static boolean deregisterInfusion(Infusion base) {
         return infusions.remove(base);
     }
@@ -48,5 +52,9 @@ public final class InfusionManager {
 
     private static void validateInfusion(Infusion infusion) {
         if (infusion.getIdentifier().contains(" ")) throw new IllegalArgumentException("infusion " + infusion + " has illegal identifier " + infusion.getIdentifier());
+        Infusion duplicate = getInfusionById(infusion.getIdentifier());
+        if (duplicate != null) {
+            throw new IllegalArgumentException("Infusion " + infusion + " has duplicate ID with " + duplicate + "!");
+        }
     }
 }
