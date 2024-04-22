@@ -36,7 +36,7 @@ public class BrutalizeInfusion extends Infusion {
     @Nullable
     @Override
     public String getExtendedDescription(int level) {
-        return "+" + 10 * level + "% Increased Critical Damage";
+        return "Critical damage increased by " + 10 * level + "%.";
     }
 
     @Nullable
