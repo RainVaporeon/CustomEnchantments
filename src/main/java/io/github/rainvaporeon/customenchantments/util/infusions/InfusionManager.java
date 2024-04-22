@@ -6,16 +6,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
 import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public final class InfusionManager {
 
-    private static final Set<Infusion> infusions = new HashSet<>();
+    private static final LinkedHashSet<Infusion> infusions = new LinkedHashSet<>();
 
     public static boolean registerInfusion(Infusion base) {
         if (infusions.contains(base)) return false;

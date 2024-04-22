@@ -33,8 +33,9 @@ public final class InfusionUtils {
         if (InfusionUtils.getInfusion(stack, infusion) > 0) removeInfusionData(item, identifier);
         InfusionLoreUtils.removeLoreNBT(item, infusion);
         item.getCompoundList(INFUSION_IDENTIFIER_KEY).addCompound(infusion.getNBT(level));
-        InfusionLoreUtils.applyLoreNBT(item, infusion, level);
+        // InfusionLoreUtils.applyLoreNBT(item, infusion, level);
         item.applyNBT(stack);
+        InfusionLoreUtils.applySortedLoreNBT(stack);
         return true;
     }
 
@@ -48,9 +49,10 @@ public final class InfusionUtils {
         Infusion infusion = InfusionManager.getInfusionById(identifier);
         if (infusion == null) return false;
         NBTItem item = new NBTItem(stack);
-        InfusionLoreUtils.removeLoreNBT(item, infusion);
+        // InfusionLoreUtils.removeLoreNBT(item, infusion);
         boolean removed = removeInfusionData(item, identifier);
         item.applyNBT(stack);
+        InfusionLoreUtils.applySortedLoreNBT(stack);
         return removed;
     }
 

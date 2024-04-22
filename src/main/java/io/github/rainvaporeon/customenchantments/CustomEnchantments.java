@@ -1,9 +1,6 @@
 package io.github.rainvaporeon.customenchantments;
 
-import io.github.rainvaporeon.customenchantments.commands.CurrentInfusionCommand;
-import io.github.rainvaporeon.customenchantments.commands.GiveInfusionCommand;
-import io.github.rainvaporeon.customenchantments.commands.ListInfusionCommand;
-import io.github.rainvaporeon.customenchantments.commands.RemoveInfusionCommand;
+import io.github.rainvaporeon.customenchantments.commands.*;
 import io.github.rainvaporeon.customenchantments.enchant.buff.combat.BloodRushInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.buff.combat.BrutalizeInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.buff.protection.*;
@@ -27,6 +24,7 @@ public final class CustomEnchantments extends JavaPlugin {
         this.getServer().getCommandMap().register(FALLBACK_PREFIX, ListInfusionCommand.getInstance());
         this.getServer().getCommandMap().register(FALLBACK_PREFIX, new CurrentInfusionCommand());
         this.getServer().getCommandMap().register(FALLBACK_PREFIX, RemoveInfusionCommand.getInstance());
+        this.getServer().getCommandMap().register(FALLBACK_PREFIX, UpdateItemCommand.getInstance());
 
         /* Buff-related combat infusion */
         InfusionManager.registerInfusions(

@@ -5,7 +5,9 @@ import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTList;
 import io.github.rainvaporeon.customenchantments.CustomEnchantments;
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
+import org.bukkit.inventory.ItemStack;
 
+import java.util.Map;
 import java.util.logging.Level;
 
 public final class InfusionLoreUtils {
@@ -30,5 +32,14 @@ public final class InfusionLoreUtils {
             }
             return ok;
         });
+    }
+
+    public static void applySortedLoreNBT(ItemStack stack) {
+        NBTItem item = new NBTItem(stack);
+        for (Map.Entry<Infusion, Integer> entry : InfusionUtils.getAllInfusions(stack).entrySet()) {
+            removeLoreNBT(item, entry.getKey());
+            applyLoreNBT(item, entry.getKey(), entry.getValue());
+        }
+        item.applyNBT(stack);
     }
 }
