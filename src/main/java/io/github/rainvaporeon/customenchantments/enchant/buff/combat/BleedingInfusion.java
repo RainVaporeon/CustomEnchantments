@@ -3,6 +3,8 @@ package io.github.rainvaporeon.customenchantments.enchant.buff.combat;
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
 import io.github.rainvaporeon.customenchantments.status.Bleeding;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
+import io.github.rainvaporeon.customenchantments.util.particles.Particles;
+import io.github.rainvaporeon.customenchantments.util.particles.Sounds;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -53,6 +55,8 @@ public class BleedingInfusion extends Infusion {
             if (!event.isCritical()) return;
             int level = InfusionUtils.accumulateInfusionLevelOf((Player) event.getDamager(), BleedingInfusion.this);
             if (level == 0) return;
+            Particles.playBleedingParticle(event.getEntity());
+            Sounds.playBlockBreakSound(event.getEntity());
             Bleeding.applyBleeding((LivingEntity) event.getEntity(), 3, level);
         }
     }

@@ -1,6 +1,7 @@
 package io.github.rainvaporeon.customenchantments.status;
 
 import com.destroystokyo.paper.event.server.ServerTickEndEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,24 +20,24 @@ public final class Bleeding implements Listener {
         INSTANCE.bleedingMap.put(entity, new BleedingInfo(seconds, Math.sqrt(amplifier)));
     }
 
-    private int time = 0;
     @EventHandler
     public void onTick(ServerTickEndEvent event) {
-        if (++time < 20) return;
         bleedingMap.forEach((entity, info) -> {
-            if (info.expirationTime <= System.currentTimeMillis() || entity.isDead()) {
+            if (--info.expirationTime <= 0 || entity.isDead()) {
                 bleedingMap.remove(entity); return;
             }
-            entity.damage(info.damage);
+            if (info.expirationTime % 20 == 0) {
+                entity.damage(info.damage);
+            }
         });
     }
 
     private static class BleedingInfo {
-        private final long expirationTime;
+        private int expirationTime;
         private final double damage;
 
         public BleedingInfo(int expirationTime, double damage) {
-            this.expirationTime = System.currentTimeMillis() + 1000L * expirationTime;
+            this.expirationTime = 20 * expirationTime + 20;
             this.damage = damage;
         }
     }
