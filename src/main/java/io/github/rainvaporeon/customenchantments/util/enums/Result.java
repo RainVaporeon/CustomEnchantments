@@ -4,5 +4,4 @@ public enum Result {
     SUCCESSFUL,
     FAIL,
     INCOMPATIBLE_TARGET
-    ;
 }

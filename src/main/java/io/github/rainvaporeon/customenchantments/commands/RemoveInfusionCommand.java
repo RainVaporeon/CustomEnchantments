@@ -17,12 +17,12 @@ import java.util.List;
 import java.util.logging.Level;
 
 public class RemoveInfusionCommand extends BaseCommand {
-    protected RemoveInfusionCommand(String name) {
-        super(name);
+    protected RemoveInfusionCommand() {
+        super("removeinfusion");
     }
 
     public static BaseCommand getInstance() {
-        return new RemoveInfusionCommand("removeinfusion");
+        return new RemoveInfusionCommand();
     }
 
     @Override
@@ -31,7 +31,7 @@ public class RemoveInfusionCommand extends BaseCommand {
     }
 
     @Override
-    public boolean execute(CommandSender commandSender, String s, String[] strings) {
+    public boolean execute(@NotNull CommandSender commandSender, @NotNull String s, String[] strings) {
         try {
             return execute0(commandSender, strings);
         } catch (Exception ex) {

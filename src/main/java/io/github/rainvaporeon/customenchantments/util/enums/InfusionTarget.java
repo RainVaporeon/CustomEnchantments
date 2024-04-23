@@ -236,7 +236,6 @@ public enum InfusionTarget {
             return BREAKABLE.includes(item) || (WEARABLE.includes(item) && !item.equals(Material.ELYTRA)) || item.equals(Material.COMPASS);
         }
     };
-    ;
 
     private final @Nullable EnchantmentTarget target;
     private final @Nullable Predicate<Material> materialPredicate;

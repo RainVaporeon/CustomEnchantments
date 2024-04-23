@@ -14,13 +14,12 @@ public final class InfusionManager {
 
     private static final LinkedHashSet<Infusion> infusions = new LinkedHashSet<>();
 
-    public static boolean registerInfusion(Infusion base) {
+    public static void registerInfusion(Infusion base) {
         validateInfusion(base);
         Listener listener = base.getListener();
         if (listener != null) Bukkit.getPluginManager().registerEvents(listener, CustomEnchantments.PLUGIN);
         CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, "Registered infusion " + base);
         infusions.addLast(base);
-        return true;
     }
 
     public static void registerInfusions(Infusion... infusions) {

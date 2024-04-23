@@ -19,12 +19,12 @@ import java.util.List;
 import java.util.logging.Level;
 
 public class GiveInfusionCommand extends BaseCommand {
-    protected GiveInfusionCommand(String name) {
-        super(name);
+    protected GiveInfusionCommand() {
+        super("giveinfusion");
     }
 
     public static BaseCommand getInstance() {
-        return new GiveInfusionCommand("giveinfusion");
+        return new GiveInfusionCommand();
     }
 
     @Override
@@ -33,7 +33,7 @@ public class GiveInfusionCommand extends BaseCommand {
     }
 
     @Override
-    public boolean execute(CommandSender commandSender, String s, String[] strings) {
+    public boolean execute(@NotNull CommandSender commandSender, @NotNull String s, String[] strings) {
         try {
             return execute0(commandSender, strings);
         } catch (Exception ex) {
@@ -68,7 +68,7 @@ public class GiveInfusionCommand extends BaseCommand {
         if (level >= 0) {
             boolean exceedsCap = level > infusion.getMaxLevel();
             if (exceedsCap && !overrideInfusionCap) {
-                commandSender.sendMessage("This infusion can only have a maximum level of " + infusion.getMaxLevel() + "" +
+                commandSender.sendMessage("This infusion can only have a maximum level of " + infusion.getMaxLevel() +
                         ", and " + level + " is outside of its range!");
                 return false;
             } else {
@@ -119,15 +119,6 @@ public class GiveInfusionCommand extends BaseCommand {
 
     private void sendHelp(CommandSender sender) {
         sender.sendMessage("/giveinfusion <type> <level> [override]");
-    }
-
-    private void sendQueryHelp(CommandSender sender, Infusion infusion) {
-        if (infusion == null) {
-            sender.sendMessage("This infusion does not exist!");
-        } else {
-            sender.sendMessage("/giveinfusion <type> <level> [override]");
-            sender.sendMessage("The maximum level for this infusion is " + infusion.getMaxLevel());
-        }
     }
 
     @Override

@@ -8,12 +8,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Set;
 
 public class ListInfusionCommand extends BaseCommand {
-    protected ListInfusionCommand(String name) {
-        super(name);
+    protected ListInfusionCommand() {
+        super("listinfusion");
     }
 
     public static ListInfusionCommand getInstance() {
-        return new ListInfusionCommand("listinfusion");
+        return new ListInfusionCommand();
     }
 
     @Override

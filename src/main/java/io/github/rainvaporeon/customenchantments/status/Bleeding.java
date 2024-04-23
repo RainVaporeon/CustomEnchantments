@@ -1,10 +1,8 @@
 package io.github.rainvaporeon.customenchantments.status;
 
-import com.destroystokyo.paper.event.server.ServerTickEndEvent;
 import com.destroystokyo.paper.event.server.ServerTickStartEvent;
 import io.github.rainvaporeon.customenchantments.util.particles.Particles;
 import io.github.rainvaporeon.customenchantments.util.particles.Sounds;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

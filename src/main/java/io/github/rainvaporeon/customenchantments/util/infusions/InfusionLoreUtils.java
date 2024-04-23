@@ -3,12 +3,8 @@ package io.github.rainvaporeon.customenchantments.util.infusions;
 import com.google.gson.JsonObject;
 import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTList;
-import io.github.rainvaporeon.customenchantments.CustomEnchantments;
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.Map;
-import java.util.logging.Level;
 
 public final class InfusionLoreUtils {
     public static void applyLoreNBT(NBTItem item, Infusion infusion, int level) {

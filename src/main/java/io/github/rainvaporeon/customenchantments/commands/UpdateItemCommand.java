@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class UpdateItemCommand extends BaseCommand {
-    UpdateItemCommand(String name) { super(name); }
+    UpdateItemCommand() { super("updateitem"); }
 
     @Override
     public boolean execute(@NotNull CommandSender commandSender, @NotNull String s, @NotNull String[] strings) {
@@ -26,7 +26,7 @@ public class UpdateItemCommand extends BaseCommand {
     }
 
     public static UpdateItemCommand getInstance() {
-        return new UpdateItemCommand("updateitem");
+        return new UpdateItemCommand();
     }
 
     @Override
