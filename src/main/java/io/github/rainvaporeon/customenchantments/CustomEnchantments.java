@@ -50,25 +50,23 @@ public final class CustomEnchantments extends JavaPlugin {
                 new MagicFragilityInfusion()
         );
 
-        /* Buff-related combat infusion */
+
+        /* Unrelated buff */
         InfusionManager.registerInfusions(
                 new BrutalizeInfusion(),
+                new EnlightenedInfusion(),
+                new KineticAbsorbInfusion()
+        );
+
+        /* Special buff infusion */
+        InfusionManager.registerInfusions(
                 new BleedingInfusion(),
                 new BloodRushInfusion()
         );
 
-        /* Unrelated buff */
+        /* Other debuff infusion */
         InfusionManager.registerInfusions(
-                new EnlightenedInfusion()
-        );
-
-        /* Debuff-related combat infusion */
-        InfusionManager.registerInfusions(
-                new CumbersomeInfusion()
-        );
-
-        /* Unrelated debuff */
-        InfusionManager.registerInfusions(
+                new CumbersomeInfusion(),
                 new RepairFragilityInfusion()
         );
 
