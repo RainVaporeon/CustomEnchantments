@@ -5,7 +5,8 @@ import org.bukkit.entity.Entity;
 
 public class Sounds {
     public static void playBlockBreakSound(Entity source) {
-        source.getWorld().playSound(source.getLocation(),
+        source.getWorld().playSound(
+                source.getLocation().add(0, source.getHeight() / 2, 0),
                 Sound.BLOCK_STONE_BREAK,
                 1,
                 1);

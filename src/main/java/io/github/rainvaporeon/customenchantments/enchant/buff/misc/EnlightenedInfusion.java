@@ -30,6 +30,11 @@ public class EnlightenedInfusion extends Infusion {
     }
 
     @Override
+    public int getMaxEffectiveLevel() {
+        return 100;
+    }
+
+    @Override
     public String getDescription() {
         return "Gain (2 * level)% more experience from all sources.";
     }
@@ -45,7 +50,7 @@ public class EnlightenedInfusion extends Infusion {
         public void onExperienceGain(PlayerExpChangeEvent event) {
             int amount = event.getAmount();
             int level = InfusionUtils.accumulateInfusionLevelOf(event.getPlayer(), EnlightenedInfusion.this);
-            double amplifier = 1 + 0.02 * level;
+            double amplifier = Math.min(1 + 0.02 * level, 2);
             event.setAmount((int) Math.round(amount * amplifier));
         }
     }
