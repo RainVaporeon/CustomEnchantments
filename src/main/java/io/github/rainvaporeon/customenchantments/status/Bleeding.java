@@ -3,6 +3,7 @@ package io.github.rainvaporeon.customenchantments.status;
 import com.destroystokyo.paper.event.server.ServerTickStartEvent;
 import io.github.rainvaporeon.customenchantments.util.particles.Particles;
 import io.github.rainvaporeon.customenchantments.util.particles.Sounds;
+import io.github.rainvaporeon.customenchantments.util.server.Server;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,7 +23,10 @@ public final class Bleeding implements Listener {
     }
 
     public static void applyBleeding(LivingEntity entity, int seconds, int amplifier) {
-        INSTANCE.bleedingMap.put(entity, new BleedingInfo(seconds, Math.sqrt(amplifier)));
+        INSTANCE.bleedingMap.compute(entity, (e, i) -> {
+            if (i == null) return new BleedingInfo(seconds, Math.sqrt(amplifier));
+            i.expirationTime = 20 * seconds + 20; return i;
+        });
     }
 
     @EventHandler
@@ -33,9 +37,11 @@ public final class Bleeding implements Listener {
                 return;
             }
             if (info.expirationTime % 20 == 0) {
-                Particles.playBleedingParticle(entity);
-                Sounds.playBlockBreakSound(entity);
-                entity.damage(info.damage);
+                Server.runTaskLater(() -> {
+                    Particles.playBleedingParticle(entity);
+                    Sounds.playBlockBreakSound(entity);
+                    entity.damage(info.damage);
+                }, 1);
             }
         });
     }
