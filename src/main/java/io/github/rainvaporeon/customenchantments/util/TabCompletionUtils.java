@@ -14,4 +14,5 @@ public class TabCompletionUtils {
     public static List<String> startsWith(String string, Collection<String> candidates) {
         return candidates.stream().filter(id -> id.startsWith(string)).collect(Collectors.toList());
     }
+
 }
