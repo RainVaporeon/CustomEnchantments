@@ -32,13 +32,13 @@ public class KineticAbsorbInfusion extends Infusion {
 
     @Override
     public String getDescription() {
-        return "Reduces incoming kinetic damage by (0.94^level).";
+        return "Reduces incoming kinetic damage by (0.9^level).";
     }
 
     @Nullable
     @Override
     public String getExtendedDescription(int level) {
-        return String.format("Kinetic damage reduced by %.1f%%.", 100 - Math.pow(0.94, level) * 100);
+        return String.format("Kinetic damage reduced by %.1f%%.", 100 - Math.pow(0.9, level) * 100);
     }
 
     class DamageListener implements Listener {
@@ -48,7 +48,7 @@ public class KineticAbsorbInfusion extends Infusion {
             if (event.getCause() != EntityDamageEvent.DamageCause.FLY_INTO_WALL) return;
             int level = InfusionUtils.accumulateInfusionLevelOf((Player) event.getEntity(), KineticAbsorbInfusion.this);
             if (level == 0) return;
-            event.setDamage(event.getDamage() * Math.pow(0.94, level));
+            event.setDamage(event.getDamage() * Math.pow(0.9, level));
         }
     }
 }
