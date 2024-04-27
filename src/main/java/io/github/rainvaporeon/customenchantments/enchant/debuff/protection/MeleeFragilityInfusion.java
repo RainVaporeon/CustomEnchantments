@@ -34,7 +34,7 @@ public class MeleeFragilityInfusion extends DebuffInfusion {
     @Nullable
     @Override
     public String getExtendedDescription(int level) {
-        return String.format("Take %.1f%% more melee damage.", Math.pow(1.1, level) * 100 - 1);
+        return String.format("Take %.1f%% more melee damage.", (Math.pow(1.1, level) - 1) * 100);
     }
 
     @Override
