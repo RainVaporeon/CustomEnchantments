@@ -34,7 +34,7 @@ public class ProjectileFragilityInfusion extends DebuffInfusion {
     @Nullable
     @Override
     public String getExtendedDescription(int level) {
-        return String.format("Take %.1f%% more projectile damage.", Math.pow(1.1, level) * 100);
+        return String.format("Take %.1f%% more projectile damage.", 1 - Math.pow(1.1, level) * 100);
     }
 
     @Override

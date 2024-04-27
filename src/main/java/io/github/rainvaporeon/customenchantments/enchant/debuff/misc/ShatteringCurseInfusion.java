@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -53,6 +54,8 @@ public class ShatteringCurseInfusion extends DebuffInfusion {
         public void onDamage(EntityDamageByEntityEvent event) {
             if (!(event.getDamager() instanceof Player)) return;
             if (event.getDamager().equals(event.getEntity())) return;
+            // sweeping would murder the armor durability and do nothing else, exclude it
+            if (event.getCause() == EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK) return;
             Player player = (Player) event.getDamager();
             int level = InfusionUtils.accumulateInfusionLevelOf(player, ShatteringCurseInfusion.this);
             if (level == 0) return;

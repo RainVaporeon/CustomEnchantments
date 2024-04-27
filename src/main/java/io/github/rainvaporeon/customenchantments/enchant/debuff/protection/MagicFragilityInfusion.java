@@ -34,7 +34,7 @@ public class MagicFragilityInfusion extends DebuffInfusion {
     @Nullable
     @Override
     public String getExtendedDescription(int level) {
-        return String.format("Take %.1f%% more magic damage.", Math.pow(1.1, level) * 100);
+        return String.format("Take %.1f%% more magic damage.", 1 - Math.pow(1.1, level) * 100);
     }
 
     @Override

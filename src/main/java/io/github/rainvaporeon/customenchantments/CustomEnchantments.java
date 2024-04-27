@@ -7,6 +7,7 @@ import io.github.rainvaporeon.customenchantments.enchant.buff.combat.BrutalizeIn
 import io.github.rainvaporeon.customenchantments.enchant.buff.combat.PoisonInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.buff.misc.EnlightenedInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.buff.misc.GracefulLandingInfusion;
+import io.github.rainvaporeon.customenchantments.enchant.buff.misc.StressTransferInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.buff.protection.*;
 import io.github.rainvaporeon.customenchantments.enchant.debuff.CumbersomeInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.debuff.RepairFragilityInfusion;
@@ -59,7 +60,8 @@ public final class CustomEnchantments extends JavaPlugin {
         InfusionManager.registerInfusions(
                 new BrutalizeInfusion(),
                 new EnlightenedInfusion(),
-                new KineticAbsorbInfusion()
+                new KineticAbsorbInfusion(),
+                new StressTransferInfusion()
         );
 
         /* Special buff infusion */

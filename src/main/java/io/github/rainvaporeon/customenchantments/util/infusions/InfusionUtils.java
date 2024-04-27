@@ -27,6 +27,7 @@ public final class InfusionUtils {
      * @return whether this succeeds.
      */
     public static boolean applyInfusion(ItemStack stack, String identifier, int level) {
+        if (stack == null || stack.isEmpty()) return false;
         Infusion infusion = InfusionManager.getInfusionById(identifier);
         if (infusion == null) return false;
         NBTItem item = new NBTItem(stack);
@@ -46,6 +47,7 @@ public final class InfusionUtils {
      * @return whether this succeeds.
      */
     public static boolean removeInfusion(ItemStack stack, String identifier) {
+        if (stack == null || stack.isEmpty()) return false;
         Infusion infusion = InfusionManager.getInfusionById(identifier);
         if (infusion == null) return false;
         NBTItem item = new NBTItem(stack);
@@ -72,7 +74,7 @@ public final class InfusionUtils {
     }
 
     public static Map<Infusion, Integer> getAllInfusions(ItemStack stack) {
-        if (stack == null || stack.getType() == Material.AIR) return Collections.emptyMap();
+        if (stack == null || stack.isEmpty()) return Collections.emptyMap();
         NBTItem item = new NBTItem(stack);
         NBTCompoundList list = item.getCompoundList(INFUSION_IDENTIFIER_KEY);
         Map<Infusion, Integer> infusionMap = new HashMap<>();
@@ -86,6 +88,7 @@ public final class InfusionUtils {
     }
 
     public static int getInfusion(ItemStack stack, Infusion type) {
+        if (stack == null || stack.isEmpty()) return 0;
         NBTItem item = new NBTItem(stack);
         NBTCompoundList list = item.getCompoundList(INFUSION_IDENTIFIER_KEY);
         ReadWriteNBT nbt = list.stream()
