@@ -59,6 +59,7 @@ public class CurrentInfusionCommand extends BaseCommand {
         for (Infusion infusion : InfusionManager.getInfusions()) {
             int level = InfusionUtils.accumulateInfusionLevelOf(player, infusion);
             if (level == 0) continue;
+            if (!infusion.showInSummary()) continue;
 
             TextComponent.Builder builder = Component.text()
                     .color(NamedTextColor.AQUA).content(infusion.getName())

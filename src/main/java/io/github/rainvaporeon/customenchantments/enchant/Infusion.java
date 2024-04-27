@@ -77,12 +77,29 @@ public abstract class Infusion {
     public abstract @Nullable Listener getListener();
 
     /**
+     * Whether this infusion should be shown in /currentinfusion
+     * @return whether this infusion should be shown in infusion summary
+     */
+    public boolean showInSummary() {
+        return true;
+    }
+
+    /**
      * Gets the infusion's description
      * @return the infusion description; cannot be null
      * @see Infusion#getExtendedDescription(int)
      */
     public String getDescription() {
         return "";
+    }
+
+    /**
+     * Gets extended description for this infusion at given level
+     * @param level the level
+     * @return describing this infusion's functionality at this level
+     */
+    public @Nullable String getExtendedDescription(int level) {
+        return null;
     }
 
     /**
@@ -100,15 +117,6 @@ public abstract class Infusion {
      */
     public int getMaxEffectiveLevel() {
         return Integer.MAX_VALUE;
-    }
-
-    /**
-     * Gets extended description for this infusion at given level
-     * @param level the level
-     * @return describing this infusion's functionality at this level
-     */
-    public @Nullable String getExtendedDescription(int level) {
-        return null;
     }
 
     public ReadWriteNBT getNBT(int level) {
