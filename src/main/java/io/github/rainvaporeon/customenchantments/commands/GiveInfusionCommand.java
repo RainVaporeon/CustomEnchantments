@@ -64,10 +64,10 @@ public class GiveInfusionCommand extends BaseCommand {
                 level = -1;
             }
         }
-        boolean overrideInfusionCap = strings.length >= 3 && Boolean.parseBoolean(strings[2]);
+        boolean force = strings.length >= 3 && Boolean.parseBoolean(strings[2]);
         if (level >= 0) {
             boolean exceedsCap = level > infusion.getMaxLevel();
-            if (exceedsCap && !overrideInfusionCap) {
+            if (exceedsCap && !force) {
                 commandSender.sendMessage("This infusion can only have a maximum level of " + infusion.getMaxLevel() +
                         ", and " + level + " is outside of its range!");
                 return false;
@@ -79,9 +79,10 @@ public class GiveInfusionCommand extends BaseCommand {
                 }
                 ItemStack handItem = player.getInventory().getItemInMainHand();
                 Result test = InfusionUtils.testInfusion(handItem, infusion);
-                if (test != Result.SUCCESSFUL) {
+                if (test != Result.SUCCESSFUL && !force) {
                     commandSender.sendMessage("This item is incompatible with this infusion!");
                     commandSender.sendMessage("This infusion is only compatible with: " + infusion.infusionTarget());
+                    commandSender.sendMessage("Use the force flag (arg3) to force add this infusion.");
                     return false;
                 }
 
