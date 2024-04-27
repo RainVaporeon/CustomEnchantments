@@ -53,7 +53,6 @@ public class PoisonInfusion extends SpecialInfusion {
         public void onDamage(EntityDamageByEntityEvent event) {
             if (!(event.getDamager() instanceof Player)) return;
             if (!(event.getEntity() instanceof LivingEntity)) return;
-            if (!event.isCritical()) return;
             int level = InfusionUtils.accumulateInfusionLevelOf((Player) event.getDamager(), PoisonInfusion.this);
             if (level == 0) return;
             CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, "Critical: applying bleeding");
