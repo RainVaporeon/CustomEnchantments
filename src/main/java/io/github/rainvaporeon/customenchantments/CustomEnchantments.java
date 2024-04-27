@@ -4,6 +4,7 @@ import io.github.rainvaporeon.customenchantments.commands.*;
 import io.github.rainvaporeon.customenchantments.enchant.buff.combat.BleedingInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.buff.combat.BloodRushInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.buff.combat.BrutalizeInfusion;
+import io.github.rainvaporeon.customenchantments.enchant.buff.combat.PoisonInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.buff.misc.EnlightenedInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.buff.misc.GracefulLandingInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.buff.protection.*;
@@ -63,6 +64,7 @@ public final class CustomEnchantments extends JavaPlugin {
         /* Special buff infusion */
         InfusionManager.registerInfusions(
                 new BleedingInfusion(),
+                new PoisonInfusion(),
                 new BloodRushInfusion(),
                 new GracefulLandingInfusion()
         );
