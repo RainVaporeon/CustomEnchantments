@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class MeleeFragilityInfusion extends DebuffInfusion {
@@ -36,9 +37,8 @@ public class MeleeFragilityInfusion extends DebuffInfusion {
         return String.format("Take %.1f%% more melee damage.", Math.pow(1.1, level) * 100);
     }
 
-    @Nullable
     @Override
-    public Listener getListener() {
+    public @NotNull Listener getListener() {
         return new DamageListener();
     }
 

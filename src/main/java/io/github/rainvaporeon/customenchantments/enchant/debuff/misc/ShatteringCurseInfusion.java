@@ -2,13 +2,13 @@ package io.github.rainvaporeon.customenchantments.enchant.debuff.misc;
 
 import io.github.rainvaporeon.customenchantments.enchant.DebuffInfusion;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
-import org.bukkit.damage.DamageSource;
-import org.bukkit.damage.DamageType;
+import io.github.rainvaporeon.customenchantments.util.server.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ShatteringCurseInfusion extends DebuffInfusion {
@@ -22,9 +22,8 @@ public class ShatteringCurseInfusion extends DebuffInfusion {
         return "Curse of Shattering";
     }
 
-    @Nullable
     @Override
-    public Listener getListener() {
+    public @NotNull Listener getListener() {
         return new DamageListener();
     }
 
@@ -58,7 +57,7 @@ public class ShatteringCurseInfusion extends DebuffInfusion {
             int level = InfusionUtils.accumulateInfusionLevelOf(player, ShatteringCurseInfusion.this);
             if (level == 0) return;
             double finalDamage = event.getFinalDamage();
-            player.damage(finalDamage, player);
+            Server.damageInstantly(player, player, finalDamage);
         }
     }
 }

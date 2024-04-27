@@ -2,6 +2,7 @@ package io.github.rainvaporeon.customenchantments.util.infusions;
 
 import io.github.rainvaporeon.customenchantments.CustomEnchantments;
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
+import io.github.rainvaporeon.customenchantments.util.SharedConstants;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
@@ -17,7 +18,9 @@ public final class InfusionManager {
     public static void registerInfusion(Infusion base) {
         validateInfusion(base);
         Listener listener = base.getListener();
-        if (listener != null) Bukkit.getPluginManager().registerEvents(listener, CustomEnchantments.PLUGIN);
+        if (listener != SharedConstants.emptyListener()) {
+            Bukkit.getPluginManager().registerEvents(listener, CustomEnchantments.PLUGIN);
+        }
         CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, "Registered infusion " + base);
         infusions.addLast(base);
     }

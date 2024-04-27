@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class DamageReductionInfusion extends Infusion {
@@ -25,9 +26,8 @@ public class DamageReductionInfusion extends Infusion {
         return 5;
     }
 
-    @Nullable
     @Override
-    public Listener getListener() {
+    public @NotNull Listener getListener() {
         return new DamageReductionListener();
     }
 

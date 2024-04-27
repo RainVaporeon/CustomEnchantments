@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -30,9 +31,8 @@ public class BloodlustInfusion extends SpecialInfusion {
         return this.getName();
     }
 
-    @Nullable
     @Override
-    public Listener getListener() {
+    public @NotNull Listener getListener() {
         return new DamageListener();
     }
 

@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import de.tr7zw.nbtapi.NBT;
 import de.tr7zw.nbtapi.iface.ReadWriteNBT;
+import io.github.rainvaporeon.customenchantments.util.SharedConstants;
 import io.github.rainvaporeon.customenchantments.util.StringStyle;
 import io.github.rainvaporeon.customenchantments.util.enums.InfusionTarget;
 import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
@@ -11,6 +12,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.EquipmentSlot;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Set;
@@ -31,7 +33,7 @@ public abstract class Infusion {
      * Gets the name for this infusion type
      * @return the name
      * @see Infusion#getDisplayName()
-     * @apiNote If display name is not implemented, the level
+     * @apiNote If the display name is not implemented, the level
      * of the infusion is appended after the return value of this method.
      */
     public abstract String getName();
@@ -74,7 +76,14 @@ public abstract class Infusion {
         };
     }
 
-    public abstract @Nullable Listener getListener();
+    /**
+     * Retrieves the listener instance for this infusion
+     * @return the listener
+     * @implNote If a listener is not required, use the empty
+     * listener instance in {@link SharedConstants#emptyListener()}
+     * instead.
+     */
+    public abstract @Nonnull Listener getListener();
 
     /**
      * Whether this infusion should be shown in /currentinfusion

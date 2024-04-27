@@ -10,6 +10,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
@@ -26,9 +27,8 @@ public class GracefulLandingInfusion extends SpecialInfusion {
         return "Graceful Landing";
     }
 
-    @Nullable
     @Override
-    public Listener getListener() {
+    public @NotNull Listener getListener() {
         return new FallDamageListener();
     }
 

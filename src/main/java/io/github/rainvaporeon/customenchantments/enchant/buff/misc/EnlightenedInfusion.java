@@ -5,6 +5,7 @@ import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerExpChangeEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class EnlightenedInfusion extends Infusion {
@@ -18,9 +19,8 @@ public class EnlightenedInfusion extends Infusion {
         return "Enlightened";
     }
 
-    @Nullable
     @Override
-    public Listener getListener() {
+    public @NotNull Listener getListener() {
         return new ExperienceGainListener();
     }
 

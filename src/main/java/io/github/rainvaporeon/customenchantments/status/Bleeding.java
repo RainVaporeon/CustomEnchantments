@@ -1,7 +1,6 @@
 package io.github.rainvaporeon.customenchantments.status;
 
 import com.destroystokyo.paper.event.server.ServerTickStartEvent;
-import io.github.rainvaporeon.customenchantments.CustomEnchantments;
 import io.github.rainvaporeon.customenchantments.util.particles.Particles;
 import io.github.rainvaporeon.customenchantments.util.particles.Sounds;
 import io.github.rainvaporeon.customenchantments.util.server.Server;
@@ -11,7 +10,6 @@ import org.bukkit.event.Listener;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 
 public final class Bleeding implements Listener {
     private final Map<LivingEntity, BleedingInfo> bleedingMap = new HashMap<>();
@@ -39,7 +37,7 @@ public final class Bleeding implements Listener {
                 Server.runTaskLater(() -> {
                     Particles.playBleedingParticle(entity);
                     Sounds.playBlockBreakSound(entity);
-                    entity.damage(info.damage);
+                    Server.damageInstantly(entity, info.damage);
                 }, 1);
             }
         });

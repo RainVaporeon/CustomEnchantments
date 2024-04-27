@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class FireResistanceInfusion extends Infusion {
@@ -35,9 +36,8 @@ public class FireResistanceInfusion extends Infusion {
         return String.format("Fire damage reduced by %.1f%%.", 100 - Math.pow(0.94, level) * 100);
     }
 
-    @Nullable
     @Override
-    public Listener getListener() {
+    public @NotNull Listener getListener() {
         return new DamageListener();
     }
 
