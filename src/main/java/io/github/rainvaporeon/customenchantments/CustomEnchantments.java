@@ -10,6 +10,7 @@ import io.github.rainvaporeon.customenchantments.enchant.buff.misc.GracefulLandi
 import io.github.rainvaporeon.customenchantments.enchant.buff.protection.*;
 import io.github.rainvaporeon.customenchantments.enchant.debuff.CumbersomeInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.debuff.RepairFragilityInfusion;
+import io.github.rainvaporeon.customenchantments.enchant.debuff.misc.ShatteringCurseInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.debuff.protection.*;
 import io.github.rainvaporeon.customenchantments.status.Bleeding;
 import io.github.rainvaporeon.customenchantments.status.Poison;
@@ -72,7 +73,8 @@ public final class CustomEnchantments extends JavaPlugin {
         /* Other debuff infusion */
         InfusionManager.registerInfusions(
                 new CumbersomeInfusion(),
-                new RepairFragilityInfusion()
+                new RepairFragilityInfusion(),
+                new ShatteringCurseInfusion()
         );
 
         Bukkit.getPluginManager().registerEvents(Bleeding.getInstance(), this);
