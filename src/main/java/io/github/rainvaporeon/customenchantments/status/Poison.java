@@ -30,7 +30,6 @@ public class Poison implements Listener {
         AttributeInstance defaultInst = entity.getType().getDefaultAttributes().getAttribute(Attribute.GENERIC_MAX_HEALTH);
         double maxHealth = inst == null ? (defaultInst == null ? 20.0 : defaultInst.getValue()) : inst.getValue();
         double damage = maxHealth * (amplifier / 100.0) / seconds;
-        CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, "Damage per damage tick is " + damage);
         INSTANCE.poisonMap.compute(entity, (e, i) -> {
             if (i == null) return new PoisonInfo(seconds, damage);
             i.expirationTime = 20 * seconds + 20; return i;
