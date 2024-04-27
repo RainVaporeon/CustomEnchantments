@@ -1,32 +1,32 @@
 package io.github.rainvaporeon.customenchantments.status;
 
 import com.destroystokyo.paper.event.server.ServerTickStartEvent;
-import io.github.rainvaporeon.customenchantments.CustomEnchantments;
 import io.github.rainvaporeon.customenchantments.util.particles.Particles;
-import io.github.rainvaporeon.customenchantments.util.particles.Sounds;
 import io.github.rainvaporeon.customenchantments.util.server.Server;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 
-public final class Bleeding implements Listener {
-    private final Map<LivingEntity, BleedingInfo> bleedingMap = new HashMap<>();
+public class Poison implements Listener {
+    private final Map<LivingEntity, PoisonInfo> bleedingMap = new HashMap<>();
 
-    private static final Bleeding INSTANCE = new Bleeding();
+    private static final Poison INSTANCE = new Poison();
 
-    private Bleeding() {}
+    private Poison() {}
 
-    public static Bleeding getInstance() {
+    public static Poison getInstance() {
         return INSTANCE;
     }
 
-    public static void applyBleeding(LivingEntity entity, int seconds, int amplifier) {
+    public static void applyPoison(LivingEntity entity, int seconds, int amplifier) {
+        if (entity.getAttribute(Attribute.GENERIC_MAX_HEALTH) == null) return;
+        double damage = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() * (0.5 * amplifier);
         INSTANCE.bleedingMap.compute(entity, (e, i) -> {
-            if (i == null) return new BleedingInfo(seconds, Math.sqrt(amplifier));
+            if (i == null) return new PoisonInfo(seconds, damage);
             i.expirationTime = 20 * seconds + 20; return i;
         });
     }
@@ -37,19 +37,23 @@ public final class Bleeding implements Listener {
         bleedingMap.forEach((entity, info) -> {
             if (info.expirationTime % 20 == 0) {
                 Server.runTaskLater(() -> {
-                    Particles.playBleedingParticle(entity);
-                    Sounds.playBlockBreakSound(entity);
-                    entity.damage(info.damage);
+                    Particles.playPoisonParticle(entity);
+                    double damage = info.damage;
+                    if (entity.getHealth() < damage) {
+                        entity.setHealth(1);
+                    } else {
+                        entity.damage(damage);
+                    }
                 }, 1);
             }
         });
     }
 
-    private static class BleedingInfo {
+    private static class PoisonInfo {
         private int expirationTime;
         private final double damage;
 
-        public BleedingInfo(int expirationTime, double damage) {
+        public PoisonInfo(int expirationTime, double damage) {
             this.expirationTime = 20 * expirationTime + 20;
             this.damage = damage;
         }
