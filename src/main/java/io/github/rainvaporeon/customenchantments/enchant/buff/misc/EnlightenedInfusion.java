@@ -42,7 +42,7 @@ public class EnlightenedInfusion extends Infusion {
     @Nullable
     @Override
     public String getExtendedDescription(int level) {
-        return String.format("Gain %d%% more experience from all sources", 2 * level);
+        return String.format("Gain %d%% more experience from all sources", 2 * Math.min(level, this.getMaxEffectiveLevel()));
     }
 
     class ExperienceGainListener implements Listener {
