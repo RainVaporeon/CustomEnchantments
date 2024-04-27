@@ -32,6 +32,11 @@ public class RepairFragilityInfusion extends DebuffInfusion {
     }
 
     @Override
+    public boolean showInSummary() {
+        return false;
+    }
+
+    @Override
     public String getDescription() {
         return "This item cannot be used in anvils.";
     }
