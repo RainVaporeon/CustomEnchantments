@@ -39,18 +39,18 @@ public class InfusionAnvilListener implements Listener {
         }
         ItemStack result = delegateResult;
 
+        Set<InfusionInfo> presentLeft = InfusionUtils.getAllInfusions(left);
         Set<InfusionInfo> presentRight = InfusionUtils.getAllInfusions(right);
-        Set<InfusionInfo> presentResult = InfusionUtils.getAllInfusions(left);
 
         // Note: If the result stores nothing, we apply the stored infusions
+        Set<InfusionInfo> storedLeft = InfusionUtils.getAllStoredInfusions(left);
         Set<InfusionInfo> storedRight = InfusionUtils.getAllStoredInfusions(right);
-        Set<InfusionInfo> storedResult = InfusionUtils.getAllStoredInfusions(left);
 
         // nothing has infusion, then it's not our business
-        if (presentRight.isEmpty() && presentResult.isEmpty() && storedRight.isEmpty() && storedResult.isEmpty()) return;
+        if (presentRight.isEmpty() && presentLeft.isEmpty() && storedRight.isEmpty() && storedLeft.isEmpty()) return;
 
         // We start managing the case where we apply RHS infusions and stored ones to result
-        if (storedResult.isEmpty()) {
+        if (storedLeft.isEmpty()) {
             // first, ignore incompatible ones
             storedRight.removeIf(info -> {
                 return info.getInfusion().infusionTarget().stream().noneMatch(target -> target.includes(result));
@@ -58,27 +58,30 @@ public class InfusionAnvilListener implements Listener {
             presentRight.removeIf(info -> {
                 return info.getInfusion().infusionTarget().stream().noneMatch(target -> target.includes(result));
             });
+            // then, append stored infusions to LHS
             storedRight.forEach(info -> {
-                InfusionInfo presentInfo = SetCollection.find(presentResult, info);
-                presentResult.add(merge(info, presentInfo));
+                InfusionInfo presentInfo = SetCollection.find(presentLeft, info);
+                SetCollection.addForced(presentLeft, merge(info, presentInfo));
             });
         } else {
             // Result stores something, may be merging books then
             storedRight.forEach(info -> {
-                InfusionInfo presentInfo = SetCollection.find(storedResult, info);
-                storedResult.add(merge(info, presentInfo));
+                InfusionInfo presentInfo = SetCollection.find(storedLeft, info);
+                SetCollection.addForced(storedLeft, merge(info, presentInfo));
             });
-            storedResult.forEach(info -> {
+            // As we are storing something, we put LHS over in stored infusions
+            storedLeft.forEach(info -> {
                 InfusionUtils.applyStoredInfusion(result, info.getInfusion().getIdentifier(), info.getLevel());
             });
         }
-        // Mutual part
-        presentRight.forEach(info -> {
-            InfusionInfo presentInfo = SetCollection.find(presentResult, info);
-            presentResult.add(merge(info, presentInfo));
-        });
 
-        presentResult.forEach(info -> {
+        // Mutual part: Merge right with left and map to left
+        presentRight.forEach(info -> {
+            InfusionInfo presentInfo = SetCollection.find(presentLeft, info);
+            SetCollection.addForced(presentLeft, merge(info, presentInfo));
+        });
+        // and then we apply
+        presentLeft.forEach(info -> {
             InfusionUtils.applyInfusion(result, info.getInfusion().getIdentifier(), info.getLevel());
         });
         event.setResult(result);
