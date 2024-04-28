@@ -15,6 +15,7 @@ import io.github.rainvaporeon.customenchantments.enchant.debuff.misc.ShatteringC
 import io.github.rainvaporeon.customenchantments.enchant.debuff.protection.*;
 import io.github.rainvaporeon.customenchantments.status.Bleeding;
 import io.github.rainvaporeon.customenchantments.status.Poison;
+import io.github.rainvaporeon.customenchantments.util.event.InfusionAnvilListener;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -35,6 +36,7 @@ public final class CustomEnchantments extends JavaPlugin {
         this.getServer().getCommandMap().register(FALLBACK_PREFIX, new CurrentInfusionCommand());
         this.getServer().getCommandMap().register(FALLBACK_PREFIX, RemoveInfusionCommand.getInstance());
         this.getServer().getCommandMap().register(FALLBACK_PREFIX, UpdateItemCommand.getInstance());
+        this.getServer().getCommandMap().register(FALLBACK_PREFIX, GiveStoredInfusionCommand.getInstance());
 
         /* Buff-related defensive infusion */
         InfusionManager.registerInfusions(
@@ -81,6 +83,7 @@ public final class CustomEnchantments extends JavaPlugin {
 
         Bukkit.getPluginManager().registerEvents(Bleeding.getInstance(), this);
         Bukkit.getPluginManager().registerEvents(Poison.getInstance(), this);
+        Bukkit.getPluginManager().registerEvents(InfusionAnvilListener.getInstance(), this);
     }
 
     @Override

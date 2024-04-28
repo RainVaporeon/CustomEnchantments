@@ -1,6 +1,7 @@
 package io.github.rainvaporeon.customenchantments.commands;
 
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
+import io.github.rainvaporeon.customenchantments.util.infusions.InfusionInfo;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionManager;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
 import net.kyori.adventure.text.Component;
@@ -13,8 +14,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Map;
 
 public class CurrentInfusionCommand extends BaseCommand {
     public CurrentInfusionCommand() {
@@ -36,20 +35,20 @@ public class CurrentInfusionCommand extends BaseCommand {
                     .content("Slot ")
                     .append(Component.text(slot.name()).color(NamedTextColor.AQUA))
                     .append(Component.text(":").color(NamedTextColor.GRAY)));
-            for (Map.Entry<Infusion, Integer> infusionInfo : InfusionUtils.getAllInfusions(inventory.getItem(slot)).entrySet()) {
+            for (InfusionInfo infusionInfo : InfusionUtils.getAllInfusions(inventory.getItem(slot))) {
                 TextComponent.Builder component = Component.text()
-                        .color(NamedTextColor.AQUA).content(infusionInfo.getKey().getName())
-                        .append(Component.text(" (" + infusionInfo.getKey().getIdentifier() + ")").color(NamedTextColor.GRAY))
-                        .append(Component.text(" Level " + infusionInfo.getValue()).color(NamedTextColor.GRAY));
+                        .color(NamedTextColor.AQUA).content(infusionInfo.getInfusion().getName())
+                        .append(Component.text(" (" + infusionInfo.getInfusion().getIdentifier() + ")").color(NamedTextColor.GRAY))
+                        .append(Component.text(" Level " + infusionInfo.getLevel()).color(NamedTextColor.GRAY));
 
-                if (!infusionInfo.getKey().applicableSlots().contains(slot)) {
+                if (!infusionInfo.getInfusion().applicableSlots().contains(slot)) {
                     component.append(
                             Component.text(" (Not applicable for slot)")
                                     .color(NamedTextColor.RED)
                     );
                 }
 
-                String desc = infusionInfo.getKey().getDescription();
+                String desc = infusionInfo.getInfusion().getDescription();
                 if (desc.isEmpty()) continue;
                 component.style(Style.style().hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(desc))).build());
                 sender.sendMessage(component);
