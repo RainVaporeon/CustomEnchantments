@@ -41,7 +41,12 @@ public final class InfusionLoreUtils {
             if (level != 0) {
                 applyLoreNBT(item, infusion, level);
             }
+            int storedLevel = InfusionUtils.getStoredInfusion(stack, infusion);
+            if (storedLevel != 0) {
+                applyLoreNBT(item, infusion, level);
+            }
         }
+
         item.applyNBT(stack);
     }
 }
