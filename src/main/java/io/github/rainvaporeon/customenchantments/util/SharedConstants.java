@@ -12,8 +12,9 @@ import static org.bukkit.event.entity.EntityDamageEvent.DamageCause.*;
 
 public class SharedConstants {
     public static final String INFUSION_IDENTIFIER_KEY = "CEInfusions";
-    public static final NamespacedKey INFUSION_NAMESPACE = new NamespacedKey(CustomEnchantments.PLUGIN, INFUSION_IDENTIFIER_KEY);
     public static final String STORED_INFUSION_IDENTIFIER_KEY = "CEStoredInfusions";
+    public static final String ENTITY_EXTRA_DATA = "CEEntityExtras";
+    public static final NamespacedKey INFUSION_NAMESPACE = new NamespacedKey(CustomEnchantments.PLUGIN, INFUSION_IDENTIFIER_KEY);
     public static final String INFUSION_ID = "id";
     public static final String INFUSION_LEVEL = "lvl";
     private static final Listener EMPTY = new Listener() {};

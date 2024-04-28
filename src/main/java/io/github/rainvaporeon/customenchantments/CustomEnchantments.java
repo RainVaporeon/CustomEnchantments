@@ -1,10 +1,7 @@
 package io.github.rainvaporeon.customenchantments;
 
 import io.github.rainvaporeon.customenchantments.commands.*;
-import io.github.rainvaporeon.customenchantments.enchant.buff.combat.BleedingInfusion;
-import io.github.rainvaporeon.customenchantments.enchant.buff.combat.BloodRushInfusion;
-import io.github.rainvaporeon.customenchantments.enchant.buff.combat.BrutalizeInfusion;
-import io.github.rainvaporeon.customenchantments.enchant.buff.combat.PoisonInfusion;
+import io.github.rainvaporeon.customenchantments.enchant.buff.combat.*;
 import io.github.rainvaporeon.customenchantments.enchant.buff.misc.EnlightenedInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.buff.misc.GracefulLandingInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.buff.misc.StressTransferInfusion;
@@ -76,7 +73,8 @@ public final class CustomEnchantments extends JavaPlugin {
                 new PoisonInfusion(),
                 new BloodRushInfusion(),
                 new GracefulLandingInfusion(),
-                new TitanicInfusion()
+                new TitanicInfusion(),
+                new SplinterInfusion()
         );
 
         /* Other debuff infusion */
