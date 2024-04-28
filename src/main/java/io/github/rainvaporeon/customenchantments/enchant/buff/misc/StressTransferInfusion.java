@@ -41,10 +41,9 @@ public class StressTransferInfusion extends Infusion {
                 "Does not apply to natural damage (Fire, fall, void...)";
     }
 
-    @Nullable
     @Override
-    public String getExtendedDescription(int level) {
-        return String.format("%d%% incoming damage is translated to durability lost.", 5 * level);
+    public boolean showInSummary() {
+        return false;
     }
 
     class DamageListener implements Listener {

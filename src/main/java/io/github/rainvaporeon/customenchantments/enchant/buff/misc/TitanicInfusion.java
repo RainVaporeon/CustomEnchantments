@@ -47,6 +47,11 @@ public class TitanicInfusion extends SpecialInfusion {
         return 1;
     }
 
+    @Override
+    public boolean showInSummary() {
+        return false;
+    }
+
     class DurabilityLostListener implements Listener {
         @EventHandler
         public void onDurabilityLost(PlayerItemDamageEvent event) {
