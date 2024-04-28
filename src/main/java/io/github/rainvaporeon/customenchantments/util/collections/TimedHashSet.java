@@ -49,14 +49,15 @@ public class TimedHashSet<E> implements Set<E> {
 
     @NotNull
     @Override
-    public Object[] toArray() {
+    public Object @NotNull [] toArray() {
         clean();
         return timer.keySet().toArray();
     }
 
+    @SuppressWarnings("unchecked")
     @NotNull
     @Override
-    public <T> T[] toArray(@NotNull T[] a) {
+    public <T> T @NotNull [] toArray(@NotNull T @NotNull [] a) {
         clean();
         return (T[]) timer.keySet().toArray();
     }

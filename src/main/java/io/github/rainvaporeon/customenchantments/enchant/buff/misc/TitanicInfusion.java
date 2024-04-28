@@ -1,6 +1,5 @@
 package io.github.rainvaporeon.customenchantments.enchant.buff.misc;
 
-import io.github.rainvaporeon.customenchantments.enchant.Infusion;
 import io.github.rainvaporeon.customenchantments.enchant.SpecialInfusion;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
 import org.bukkit.event.EventHandler;

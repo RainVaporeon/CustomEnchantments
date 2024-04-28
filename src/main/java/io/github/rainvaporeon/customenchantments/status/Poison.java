@@ -1,7 +1,6 @@
 package io.github.rainvaporeon.customenchantments.status;
 
 import com.destroystokyo.paper.event.server.ServerTickStartEvent;
-import io.github.rainvaporeon.customenchantments.CustomEnchantments;
 import io.github.rainvaporeon.customenchantments.util.particles.Particles;
 import io.github.rainvaporeon.customenchantments.util.server.Server;
 import org.bukkit.attribute.Attribute;
@@ -12,7 +11,6 @@ import org.bukkit.event.Listener;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 
 public class Poison implements Listener {
     private final Map<LivingEntity, PoisonInfo> poisonMap = new HashMap<>();

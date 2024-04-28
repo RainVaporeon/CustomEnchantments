@@ -13,11 +13,6 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.EnumSet;
-import java.util.Set;
-
-import static org.bukkit.event.entity.EntityDamageEvent.DamageCause.*;
-
 public class StressTransferInfusion extends Infusion {
     @Override
     public String getIdentifier() {

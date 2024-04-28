@@ -1,7 +1,6 @@
 package io.github.rainvaporeon.customenchantments.enchant.buff.combat;
 
 import de.tr7zw.nbtapi.NBT;
-import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTCompoundList;
 import de.tr7zw.nbtapi.NBTEntity;
 import de.tr7zw.nbtapi.iface.ReadWriteNBT;
@@ -14,7 +13,6 @@ import io.github.rainvaporeon.customenchantments.util.nbt.ItemData;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
