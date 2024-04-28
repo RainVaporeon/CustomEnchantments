@@ -33,13 +33,13 @@ public class LifeStealInfusion extends SpecialInfusion {
 
     @Override
     public String getDescription() {
-        return "(2*level)% of the damage dealt gets converted to healing.";
+        return "(5*level)% of the final damage dealt gets converted to healing.";
     }
 
     @Nullable
     @Override
     public String getExtendedDescription(int level) {
-        return String.format("%d%% of the damage dealt gets converted to healing.", 2 * level);
+        return String.format("%d%% of the damage dealt gets converted to healing.", 5 * level);
     }
 
     class DamageListener implements Listener {
@@ -50,7 +50,7 @@ public class LifeStealInfusion extends SpecialInfusion {
             Player player = (Player) src;
             int level = InfusionUtils.accumulateInfusionLevelOf(player, LifeStealInfusion.this);
             if (level == 0) return;
-            double healing = (0.02 * level) * event.getFinalDamage();
+            double healing = (0.05 * level) * event.getFinalDamage();
             player.setHealth(player.getHealth() + healing);
         }
     }
