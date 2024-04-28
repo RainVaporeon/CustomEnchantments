@@ -65,6 +65,7 @@ public class InfusionAnvilListener implements Listener {
             });
         } else {
             // Result stores something, may be merging books then
+            // in that case we filter nothing at all (probably will change for conflicting infusions)
             storedRight.forEach(info -> {
                 InfusionInfo presentInfo = SetCollection.find(storedLeft, info);
                 SetCollection.addForced(storedLeft, merge(info, presentInfo));

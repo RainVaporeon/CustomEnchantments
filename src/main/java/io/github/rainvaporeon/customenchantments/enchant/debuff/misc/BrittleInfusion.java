@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class BrittleInfusion extends DebuffInfusion {
     @Override
@@ -22,6 +23,12 @@ public class BrittleInfusion extends DebuffInfusion {
     @Override
     public String getDescription() {
         return "Loses (10*level)% more durability on the item.";
+    }
+
+    @Nullable
+    @Override
+    public String getExtendedDescription(int level) {
+        return String.format("Loses %d%% more durability on the item", level * 10);
     }
 
     @NotNull

@@ -50,7 +50,7 @@ public class CurrentInfusionCommand extends BaseCommand {
 
                 String desc = infusionInfo.getInfusion().getDescription();
                 if (desc.isEmpty()) continue;
-                component.style(Style.style().hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(desc))).build());
+                component.style(Style.style().color(NamedTextColor.AQUA).hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(desc))).build());
                 sender.sendMessage(component);
             }
         }

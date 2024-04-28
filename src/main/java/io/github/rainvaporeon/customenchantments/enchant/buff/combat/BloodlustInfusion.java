@@ -44,7 +44,7 @@ public class BloodlustInfusion extends SpecialInfusion {
     @Override
     public String getDescription() {
         return "After killing a mob, your next instance of melee damage in the next 8" +
-                " seconds are increased by 25%.";
+                " seconds are increased by (25 * level)%.";
     }
 
     @Nullable
@@ -54,7 +54,8 @@ public class BloodlustInfusion extends SpecialInfusion {
     }
 
     class DamageListener implements Listener {
-        private final Map<UUID, Long> damageBonusEffects = new HashMap<>(16, 0.25F);
+        private final Map<UUID, DamageInfo> damageBonusEffects = new HashMap<>(16, 0.25F);
+        DamageInfo empty = new DamageInfo(0, 0);
 
         @EventHandler
         public void onDeath(EntityDeathEvent event) {
@@ -62,7 +63,7 @@ public class BloodlustInfusion extends SpecialInfusion {
             if (player == null) return;
             int level = InfusionUtils.accumulateInfusionLevelOf(player, BloodlustInfusion.this);
             if (level == 0) return;
-            damageBonusEffects.put(player.getUniqueId(), System.currentTimeMillis() + 8000);
+            damageBonusEffects.put(player.getUniqueId(), new DamageInfo(System.currentTimeMillis() + 8000, 0.25 * level));
         }
 
         @EventHandler
@@ -74,13 +75,23 @@ public class BloodlustInfusion extends SpecialInfusion {
             if (level == 0) return;
             checkAndClearMap();
             if (damageBonusEffects.containsKey(player.getUniqueId())) {
-                event.setDamage(event.getDamage() * 1.25);
+                event.setDamage(event.getDamage() * damageBonusEffects.getOrDefault(player.getUniqueId(), empty).amplifier);
                 damageBonusEffects.remove(player.getUniqueId());
             }
         }
 
         private void checkAndClearMap() {
-            damageBonusEffects.entrySet().removeIf(e -> e.getValue() < System.currentTimeMillis());
+            damageBonusEffects.entrySet().removeIf(e -> e.getValue().expiry < System.currentTimeMillis());
+        }
+
+        private class DamageInfo {
+            long expiry;
+            double amplifier;
+
+            public DamageInfo(long expiry, double amplifier) {
+                this.expiry = expiry;
+                this.amplifier = 1 + amplifier;
+            }
         }
     }
 }
