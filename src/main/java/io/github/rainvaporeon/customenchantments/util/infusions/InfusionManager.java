@@ -17,6 +17,8 @@ public final class InfusionManager {
     // making the lore ordered and for other display purposes.
     private static final LinkedHashSet<Infusion> infusions = new LinkedHashSet<>();
 
+    private static final Map<String, String> migrationMap = new HashMap<>();
+
     /**
      * Registers the infusion to the manager
      * @param base the infusion
@@ -49,6 +51,14 @@ public final class InfusionManager {
      */
     public static Set<Infusion> getInfusions() {
         return new LinkedHashSet<>(infusions);
+    }
+
+    public static void registerMigrationMapping(String from, String to) {
+        migrationMap.put(from, to);
+    }
+
+    public static @Nullable String getMigrationMapping(String source) {
+        return migrationMap.get(source);
     }
 
     /**
