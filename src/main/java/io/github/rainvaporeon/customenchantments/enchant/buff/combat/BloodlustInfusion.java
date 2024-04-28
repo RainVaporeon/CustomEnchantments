@@ -44,13 +44,14 @@ public class BloodlustInfusion extends SpecialInfusion {
     @Override
     public String getDescription() {
         return "After killing a mob, your next instance of melee damage in the next 8" +
-                " seconds are increased by (25 * level)%.";
+                " seconds is increased by (25 * level)%.";
     }
 
     @Nullable
     @Override
     public String getExtendedDescription(int level) {
-        return this.getDescription();
+        return String.format("After killing a mob, your next instance of melee damage in the next 8" +
+                " seconds is increased by %d%%.", 25 * level);
     }
 
     class DamageListener implements Listener {
