@@ -8,9 +8,11 @@ import io.github.rainvaporeon.customenchantments.enchant.buff.combat.PoisonInfus
 import io.github.rainvaporeon.customenchantments.enchant.buff.misc.EnlightenedInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.buff.misc.GracefulLandingInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.buff.misc.StressTransferInfusion;
+import io.github.rainvaporeon.customenchantments.enchant.buff.misc.TitanicInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.buff.protection.*;
 import io.github.rainvaporeon.customenchantments.enchant.debuff.CumbersomeInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.debuff.RepairFragilityInfusion;
+import io.github.rainvaporeon.customenchantments.enchant.debuff.misc.BrittleInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.debuff.misc.ShatteringCurseInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.debuff.protection.*;
 import io.github.rainvaporeon.customenchantments.status.Bleeding;
@@ -73,14 +75,16 @@ public final class CustomEnchantments extends JavaPlugin {
                 new BleedingInfusion(),
                 new PoisonInfusion(),
                 new BloodRushInfusion(),
-                new GracefulLandingInfusion()
+                new GracefulLandingInfusion(),
+                new TitanicInfusion()
         );
 
         /* Other debuff infusion */
         InfusionManager.registerInfusions(
                 new CumbersomeInfusion(),
                 new RepairFragilityInfusion(),
-                new ShatteringCurseInfusion()
+                new ShatteringCurseInfusion(),
+                new BrittleInfusion()
         );
 
         Bukkit.getPluginManager().registerEvents(Bleeding.getInstance(), this);
