@@ -28,8 +28,8 @@ public class CumbersomeInfusion extends DebuffInfusion {
     }
 
     @Override
-    public String getDisplayName() {
-        return this.getName();
+    public String getDisplayName(int level) {
+        return level == 1 ? this.getName() : super.getDisplayName(level);
     }
 
     @Override

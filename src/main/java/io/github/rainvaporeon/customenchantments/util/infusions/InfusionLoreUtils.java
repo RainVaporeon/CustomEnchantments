@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 public final class InfusionLoreUtils {
     public static void applyLoreNBT(NBTItem item, Infusion infusion, int level) {
         NBTList<String> lore = item.getOrCreateCompound("display").getStringList("Lore");
-        String display = infusion.getDisplayName();
+        String display = infusion.getDisplayName(level);
         String value = display.replace("%s", infusion.getLevelStyle().apply(level));
         JsonObject o = new JsonObject();
         o.addProperty("text", value);

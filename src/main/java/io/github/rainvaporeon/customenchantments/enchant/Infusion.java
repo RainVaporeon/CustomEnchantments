@@ -30,7 +30,7 @@ public abstract class Infusion {
     /**
      * Gets the name for this infusion type
      * @return the name
-     * @see Infusion#getDisplayName()
+     * @see Infusion#getDisplayName(int)
      * @apiNote If the display name is not implemented, the level
      * of the infusion is appended after the return value of this method.
      */
@@ -43,7 +43,7 @@ public abstract class Infusion {
      * substitute the level position with {@code %s}.
      * @see Infusion#getName()
      */
-    public String getDisplayName() {
+    public String getDisplayName(int level) {
         return this.getName() + " %s";
     }
 
