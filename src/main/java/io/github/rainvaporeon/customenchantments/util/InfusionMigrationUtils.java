@@ -6,7 +6,6 @@ import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionLoreUtils;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionManager;
-import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -20,18 +19,32 @@ public class InfusionMigrationUtils {
         NBTItem item = new NBTItem(stack);
         Map<Infusion, Integer> replaceMap = new HashMap<>();
         List<ReadWriteNBT> removalList = new ArrayList<>();
-        NBTCompoundList list = item.getCompoundList(InfusionUtils.INFUSION_IDENTIFIER_KEY);
+        NBTCompoundList list = item.getCompoundList(SharedConstants.INFUSION_IDENTIFIER_KEY);
         for (ReadWriteNBT nbt : list) {
-            String id = nbt.getString(Infusion.INFUSION_ID);
-            int level = nbt.getInteger(Infusion.INFUSION_LEVEL);
+            String id = nbt.getString(SharedConstants.INFUSION_ID);
+            int level = nbt.getInteger(SharedConstants.INFUSION_LEVEL);
 
             String mapping = InfusionManager.getMigrationMapping(id);
             if (mapping == null) continue;
             replaceMap.put(InfusionManager.getInfusionById(mapping), level);
             removalList.add(nbt);
         }
+        NBTCompoundList store = item.getCompoundList(SharedConstants.STORED_INFUSION_IDENTIFIER_KEY);
+        List<ReadWriteNBT> storeRemovalList = new ArrayList<>();
+        Map<Infusion, Integer> storeReplaceMap = new HashMap<>();
+        for (ReadWriteNBT nbt : store) {
+            String id = nbt.getString(SharedConstants.INFUSION_ID);
+            int level = nbt.getInteger(SharedConstants.INFUSION_LEVEL);
+
+            String mapping = InfusionManager.getMigrationMapping(id);
+            if (mapping == null) continue;
+            storeReplaceMap.put(InfusionManager.getInfusionById(mapping), level);
+            storeRemovalList.add(nbt);
+        }
         list.removeIf(removalList::contains);
         replaceMap.forEach((k, v) -> list.addCompound(k.getNBT(v)));
+        store.removeIf(storeRemovalList::contains);
+        storeReplaceMap.forEach((k, v) -> store.addCompound(k.getNBT(v)));
         InfusionLoreUtils.applySortedLoreNBT(stack);
         return stack;
     }

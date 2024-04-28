@@ -19,8 +19,6 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 public abstract class Infusion {
-    public static final String INFUSION_ID = "id";
-    public static final String INFUSION_LEVEL = "lvl";
 
     /**
      * Gets the identifier for this infusion type, used to allow
@@ -130,8 +128,8 @@ public abstract class Infusion {
 
     public ReadWriteNBT getNBT(int level) {
         ReadWriteNBT compound = NBT.createNBTObject();
-        compound.setString(INFUSION_ID, this.getIdentifier());
-        compound.setInteger(INFUSION_LEVEL, level);
+        compound.setString(SharedConstants.INFUSION_ID, this.getIdentifier());
+        compound.setInteger(SharedConstants.INFUSION_LEVEL, level);
         return compound;
     }
 
