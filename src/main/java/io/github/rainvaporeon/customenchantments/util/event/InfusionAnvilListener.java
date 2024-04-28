@@ -34,28 +34,28 @@ public class InfusionAnvilListener implements Listener {
         if (left == null || left.isEmpty()) return;
         if (right == null || right.isEmpty()) return;
         if (delegateResult == null || delegateResult.isEmpty()) {
-            delegateResult = left;
+            // must copy here to prevent LHS from being modified
+            delegateResult = left.clone();
         }
         ItemStack result = delegateResult;
 
         Set<InfusionInfo> presentRight = InfusionUtils.getAllInfusions(right);
-        Set<InfusionInfo> presentResult = InfusionUtils.getAllInfusions(result);
+        Set<InfusionInfo> presentResult = InfusionUtils.getAllInfusions(left);
 
         // Note: If the result stores nothing, we apply the stored infusions
         Set<InfusionInfo> storedRight = InfusionUtils.getAllStoredInfusions(right);
-        Set<InfusionInfo> storedResult = InfusionUtils.getAllStoredInfusions(result);
-
-        presentRight.removeIf(info -> {
-            return info.getInfusion().infusionTarget().stream().noneMatch(target -> target.includes(result));
-        });
+        Set<InfusionInfo> storedResult = InfusionUtils.getAllStoredInfusions(left);
 
         // nothing has infusion, then it's not our business
-        if (presentRight.isEmpty() && presentResult.isEmpty()) return;
+        if (presentRight.isEmpty() && presentResult.isEmpty() && storedRight.isEmpty() && storedResult.isEmpty()) return;
 
         // We start managing the case where we apply RHS infusions and stored ones to result
         if (storedResult.isEmpty()) {
             // first, ignore incompatible ones
             storedRight.removeIf(info -> {
+                return info.getInfusion().infusionTarget().stream().noneMatch(target -> target.includes(result));
+            });
+            presentRight.removeIf(info -> {
                 return info.getInfusion().infusionTarget().stream().noneMatch(target -> target.includes(result));
             });
             storedRight.forEach(info -> {
