@@ -4,6 +4,7 @@ import io.github.rainvaporeon.customenchantments.util.SetCollection;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionInfo;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.inventory.AnvilInventory;
@@ -24,15 +25,18 @@ public class InfusionAnvilListener implements Listener {
      * Note: As left automatically carries over to result,
      * we do not really need to look at LHS at all.
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPrepareAnvil(PrepareAnvilEvent event) {
         AnvilInventory inventory = event.getInventory();
         ItemStack left = inventory.getFirstItem();
         ItemStack right = inventory.getSecondItem();
-        ItemStack result = inventory.getResult();
+        ItemStack delegateResult = inventory.getResult();
         if (left == null || left.isEmpty()) return;
         if (right == null || right.isEmpty()) return;
-        if (result == null || result.isEmpty()) return;
+        if (delegateResult == null || delegateResult.isEmpty()) {
+            delegateResult = left;
+        }
+        ItemStack result = delegateResult;
 
         Set<InfusionInfo> presentRight = InfusionUtils.getAllInfusions(right);
         Set<InfusionInfo> presentResult = InfusionUtils.getAllInfusions(result);
@@ -42,7 +46,7 @@ public class InfusionAnvilListener implements Listener {
         Set<InfusionInfo> storedResult = InfusionUtils.getAllStoredInfusions(result);
 
         presentRight.removeIf(info -> {
-            return info.getInfusion().infusionTarget().stream().anyMatch(target -> target.includes(result));
+            return info.getInfusion().infusionTarget().stream().noneMatch(target -> target.includes(result));
         });
 
         // nothing has infusion, then it's not our business
@@ -50,9 +54,9 @@ public class InfusionAnvilListener implements Listener {
 
         // We start managing the case where we apply RHS infusions and stored ones to result
         if (storedResult.isEmpty()) {
-            // first ignore incompatible ones
+            // first, ignore incompatible ones
             storedRight.removeIf(info -> {
-                return info.getInfusion().infusionTarget().stream().anyMatch(target -> target.includes(result));
+                return info.getInfusion().infusionTarget().stream().noneMatch(target -> target.includes(result));
             });
             storedRight.forEach(info -> {
                 InfusionInfo presentInfo = SetCollection.find(presentResult, info);
@@ -64,6 +68,9 @@ public class InfusionAnvilListener implements Listener {
                 InfusionInfo presentInfo = SetCollection.find(storedResult, info);
                 storedResult.add(merge(info, presentInfo));
             });
+            storedResult.forEach(info -> {
+                InfusionUtils.applyStoredInfusion(result, info.getInfusion().getIdentifier(), info.getLevel());
+            });
         }
         // Mutual part
         presentRight.forEach(info -> {
@@ -73,9 +80,6 @@ public class InfusionAnvilListener implements Listener {
 
         presentResult.forEach(info -> {
             InfusionUtils.applyInfusion(result, info.getInfusion().getIdentifier(), info.getLevel());
-        });
-        storedResult.forEach(info -> {
-            InfusionUtils.applyStoredInfusion(result, info.getInfusion().getIdentifier(), info.getLevel());
         });
         event.setResult(result);
     }
