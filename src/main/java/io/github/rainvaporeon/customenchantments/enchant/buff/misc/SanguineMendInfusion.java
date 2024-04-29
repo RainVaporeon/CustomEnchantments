@@ -67,6 +67,7 @@ public class SanguineMendInfusion extends Infusion {
             if (!(meta instanceof Damageable)) return;
             Damageable dmeta = (Damageable) meta;
             dmeta.setDamage((int) (dmeta.getDamage() - stack.getType().getMaxDurability() * level / 100.0));
+            stack.setItemMeta(meta);
         }
     }
 }
