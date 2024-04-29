@@ -2,10 +2,7 @@ package io.github.rainvaporeon.customenchantments;
 
 import io.github.rainvaporeon.customenchantments.commands.*;
 import io.github.rainvaporeon.customenchantments.enchant.buff.combat.*;
-import io.github.rainvaporeon.customenchantments.enchant.buff.misc.EnlightenedInfusion;
-import io.github.rainvaporeon.customenchantments.enchant.buff.misc.GracefulLandingInfusion;
-import io.github.rainvaporeon.customenchantments.enchant.buff.misc.StressTransferInfusion;
-import io.github.rainvaporeon.customenchantments.enchant.buff.misc.TitanicInfusion;
+import io.github.rainvaporeon.customenchantments.enchant.buff.misc.*;
 import io.github.rainvaporeon.customenchantments.enchant.buff.protection.*;
 import io.github.rainvaporeon.customenchantments.enchant.debuff.CumbersomeInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.debuff.RepairFragilityInfusion;
@@ -65,7 +62,8 @@ public final class CustomEnchantments extends JavaPlugin {
                 new EnlightenedInfusion(),
                 new KineticAbsorbInfusion(),
                 new StressTransferInfusion(),
-                new SplinterInfusion()
+                new SplinterInfusion(),
+                new SanguineMendInfusion()
         );
 
         /* Special buff infusion */
