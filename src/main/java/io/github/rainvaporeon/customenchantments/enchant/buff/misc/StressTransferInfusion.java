@@ -41,6 +41,13 @@ public class StressTransferInfusion extends Infusion {
                 "Does not apply to natural damage (Fire, fall, void...)";
     }
 
+    @Nullable
+    @Override
+    public String getExtendedDescription(int level) {
+        return String.format("%d%% of the damage is reflected onto the wearing piece as durability lost.\n" +
+                "Does not apply to natural damage causes.", 5 * level);
+    }
+
     @Override
     public boolean showInSummary() {
         return false;

@@ -86,6 +86,9 @@ public abstract class Infusion {
     /**
      * Whether this infusion should be shown in /currentinfusion
      * @return whether this infusion should be shown in infusion summary
+     * @apiNote if this is {@code false}, the extended description
+     * will be used instead during the infusion list.
+     * @see Infusion#getExtendedDescription(int)
      */
     public boolean showInSummary() {
         return true;

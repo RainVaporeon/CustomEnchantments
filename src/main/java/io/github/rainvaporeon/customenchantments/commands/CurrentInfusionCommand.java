@@ -15,6 +15,8 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
+
 public class CurrentInfusionCommand extends BaseCommand {
     public CurrentInfusionCommand() {
         super("currentinfusion");
@@ -36,20 +38,22 @@ public class CurrentInfusionCommand extends BaseCommand {
                     .append(Component.text(slot.name()).color(NamedTextColor.AQUA))
                     .append(Component.text(":").color(NamedTextColor.GRAY)));
             for (InfusionInfo infusionInfo : InfusionUtils.getAllInfusions(inventory.getItem(slot))) {
+                Infusion infusion = infusionInfo.getInfusion();
+                int level = infusionInfo.getLevel();
                 TextComponent.Builder component = Component.text()
                         .color(NamedTextColor.AQUA).content(infusionInfo.getInfusion().getName())
                         .append(Component.text(" (" + infusionInfo.getInfusion().getIdentifier() + ")").color(NamedTextColor.GRAY))
                         .append(Component.text(" Level " + infusionInfo.getLevel()).color(NamedTextColor.GRAY));
 
-                if (!infusionInfo.getInfusion().applicableSlots().contains(slot)) {
+                if (!infusion.applicableSlots().contains(slot)) {
                     component.append(
                             Component.text(" (Not applicable for slot)")
                                     .color(NamedTextColor.RED)
                     );
                 }
 
-                String desc = infusionInfo.getInfusion().getDescription();
-                if (desc.isEmpty()) continue;
+                String desc = Optional.ofNullable(infusion.getExtendedDescription(level)).orElse(infusion.getDescription());
+                if (desc == null || desc.isEmpty()) continue;
                 component.style(Style.style().color(NamedTextColor.AQUA).hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(desc))).build());
                 sender.sendMessage(component);
             }
