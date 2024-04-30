@@ -5,10 +5,28 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * A collection of convenience methods for interacting with the server
  */
 public class Server {
+    public static Logger getLogger() {
+        return CustomEnchantments.PLUGIN.getLogger();
+    }
+
+    public static void log(String message) {
+        CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, message);
+    }
+
+    public static void warn(String message) {
+        CustomEnchantments.PLUGIN.getLogger().log(Level.WARNING, message);
+    }
+
+    public static void warn(String message, Throwable t) {
+        getLogger().log(Level.WARNING, message, t);
+    }
 
     public static void runTask(Runnable runnable) {
         Server.createRunnable(runnable).runTask(CustomEnchantments.PLUGIN);

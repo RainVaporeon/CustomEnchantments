@@ -3,7 +3,11 @@ package io.github.rainvaporeon.customenchantments.enchant.buff.combat;
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
 import io.github.rainvaporeon.customenchantments.util.enums.InfusionTarget;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
+import io.github.rainvaporeon.customenchantments.util.particles.Particles;
+import io.github.rainvaporeon.customenchantments.util.particles.Sounds;
+import io.github.rainvaporeon.customenchantments.util.server.Server;
 import org.bukkit.Location;
+import org.bukkit.entity.Enemy;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,7 +23,8 @@ import java.util.EnumSet;
 import java.util.Set;
 
 public class SplinterInfusion extends Infusion {
-    public static final double EFFECTIVE_RADIUS = 4.0;
+    public static final double EFFECTIVE_RADIUS = 3.0;
+    public static final double AMPLIFIER = 0.07;
 
     @Override
     public String getIdentifier() {
@@ -33,13 +38,13 @@ public class SplinterInfusion extends Infusion {
 
     @Override
     public String getDescription() {
-        return "(10*level)% of the arrow damage gets transferred to nearby mobs.";
+        return "(7*level)% of the arrow damage gets transferred to nearby mobs.";
     }
 
     @Nullable
     @Override
     public String getExtendedDescription(int level) {
-        return String.format("%d%% of the arrow damage done to the entity also gets spread to entities in a 4 block radius.", level * 10);
+        return String.format("%d%% of the arrow damage done to the entity also gets spread to entities in a 3 block radius.", level * 7);
     }
 
     @NotNull
@@ -55,7 +60,7 @@ public class SplinterInfusion extends Infusion {
 
     @Override
     public Set<InfusionTarget> infusionTarget() {
-        return EnumSet.of(InfusionTarget.BOW, InfusionTarget.CROSSBOW);
+        return EnumSet.of(InfusionTarget.BOW, InfusionTarget.CROSSBOW, InfusionTarget.THROWABLE);
     }
 
     @Override
@@ -89,13 +94,16 @@ public class SplinterInfusion extends Infusion {
 
         @EventHandler
         public void onArrowHit(EntityDamageByEntityEvent event) {
-            if (!(event.getDamager() instanceof Player)) return;
             if (!(event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE)) return;
             int level = readEffectTag(event.getDamager());
             if (level == 0) return;
             Location location = event.getDamager().getLocation();
             event.getDamager().getWorld().getNearbyLivingEntities(location, EFFECTIVE_RADIUS).forEach(e -> {
-                e.damage(event.getDamage() * 0.1 * level);
+                if (!(e instanceof Enemy)) return; // Avoid non enemies
+                if (e.equals(event.getEntity())) return; // Ignore itself
+                Particles.playSplinterParticle(e);
+                Sounds.playSplinterEffectSound(e);
+                e.damage(event.getDamage() * AMPLIFIER * level);
             });
         }
     }

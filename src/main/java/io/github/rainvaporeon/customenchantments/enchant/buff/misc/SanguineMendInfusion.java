@@ -3,6 +3,8 @@ package io.github.rainvaporeon.customenchantments.enchant.buff.misc;
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
 import io.github.rainvaporeon.customenchantments.util.enums.InfusionTarget;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
+import io.github.rainvaporeon.customenchantments.util.server.Server;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -67,7 +69,10 @@ public class SanguineMendInfusion extends Infusion {
             if (!(meta instanceof Damageable)) return;
             Damageable dmeta = (Damageable) meta;
             dmeta.setDamage((int) (dmeta.getDamage() - stack.getType().getMaxDurability() * level / 100.0));
+            // Running twice so the item does not break and also appears fully durable after the use.
+            // Probably a bad idea -- changes are welcome
             stack.setItemMeta(meta);
+            Server.runTaskLater(() -> stack.setItemMeta(meta), 1);
         }
     }
 }

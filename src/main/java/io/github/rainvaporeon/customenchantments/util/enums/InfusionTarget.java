@@ -227,6 +227,14 @@ public enum InfusionTarget {
         }
     },
 
+    THROWABLE {
+        @Override
+        public boolean includes(Material item) {
+            return item.equals(Material.SNOWBALL) ||
+                    item.equals(Material.ENDER_PEARL);
+        }
+    },
+
     /**
      * Allow the Enchantment to be placed on vanishing items.
      */
