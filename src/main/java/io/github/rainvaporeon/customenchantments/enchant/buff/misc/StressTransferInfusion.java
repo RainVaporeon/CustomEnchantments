@@ -10,6 +10,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,14 +40,16 @@ public class StressTransferInfusion extends Infusion {
     @Override
     public String getDescription() {
         return "(5 * level)% of the damage is reflected onto the wearing piece as durability lost.\n" +
-                "Does not apply to natural damage (Fire, fall, void...)";
+                "Does not apply to natural damage (Fire, fall, void...)\n" +
+                "If the transferred damage destroys the piece, it will not be activated.";
     }
 
     @Nullable
     @Override
     public String getExtendedDescription(int level) {
         return String.format("%d%% of the damage is reflected onto the wearing piece as durability lost.\n" +
-                "Does not apply to natural damage causes.", 5 * level);
+                "Does not apply to natural damage causes.\n" +
+                "If the transferred damage destroys the piece, it will not be activated.", 5 * level);
     }
 
     @Override
@@ -64,10 +68,16 @@ public class StressTransferInfusion extends Infusion {
             int reductionPct = 0;
             for (EquipmentSlot slot : StressTransferInfusion.this.applicableSlots()) {
                 ItemStack stack = player.getInventory().getItem(slot);
+                ItemMeta meta = stack.getItemMeta();
                 int level = InfusionUtils.getInfusion(stack, StressTransferInfusion.this);
                 if (level == 0) continue;
                 int reduction = 5 * level;
                 double durabilityPenalty = damage * reduction / 100.0;
+                if (meta instanceof Damageable) {
+                    Damageable dmeta = (Damageable) meta;
+                    // do not damage or reduce damage
+                    if (durabilityPenalty >= (stack.getType().getMaxDurability() - dmeta.getDamage())) return;
+                }
                 player.damageItemStack(slot, (int) durabilityPenalty);
                 reductionPct += reduction;
             }
