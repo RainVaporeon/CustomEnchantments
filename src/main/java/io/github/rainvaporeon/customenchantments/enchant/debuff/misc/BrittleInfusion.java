@@ -10,6 +10,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BrittleInfusion extends DebuffInfusion {
+    public static final double PENALTY = 0.1;
+
     @Override
     public String getIdentifier() {
         return "brittle";
@@ -54,7 +56,7 @@ public class BrittleInfusion extends DebuffInfusion {
             if (stack.isEmpty()) return;
             int level = InfusionUtils.getInfusion(stack, BrittleInfusion.this);
             if (level == 0) return;
-            event.setDamage((int) (event.getDamage() * (1 + 0.1 * level)));
+            event.setDamage((int) (event.getDamage() * (1 + PENALTY * level)));
         }
     }
 }

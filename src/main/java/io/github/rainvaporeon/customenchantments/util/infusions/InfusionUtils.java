@@ -57,6 +57,7 @@ public final class InfusionUtils {
         NBTItem item = new NBTItem(stack);
         item.removeKey(SharedConstants.INFUSION_IDENTIFIER_KEY);
         item.applyNBT(stack);
+        InfusionLoreUtils.applySortedLoreNBT(stack);
     }
 
     private static boolean removeInfusionData(NBTItem nbt, String identifier) {

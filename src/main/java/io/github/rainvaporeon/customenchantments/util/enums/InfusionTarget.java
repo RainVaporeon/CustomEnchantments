@@ -231,7 +231,8 @@ public enum InfusionTarget {
         @Override
         public boolean includes(Material item) {
             return item.equals(Material.SNOWBALL) ||
-                    item.equals(Material.ENDER_PEARL);
+                    item.equals(Material.ENDER_PEARL) ||
+                    item.equals(Material.TRIDENT);
         }
     },
 

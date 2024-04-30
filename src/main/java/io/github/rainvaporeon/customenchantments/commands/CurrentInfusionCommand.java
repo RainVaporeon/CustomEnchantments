@@ -52,8 +52,18 @@ public class CurrentInfusionCommand extends BaseCommand {
                     );
                 }
 
+                if (infusion.infusionTarget().stream().noneMatch(inc -> inc.includes(inventory.getItem(slot)))) {
+                    component.append(
+                            Component.text(" (Not applicable for item)")
+                                    .color(NamedTextColor.RED)
+                    );
+                }
+
                 String desc = Optional.ofNullable(infusion.getExtendedDescription(level)).orElse(infusion.getDescription());
-                if (desc == null || desc.isEmpty()) continue;
+                if (desc == null || desc.isEmpty()) {
+                    sender.sendMessage(component);
+                    continue;
+                }
                 component.style(Style.style().color(NamedTextColor.AQUA).hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(desc))).build());
                 sender.sendMessage(component);
             }
