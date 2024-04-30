@@ -1,6 +1,8 @@
 package io.github.rainvaporeon.customenchantments.enchant.buff.combat;
 
 import de.tr7zw.nbtapi.NBT;
+import de.tr7zw.nbtapi.NBTCompoundList;
+import de.tr7zw.nbtapi.NBTEntity;
 import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
 import io.github.rainvaporeon.customenchantments.util.SharedConstants;
@@ -9,7 +11,8 @@ import io.github.rainvaporeon.customenchantments.util.enums.InfusionTarget;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
 import io.github.rainvaporeon.customenchantments.util.nbt.ItemData;
 import org.bukkit.Location;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -44,7 +47,7 @@ public class SplinterInfusion extends Infusion {
     @Nullable
     @Override
     public String getExtendedDescription(int level) {
-        return String.format("%d%% of the arrow damage done to the entity also gets spread to enemies in a 4 block radius.", level * 10);
+        return String.format("%d%% of the arrow damage done to the entity also gets spread to entities in a 4 block radius.", level * 10);
     }
 
     @NotNull
@@ -68,20 +71,17 @@ public class SplinterInfusion extends Infusion {
         return 5;
     }
 
-    private void addEffectTag(ReadWriteNBT compound, int level) {
+    private ReadWriteNBT getEffectTag(int level) {
+        ReadWriteNBT compound = NBT.createNBTObject();
         compound.setString(SharedConstants.INFUSION_ID, SplinterInfusion.NAME);
         compound.setInteger(SharedConstants.INFUSION_LEVEL, level);
+        return compound;
     }
 
-    private int readEffectTag(Entity entity) {
-        int[] container = new int[1];
-        NBT.get(entity, nbt -> {
-            nbt.getCompoundList(SharedConstants.ENTITY_EXTRA_DATA).forEach(rw -> {
-                if (!NAME.equals(rw.getString(SharedConstants.INFUSION_ID))) return;
-                container[0] = rw.getInteger(SharedConstants.INFUSION_LEVEL);
-            });
-        });
-        return container[0];
+    private int readEffectTag(NBTEntity entity) {
+        NBTCompoundList list = ItemData.getEntityExtras(entity);
+        return list.stream().filter(rw -> rw.getString(SharedConstants.INFUSION_ID).equals(NAME))
+                .findFirst().map(rw -> rw.getInteger(SharedConstants.INFUSION_LEVEL)).orElse(0);
     }
 
     class ShootEventListener implements Listener {
@@ -92,9 +92,8 @@ public class SplinterInfusion extends Infusion {
             if (!(event.getEntity() instanceof Player)) return;
             int level = InfusionUtils.getInfusion(event.getBow(), SplinterInfusion.this);
             if (level == 0) return;
-            NBT.modify(event.getProjectile(), nbt -> {
-                addEffectTag(ItemData.getEntityExtras(nbt).addCompound(), level);
-            });
+            NBTEntity entity = new NBTEntity(event.getProjectile());
+            ItemData.getEntityExtras(entity).addCompound(getEffectTag(level));
             projectiles.add(event.getProjectile());
         }
 
@@ -104,11 +103,10 @@ public class SplinterInfusion extends Infusion {
             if (!(event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE)) return;
             if (!projectiles.contains(event.getDamager())) return;
             projectiles.remove(event.getDamager());
-            int level = readEffectTag(event.getEntity());
+            int level = readEffectTag(new NBTEntity(event.getDamager()));
             if (level == 0) return;
             Location location = event.getDamager().getLocation();
             event.getDamager().getWorld().getNearbyLivingEntities(location, EFFECTIVE_RADIUS).forEach(e -> {
-                if (!(e instanceof Enemy)) return;
                 e.damage(event.getDamage() * 0.1 * level);
             });
         }
