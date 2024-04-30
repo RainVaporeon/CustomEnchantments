@@ -12,4 +12,8 @@ public class Permission {
     public static String of(String id) {
         return "customenchantments." + id;
     }
+
+    public static org.bukkit.permissions.Permission bukkit(String context) {
+        return new org.bukkit.permissions.Permission(context);
+    }
 }

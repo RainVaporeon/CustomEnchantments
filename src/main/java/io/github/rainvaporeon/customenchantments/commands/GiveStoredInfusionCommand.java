@@ -33,6 +33,11 @@ public class GiveStoredInfusionCommand extends BaseCommand {
 
     @Override
     public boolean execute(@NotNull CommandSender commandSender, @NotNull String s, String[] strings) {
+        if (!commandSender.hasPermission(Permission.bukkit(this.getName()))) {
+            commandSender.sendMessage("You do not have permission to do this!");
+            return false;
+        }
+
         try {
             return execute0(commandSender, strings);
         } catch (Exception ex) {
