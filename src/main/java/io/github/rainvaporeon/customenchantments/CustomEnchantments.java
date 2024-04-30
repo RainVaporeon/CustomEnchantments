@@ -74,7 +74,8 @@ public final class CustomEnchantments extends JavaPlugin {
                 new BloodlustInfusion(),
                 new GracefulLandingInfusion(),
                 new TitanicInfusion(),
-                new LifeStealInfusion()
+                new LifeStealInfusion(),
+                new SoulTetherInfusion()
         );
 
         /* Other debuff infusion */
