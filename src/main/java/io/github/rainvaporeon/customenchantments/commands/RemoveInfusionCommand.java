@@ -80,6 +80,11 @@ public class RemoveInfusionCommand extends BaseCommand {
         return Permission.of("removeinfusion");
     }
 
+    @Override
+    public @NotNull List<String> getAliases() {
+        return Collections.singletonList("ri");
+    }
+
     private void sendHelp(CommandSender sender) {
         sender.sendMessage("/removeinfusion <type>");
     }

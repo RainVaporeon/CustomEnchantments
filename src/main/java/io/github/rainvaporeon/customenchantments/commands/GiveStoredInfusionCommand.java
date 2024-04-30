@@ -107,11 +107,16 @@ public class GiveStoredInfusionCommand extends BaseCommand {
 
     @Override
     public @Nullable String getPermission() {
-        return Permission.of("giveinfusion");
+        return Permission.of("givestoredinfusion");
     }
 
     private void sendHelp(CommandSender sender) {
-        sender.sendMessage("/giveinfusion <type> <level> [override]");
+        sender.sendMessage("/givestoredinfusion <type> <level> [override]");
+    }
+
+    @Override
+    public @NotNull List<String> getAliases() {
+        return Collections.singletonList("gsi");
     }
 
     @Override

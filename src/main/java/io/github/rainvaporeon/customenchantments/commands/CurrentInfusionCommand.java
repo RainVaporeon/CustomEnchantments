@@ -15,6 +15,8 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 public class CurrentInfusionCommand extends BaseCommand {
@@ -95,6 +97,11 @@ public class CurrentInfusionCommand extends BaseCommand {
         }
         sender.sendMessage(Component.text().color(NamedTextColor.YELLOW).content("You can hover over the infusion name to see their effects."));
         return true;
+    }
+
+    @Override
+    public @NotNull List<String> getAliases() {
+        return Collections.singletonList("ci");
     }
 
     @Override

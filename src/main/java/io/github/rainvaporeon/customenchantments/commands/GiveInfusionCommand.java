@@ -123,6 +123,11 @@ public class GiveInfusionCommand extends BaseCommand {
     }
 
     @Override
+    public @NotNull List<String> getAliases() {
+        return Collections.singletonList("gi");
+    }
+
+    @Override
     public boolean testPermission(@NotNull CommandSender target) {
         return target.hasPermission(Permission.of(this.getName()));
     }

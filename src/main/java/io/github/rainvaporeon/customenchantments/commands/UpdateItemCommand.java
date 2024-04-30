@@ -6,6 +6,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
+import java.util.List;
+
 public class UpdateItemCommand extends BaseCommand {
     UpdateItemCommand() { super("updateitem"); }
 
@@ -27,6 +30,11 @@ public class UpdateItemCommand extends BaseCommand {
 
     public static UpdateItemCommand getInstance() {
         return new UpdateItemCommand();
+    }
+
+    @Override
+    public @NotNull List<String> getAliases() {
+        return Collections.singletonList("ui");
     }
 
     @Override
