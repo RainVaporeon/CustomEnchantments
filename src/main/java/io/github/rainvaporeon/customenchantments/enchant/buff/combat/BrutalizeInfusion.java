@@ -1,7 +1,6 @@
 package io.github.rainvaporeon.customenchantments.enchant.buff.combat;
 
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
-import io.github.rainvaporeon.customenchantments.util.infusions.InfusionManager;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,8 +14,6 @@ import java.util.EnumSet;
 import java.util.Set;
 
 public class BrutalizeInfusion extends Infusion {
-    public static final double AMPLIFIER = 0.07;
-
     @Override
     public String getIdentifier() {
         return "brutalize";
@@ -34,13 +31,13 @@ public class BrutalizeInfusion extends Infusion {
 
     @Override
     public String getDescription() {
-        return "Increases critical hit damage by 7% per level.";
+        return "Increases critical hit damage by 10% per level.";
     }
 
     @Nullable
     @Override
     public String getExtendedDescription(int level) {
-        return "Critical damage increased by " + 7 * level + "%.";
+        return "Critical damage increased by " + 10 * level + "%.";
     }
 
     @Override
@@ -60,10 +57,8 @@ public class BrutalizeInfusion extends Infusion {
             if (!(event.getDamager() instanceof Player)) return;
             Player damager = (Player) event.getDamager();
             int totalLevel = InfusionUtils.accumulateInfusionLevelOf(damager, BrutalizeInfusion.this);
-            int cumbersome = InfusionUtils.accumulateInfusionLevelOf(damager, InfusionManager.getInfusionById("cumbersome"));
-            if (cumbersome > 0) return; // Do not apply on cumbersome
             if (event.isCritical()) {
-                double multiplier = 1 + AMPLIFIER * totalLevel;
+                double multiplier = 1 + 0.1 * totalLevel;
                 event.setDamage(event.getDamage() * multiplier);
             }
         }
