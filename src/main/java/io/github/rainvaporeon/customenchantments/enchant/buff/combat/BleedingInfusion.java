@@ -59,6 +59,7 @@ public class BleedingInfusion extends SpecialInfusion {
         public void onDamage(EntityDamageByEntityEvent event) {
             if (!(event.getDamager() instanceof Player)) return;
             if (!(event.getEntity() instanceof LivingEntity)) return;
+            if (event.getDamager().equals(event.getEntity())) return; // probably won't happen
             if (!event.isCritical()) return;
             int level = InfusionUtils.accumulateInfusionLevelOf((Player) event.getDamager(), BleedingInfusion.this);
             if (level == 0) return;

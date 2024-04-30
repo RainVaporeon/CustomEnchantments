@@ -48,6 +48,7 @@ public class PoisonInfusion extends SpecialInfusion {
         public void onDamage(EntityDamageByEntityEvent event) {
             if (!(event.getDamager() instanceof Player)) return;
             if (!(event.getEntity() instanceof LivingEntity)) return;
+            if (event.getDamager().equals(event.getEntity())) return; // do not poison yourself
             int level = InfusionUtils.accumulateInfusionLevelOf((Player) event.getDamager(), PoisonInfusion.this);
             if (level == 0) return;
             Poison.applyPoison((LivingEntity) event.getEntity(), 4, level);
