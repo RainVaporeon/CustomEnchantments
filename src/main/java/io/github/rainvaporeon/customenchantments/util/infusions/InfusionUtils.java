@@ -102,7 +102,6 @@ public final class InfusionUtils {
     }
 
     public static int accumulateInfusionLevelOf(Player entity, Infusion infusion) {
-        if (infusion == null) return 0;
         PlayerInventory inventory = entity.getInventory();
         Set<InfusionTarget> targetSet = infusion.infusionTarget();
         Set<EquipmentSlot> allowedSlots = infusion.applicableSlots();
