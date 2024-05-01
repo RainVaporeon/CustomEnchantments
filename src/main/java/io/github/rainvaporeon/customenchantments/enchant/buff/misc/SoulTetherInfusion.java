@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -54,11 +55,13 @@ public class SoulTetherInfusion extends SpecialInfusion {
         @EventHandler
         public void onPlayerDeath(PlayerDeathEvent event) {
             if (event.getKeepInventory()) return; // keep inv, this infusion is useless
-            List<ItemStack> inventory = Arrays.stream(event.getPlayer().getInventory().getContents()).collect(Collectors.toList());
-            inventory.removeIf(Objects::isNull);
-            inventory.removeIf(is -> InfusionUtils.getInfusion(is, SoulTetherInfusion.this) == 0);
-            event.getDrops().removeAll(inventory);
-            event.getItemsToKeep().addAll(inventory);
+            Iterator<ItemStack> it = event.getDrops().iterator();
+            while (it.hasNext()) {
+                ItemStack stx = it.next();
+                if (InfusionUtils.getInfusion(stx, SoulTetherInfusion.this) == 0) continue;
+                it.remove();
+                event.getItemsToKeep().add(stx);
+            }
         }
     }
 }
