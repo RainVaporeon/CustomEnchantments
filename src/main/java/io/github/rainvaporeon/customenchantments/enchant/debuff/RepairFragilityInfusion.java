@@ -39,7 +39,7 @@ public class RepairFragilityInfusion extends DebuffInfusion {
 
     @Override
     public String getDescription() {
-        return "This item cannot be used in anvils or repaired.";
+        return "This item cannot be used in anvils or repaired in grindstones.";
     }
 
     @Nullable

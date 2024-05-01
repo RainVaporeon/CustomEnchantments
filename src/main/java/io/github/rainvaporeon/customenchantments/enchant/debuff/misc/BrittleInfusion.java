@@ -24,7 +24,7 @@ public class BrittleInfusion extends DebuffInfusion {
 
     @Override
     public String getDescription() {
-        return "Loses (10*level)% more durability on the item.";
+        return "Loses (10 * level)% more durability on the item.";
     }
 
     @Nullable

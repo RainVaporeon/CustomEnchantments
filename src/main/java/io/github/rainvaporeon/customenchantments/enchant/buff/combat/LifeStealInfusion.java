@@ -33,7 +33,7 @@ public class LifeStealInfusion extends SpecialInfusion {
 
     @Override
     public String getDescription() {
-        return "(5*level)% of the final damage dealt gets converted to healing.";
+        return "(5 * level)% of the final damage dealt gets converted to healing.";
     }
 
     @Nullable

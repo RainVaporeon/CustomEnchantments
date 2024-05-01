@@ -38,7 +38,7 @@ public class SplinterInfusion extends Infusion {
 
     @Override
     public String getDescription() {
-        return "(7*level)% of the arrow damage gets transferred to nearby mobs.";
+        return "(7 * level)% of the arrow damage gets transferred to nearby mobs.";
     }
 
     @Nullable
