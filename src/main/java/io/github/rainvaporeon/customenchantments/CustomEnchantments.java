@@ -58,6 +58,7 @@ public final class CustomEnchantments extends JavaPlugin {
 
         /* Unrelated buff */
         InfusionManager.registerInfusions(
+                new KillStreakInfusion(),
                 new BrutalizeInfusion(),
                 new EnlightenedInfusion(),
                 new KineticAbsorbInfusion(),
