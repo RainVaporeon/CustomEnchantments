@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -71,6 +72,7 @@ public class BloodlustInfusion extends SpecialInfusion {
         public void onDamage(EntityDamageByEntityEvent event) {
             Entity src = event.getDamager();
             if (!(src instanceof Player)) return;
+            if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK) return;
             Player player = (Player) src;
             int level = InfusionUtils.accumulateInfusionLevelOf(player, BloodlustInfusion.this);
             if (level == 0) return;
