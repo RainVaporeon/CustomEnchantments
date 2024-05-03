@@ -59,6 +59,7 @@ public class InfusionAnvilListener implements Listener {
             presentRight.removeIf(info -> {
                 return info.getInfusion().infusionTarget().stream().noneMatch(target -> target.includes(result));
             });
+            if (storedRight.isEmpty() && presentRight.isEmpty()) return;
             // then, append stored infusions to LHS
             storedRight.forEach(info -> {
                 InfusionInfo presentInfo = SetCollection.find(presentLeft, info);
@@ -67,15 +68,20 @@ public class InfusionAnvilListener implements Listener {
         } else {
             // Result stores something, may be merging books then
             // in that case we filter nothing at all (probably will change for conflicting infusions)
+            if (storedRight.isEmpty()) return;
+
             storedRight.forEach(info -> {
                 InfusionInfo presentInfo = SetCollection.find(storedLeft, info);
                 SetCollection.addForced(storedLeft, merge(info, presentInfo));
             });
+
             // As we are storing something, we put LHS over in stored infusions
             storedLeft.forEach(info -> {
                 InfusionUtils.applyStoredInfusion(result, info.getInfusion().getIdentifier(), info.getLevel());
             });
         }
+
+
 
         // Mutual part: Merge right with left and map to left
         presentRight.forEach(info -> {
@@ -86,6 +92,9 @@ public class InfusionAnvilListener implements Listener {
         presentLeft.forEach(info -> {
             InfusionUtils.applyInfusion(result, info.getInfusion().getIdentifier(), info.getLevel());
         });
+
+        if (left.equals(result)) return;
+
         event.getInventory().setRepairCost(Math.max(event.getInventory().getRepairCost(), 1));
         event.setResult(result);
     }
