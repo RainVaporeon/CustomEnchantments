@@ -6,6 +6,7 @@ import io.github.rainvaporeon.customenchantments.util.Permission;
 import io.github.rainvaporeon.customenchantments.util.TabCompletionUtils;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionManager;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -89,7 +90,10 @@ public class GiveStoredInfusionCommand extends BaseCommand {
                 return false;
             } else {
                 ItemStack handItem = player.getInventory().getItemInMainHand();
-
+                if (handItem.getType() != Material.ENCHANTED_BOOK) {
+                    commandSender.sendMessage("The hand item is not an enchanted book!");
+                    return false;
+                }
                 if (InfusionUtils.applyStoredInfusion(handItem, infusion.getIdentifier(), level)) {
                     commandSender.sendMessage("Successfully applied this infusion!");
                     player.getInventory().setItemInMainHand(handItem);

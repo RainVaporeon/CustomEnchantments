@@ -16,6 +16,6 @@ public class SetCollection {
      * @param <T> the type
      */
     public static <T> boolean addForced(Set<T> set, T object) {
-        return set.remove(object) && set.add(object);
+        return set.remove(object) & set.add(object);
     }
 }
