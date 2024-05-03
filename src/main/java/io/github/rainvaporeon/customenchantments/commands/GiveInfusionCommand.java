@@ -32,6 +32,10 @@ public class GiveInfusionCommand extends BaseCommand {
         return "giveinfusion";
     }
 
+    private static final int PLAYER_INDEX = 0;
+    private static final int IDENTIFIER_INDEX = 1;
+    private static final int LEVEL_INDEX = 2;
+    private static final int FORCE_INDEX = 3;
     @Override
     public boolean execute(@NotNull CommandSender commandSender, @NotNull String s, String[] strings) {
         if (!commandSender.hasPermission(Permission.bukkit(this.getName()))) {
@@ -53,23 +57,30 @@ public class GiveInfusionCommand extends BaseCommand {
             sendHelp(commandSender);
             return true;
         }
-        Infusion infusion = InfusionManager.getInfusionById(strings[0]);
+
+        Player player = commandSender.getServer().getPlayerExact(strings[PLAYER_INDEX]);
+        if (player == null) {
+            commandSender.sendMessage("Cannot find this player! Are they online?");
+            return false;
+        }
+
+        Infusion infusion = InfusionManager.getInfusionById(strings[IDENTIFIER_INDEX]);
         if (infusion == null) {
             sendHelp(commandSender);
             return true;
         }
         int level;
-        if (strings.length == 1) {
+        if (strings.length == LEVEL_INDEX) {
             level = 1;
         } else {
             try {
-                level = Integer.parseInt(strings[1]);
+                level = Integer.parseInt(strings[LEVEL_INDEX]);
             } catch (NumberFormatException ex) {
                 /* swallow */
                 level = -1;
             }
         }
-        boolean force = strings.length >= 3 && Boolean.parseBoolean(strings[2]);
+        boolean force = strings.length > FORCE_INDEX && Boolean.parseBoolean(strings[FORCE_INDEX]);
         if (level >= 0) {
             boolean exceedsCap = level > infusion.getMaxLevel();
             if (exceedsCap && !force) {
@@ -77,11 +88,6 @@ public class GiveInfusionCommand extends BaseCommand {
                         ", and " + level + " is outside of its range!");
                 return false;
             } else {
-                Player player = commandSender.getServer().getPlayerExact(commandSender.getName());
-                if (player == null) {
-                    commandSender.sendMessage("This command must be executed by a player!");
-                    return false;
-                }
                 ItemStack handItem = player.getInventory().getItemInMainHand();
                 Result test = InfusionUtils.testInfusion(handItem, infusion);
                 if (test != Result.SUCCESSFUL && !force) {
@@ -101,7 +107,7 @@ public class GiveInfusionCommand extends BaseCommand {
                 }
             }
         } else {
-            commandSender.sendMessage("Invalid level " + strings[1] + " provided!");
+            commandSender.sendMessage("Invalid level " + strings[IDENTIFIER_INDEX] + " provided!");
             return false;
         }
     }
@@ -110,9 +116,11 @@ public class GiveInfusionCommand extends BaseCommand {
     public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
         switch (args.length) {
             case 1:
-                return TabCompletionUtils.startsWith(args[0], InfusionManager.getInfusionIdentifiers());
-            case 3:
-                return TabCompletionUtils.startsWith(args[2], "true", "false");
+                return TabCompletionUtils.serverMembers(args[PLAYER_INDEX], sender);
+            case 2:
+                return TabCompletionUtils.startsWith(args[IDENTIFIER_INDEX], InfusionManager.getInfusionIdentifiers());
+            case 4:
+                return TabCompletionUtils.startsWith(args[FORCE_INDEX], "true", "false");
             default:
                 return Collections.emptyList();
         }
@@ -124,7 +132,7 @@ public class GiveInfusionCommand extends BaseCommand {
     }
 
     private void sendHelp(CommandSender sender) {
-        sender.sendMessage("/giveinfusion <type> <level> [override]");
+        sender.sendMessage("/giveinfusion <player> <type> <level> [override]");
     }
 
     @Override

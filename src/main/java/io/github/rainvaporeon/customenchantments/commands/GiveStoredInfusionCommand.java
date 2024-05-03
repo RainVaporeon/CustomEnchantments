@@ -31,6 +31,11 @@ public class GiveStoredInfusionCommand extends BaseCommand {
         return "givestoredinfusion";
     }
 
+
+    private static final int PLAYER_INDEX = 0;
+    private static final int IDENTIFIER_INDEX = 1;
+    private static final int LEVEL_INDEX = 2;
+    private static final int FORCE_INDEX = 3;
     @Override
     public boolean execute(@NotNull CommandSender commandSender, @NotNull String s, String[] strings) {
         if (!commandSender.hasPermission(Permission.bukkit(this.getName()))) {
@@ -48,27 +53,34 @@ public class GiveStoredInfusionCommand extends BaseCommand {
     }
 
     private boolean execute0(CommandSender commandSender, String[] strings) {
-        if (strings.length == 0) {
+        if (strings.length <= 1) {
             sendHelp(commandSender);
             return true;
         }
-        Infusion infusion = InfusionManager.getInfusionById(strings[0]);
+
+        Player player = commandSender.getServer().getPlayerExact(strings[PLAYER_INDEX]);
+        if (player == null) {
+            commandSender.sendMessage("Cannot find this player! Are they online?");
+            return false;
+        }
+
+        Infusion infusion = InfusionManager.getInfusionById(strings[IDENTIFIER_INDEX]);
         if (infusion == null) {
             sendHelp(commandSender);
             return true;
         }
         int level;
-        if (strings.length == 1) {
+        if (strings.length == LEVEL_INDEX) {
             level = 1;
         } else {
             try {
-                level = Integer.parseInt(strings[1]);
+                level = Integer.parseInt(strings[LEVEL_INDEX]);
             } catch (NumberFormatException ex) {
                 /* swallow */
                 level = -1;
             }
         }
-        boolean force = strings.length >= 3 && Boolean.parseBoolean(strings[2]);
+        boolean force = strings.length > FORCE_INDEX && Boolean.parseBoolean(strings[FORCE_INDEX]);
         if (level >= 0) {
             boolean exceedsCap = level > infusion.getMaxLevel();
             if (exceedsCap && !force) {
@@ -76,11 +88,6 @@ public class GiveStoredInfusionCommand extends BaseCommand {
                         ", and " + level + " is outside of its range!");
                 return false;
             } else {
-                Player player = commandSender.getServer().getPlayerExact(commandSender.getName());
-                if (player == null) {
-                    commandSender.sendMessage("This command must be executed by a player!");
-                    return false;
-                }
                 ItemStack handItem = player.getInventory().getItemInMainHand();
 
                 if (InfusionUtils.applyStoredInfusion(handItem, infusion.getIdentifier(), level)) {
@@ -93,7 +100,7 @@ public class GiveStoredInfusionCommand extends BaseCommand {
                 }
             }
         } else {
-            commandSender.sendMessage("Invalid level " + strings[1] + " provided!");
+            commandSender.sendMessage("Invalid level " + strings[LEVEL_INDEX] + " provided!");
             return false;
         }
     }
@@ -102,9 +109,11 @@ public class GiveStoredInfusionCommand extends BaseCommand {
     public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
         switch (args.length) {
             case 1:
-                return TabCompletionUtils.startsWith(args[0], InfusionManager.getInfusionIdentifiers());
-            case 3:
-                return TabCompletionUtils.startsWith(args[2], "true", "false");
+                return TabCompletionUtils.serverMembers(args[PLAYER_INDEX], sender);
+            case 2:
+                return TabCompletionUtils.startsWith(args[IDENTIFIER_INDEX], InfusionManager.getInfusionIdentifiers());
+            case 4:
+                return TabCompletionUtils.startsWith(args[FORCE_INDEX], "true", "false");
             default:
                 return Collections.emptyList();
         }
@@ -116,7 +125,7 @@ public class GiveStoredInfusionCommand extends BaseCommand {
     }
 
     private void sendHelp(CommandSender sender) {
-        sender.sendMessage("/givestoredinfusion <type> <level> [override]");
+        sender.sendMessage("/givestoredinfusion <player> <type> <level> [override]");
     }
 
     @Override

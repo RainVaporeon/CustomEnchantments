@@ -3,6 +3,7 @@ package io.github.rainvaporeon.customenchantments.util.event;
 import io.github.rainvaporeon.customenchantments.util.SetCollection;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionInfo;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
+import io.github.rainvaporeon.customenchantments.util.server.Server;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -85,6 +86,7 @@ public class InfusionAnvilListener implements Listener {
         presentLeft.forEach(info -> {
             InfusionUtils.applyInfusion(result, info.getInfusion().getIdentifier(), info.getLevel());
         });
+        event.getInventory().setRepairCost(Math.max(event.getInventory().getRepairCost(), 1));
         event.setResult(result);
     }
 
@@ -99,11 +101,15 @@ public class InfusionAnvilListener implements Listener {
         int rightLevel = right.getLevel();
         // As we've already established left == right, no need to bother
         int levelCap = left.getInfusion().getMaxLevel();
+        Server.log("merging infusion " + left + " and " + right + ":");
+        Server.log("LVLL=" + leftLevel + "; LVLR=" + rightLevel + "; CAP=" + levelCap);
 
         if (leftLevel == rightLevel) {
+            Server.log("Equality: Evaluating " + Math.min(levelCap, leftLevel + 1));
             // Increase a level, but does not go over the established cap
             return new InfusionInfo(left.getInfusion(), Math.min(levelCap, leftLevel + 1));
         } else {
+            Server.log("Different: Evaluating " + Math.max(leftLevel, rightLevel));
             // Retain level, keep overleveled infusion.
             return new InfusionInfo(left.getInfusion(), Math.max(leftLevel, rightLevel));
         }

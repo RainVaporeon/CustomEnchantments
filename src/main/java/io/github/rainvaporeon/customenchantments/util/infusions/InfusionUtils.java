@@ -70,7 +70,7 @@ public final class InfusionUtils {
         Infusion infusion = InfusionManager.getInfusionById(identifier);
         if (infusion == null) return false;
         NBTItem item = new NBTItem(stack);
-        if (InfusionUtils.getInfusion(stack, infusion) > 0) removeInfusionData(item, identifier);
+        if (InfusionUtils.getStoredInfusion(stack, infusion) > 0) removeStoredInfusionData(item, identifier);
         InfusionLoreUtils.removeLoreNBT(item, infusion);
         item.getCompoundList(SharedConstants.STORED_INFUSION_IDENTIFIER_KEY).addCompound(infusion.getNBT(level));
         item.applyNBT(stack);
