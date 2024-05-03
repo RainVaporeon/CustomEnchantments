@@ -20,11 +20,10 @@ public class TabCompletionUtils {
     }
 
     public static List<String> serverMembers(String string, CommandSender sender) {
-        return TabCompletionUtils.startsWith(string.toLowerCase(Locale.ROOT), sender.getServer()
+        return TabCompletionUtils.startsWith(string, sender.getServer()
                 .getOnlinePlayers()
                 .stream()
                 .map(Player::getName)
-                .map(String::toLowerCase)
                 .collect(Collectors.toList()));
     }
 }
