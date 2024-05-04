@@ -9,8 +9,10 @@ import io.github.rainvaporeon.customenchantments.util.server.Server;
 import org.bukkit.Location;
 import org.bukkit.entity.Enemy;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -92,9 +94,10 @@ public class SplinterInfusion extends Infusion {
             appendEffectTag(event.getProjectile(), level);
         }
 
-        @EventHandler
+        @EventHandler(priority = EventPriority.MONITOR)
         public void onArrowHit(EntityDamageByEntityEvent event) {
             if (!(event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE)) return;
+            if (!(event.getEntity() instanceof LivingEntity)) return;
             int level = readEffectTag(event.getDamager());
             if (level == 0) return;
             Location location = event.getDamager().getLocation();
@@ -103,7 +106,7 @@ public class SplinterInfusion extends Infusion {
                 if (e.equals(event.getEntity())) return; // Ignore itself
                 Particles.playSplinterParticle(e);
                 Sounds.playSplinterEffectSound(e);
-                e.damage(event.getDamage() * AMPLIFIER * level);
+                Server.damageInstantly((LivingEntity) event.getEntity(), event.getDamager(), event.getDamage() * AMPLIFIER * level);
             });
         }
     }

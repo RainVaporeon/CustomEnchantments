@@ -5,6 +5,7 @@ import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -66,7 +67,7 @@ public class KillStreakInfusion extends Infusion {
             }
         }
 
-        @EventHandler
+        @EventHandler(priority = EventPriority.HIGH)
         public void onDamage(EntityDamageByEntityEvent event) {
             Entity src = event.getDamager();
             if (!(src instanceof Player)) return;
