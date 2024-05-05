@@ -3,7 +3,6 @@ package io.github.rainvaporeon.customenchantments.util.event;
 import io.github.rainvaporeon.customenchantments.util.SetCollection;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionInfo;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
-import io.github.rainvaporeon.customenchantments.util.server.Server;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -59,19 +58,13 @@ public class InfusionAnvilListener implements Listener {
                 SetCollection.addForced(storedLeft, merge(info, presentInfo));
             });
             // As we are storing something, we put LHS over in stored infusions
-            storedLeft.forEach(info -> {
-                InfusionUtils.applyStoredInfusion(result, info.getInfusion().getIdentifier(), info.getLevel());
-            });
+            storedLeft.forEach(info -> InfusionUtils.applyStoredInfusion(result, info.getInfusion().getIdentifier(), info.getLevel()));
         } else {
             // different type and not appending book, exit
             if (left.getType() != right.getType() && right.getType() != Material.ENCHANTED_BOOK) return;
             // first, ignore incompatible ones
-            storedRight.removeIf(info -> {
-                return info.getInfusion().infusionTarget().stream().noneMatch(target -> target.includes(left));
-            });
-            presentRight.removeIf(info -> {
-                return info.getInfusion().infusionTarget().stream().noneMatch(target -> target.includes(left));
-            });
+            storedRight.removeIf(info -> info.getInfusion().infusionTarget().stream().noneMatch(target -> target.includes(left)));
+            presentRight.removeIf(info -> info.getInfusion().infusionTarget().stream().noneMatch(target -> target.includes(left)));
             // well, everything's excluded, seeya then
             if (storedRight.isEmpty() && presentRight.isEmpty()) return;
             // then, append stored infusions to LHS
@@ -87,9 +80,7 @@ public class InfusionAnvilListener implements Listener {
             SetCollection.addForced(presentLeft, merge(info, presentInfo));
         });
         // and then we apply
-        presentLeft.forEach(info -> {
-            InfusionUtils.applyInfusion(result, info.getInfusion().getIdentifier(), info.getLevel());
-        });
+        presentLeft.forEach(info -> InfusionUtils.applyInfusion(result, info.getInfusion().getIdentifier(), info.getLevel()));
 
         if (left.equals(result)) return;
 
