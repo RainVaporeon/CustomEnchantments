@@ -10,12 +10,13 @@ public class SetCollection {
 
     /**
      * Forcibly adds an element to the set, removing the originally mapped key if needed
-     * @param set the set
+     *
+     * @param set    the set
      * @param object the object
-     * @return whether there was already a mapping
-     * @param <T> the type
+     * @param <T>    the type
      */
-    public static <T> boolean addForced(Set<T> set, T object) {
-        return set.remove(object) & set.add(object);
+    public static <T> void addForced(Set<T> set, T object) {
+        set.remove(object);
+        set.add(object);
     }
 }

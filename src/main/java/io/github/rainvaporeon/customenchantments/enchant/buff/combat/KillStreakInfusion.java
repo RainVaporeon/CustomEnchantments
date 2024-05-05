@@ -51,7 +51,7 @@ public class KillStreakInfusion extends Infusion {
 
     class DamageListener implements Listener {
         private final Map<UUID, List<DamageInfo>> damageBonusEffects = new HashMap<>(16, 0.25F);
-        DamageListener.DamageInfo empty = new DamageListener.DamageInfo(0, 0);
+        final DamageListener.DamageInfo empty = new DamageListener.DamageInfo(0, 0);
 
         @EventHandler
         public void onDeath(EntityDeathEvent event) {
@@ -89,8 +89,8 @@ public class KillStreakInfusion extends Infusion {
         }
 
         private class DamageInfo {
-            long expiry;
-            double amplifier;
+            final long expiry;
+            final double amplifier;
 
             public DamageInfo(long expiry, double amplifier) {
                 this.expiry = expiry;

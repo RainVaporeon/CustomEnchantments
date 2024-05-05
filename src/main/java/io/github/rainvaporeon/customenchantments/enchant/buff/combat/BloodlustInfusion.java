@@ -57,7 +57,7 @@ public class BloodlustInfusion extends SpecialInfusion {
 
     class DamageListener implements Listener {
         private final Map<UUID, DamageInfo> damageBonusEffects = new HashMap<>(16, 0.25F);
-        DamageInfo empty = new DamageInfo(0, 0);
+        final DamageInfo empty = new DamageInfo(0, 0);
 
         @EventHandler
         public void onDeath(EntityDeathEvent event) {
@@ -88,8 +88,8 @@ public class BloodlustInfusion extends SpecialInfusion {
         }
 
         private class DamageInfo {
-            long expiry;
-            double amplifier;
+            final long expiry;
+            final double amplifier;
 
             public DamageInfo(long expiry, double amplifier) {
                 this.expiry = expiry;
