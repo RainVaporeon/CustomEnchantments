@@ -25,8 +25,8 @@ import java.util.EnumSet;
 import java.util.Set;
 
 public class SplinterInfusion extends Infusion {
-    public static final double EFFECTIVE_RADIUS = 3.0;
-    public static final double AMPLIFIER = 0.07;
+    public static final double EFFECTIVE_RADIUS = 3.5;
+    public static final double AMPLIFIER = 0.1;
 
     @Override
     public String getIdentifier() {
@@ -40,13 +40,13 @@ public class SplinterInfusion extends Infusion {
 
     @Override
     public String getDescription() {
-        return "(7 * level)% of the arrow damage gets transferred to nearby mobs.";
+        return "(10 * level)% of the arrow damage gets transferred to nearby mobs.";
     }
 
     @Nullable
     @Override
     public String getExtendedDescription(int level) {
-        return String.format("%d%% of the arrow damage done to the entity also gets spread to entities in a 3 block radius.", level * 7);
+        return String.format("%.2f%% of the arrow damage done to the entity also gets spread to entities in a %.1f block radius.", level * 100 * AMPLIFIER, EFFECTIVE_RADIUS);
     }
 
     @NotNull
