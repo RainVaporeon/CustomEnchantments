@@ -16,7 +16,11 @@ public class SetCollection {
      * @param <T>    the type
      */
     public static <T> void addForced(Set<T> set, T object) {
-        set.remove(object);
+        if (set.contains(object)) {
+            set.remove(object);
+            set.add(object);
+            return;
+        }
         set.add(object);
     }
 }
