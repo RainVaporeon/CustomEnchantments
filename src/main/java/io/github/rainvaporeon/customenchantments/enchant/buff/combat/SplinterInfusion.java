@@ -8,8 +8,10 @@ import io.github.rainvaporeon.customenchantments.util.particles.Sounds;
 import org.bukkit.Location;
 import org.bukkit.entity.Enemy;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -22,8 +24,8 @@ import java.util.EnumSet;
 import java.util.Set;
 
 public class SplinterInfusion extends Infusion {
-    public static final double EFFECTIVE_RADIUS = 3.0;
-    public static final double AMPLIFIER = 0.07;
+    public static final double EFFECTIVE_RADIUS = 3.5;
+    public static final double AMPLIFIER = 0.1;
 
     @Override
     public String getIdentifier() {
@@ -37,13 +39,13 @@ public class SplinterInfusion extends Infusion {
 
     @Override
     public String getDescription() {
-        return "(7 * level)% of the arrow damage gets transferred to nearby mobs.";
+        return "(10 * level)% of the arrow damage gets transferred to nearby mobs.";
     }
 
     @Nullable
     @Override
     public String getExtendedDescription(int level) {
-        return String.format("%d%% of the arrow damage done to the entity also gets spread to entities in a 3 block radius.", level * 7);
+        return String.format("%.2f%% of the arrow damage done to the entity also gets spread to entities in a %.1f block radius.", level * 100 * AMPLIFIER, EFFECTIVE_RADIUS);
     }
 
     @NotNull
@@ -91,9 +93,10 @@ public class SplinterInfusion extends Infusion {
             appendEffectTag(event.getProjectile(), level);
         }
 
-        @EventHandler
+        @EventHandler(priority = EventPriority.MONITOR)
         public void onArrowHit(EntityDamageByEntityEvent event) {
             if (!(event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE)) return;
+            if (!(event.getEntity() instanceof LivingEntity)) return;
             int level = readEffectTag(event.getDamager());
             if (level == 0) return;
             Location location = event.getDamager().getLocation();
@@ -102,7 +105,7 @@ public class SplinterInfusion extends Infusion {
                 if (e.equals(event.getEntity())) return; // Ignore itself
                 Particles.playSplinterParticle(e);
                 Sounds.playSplinterEffectSound(e);
-                e.damage(event.getDamage() * AMPLIFIER * level);
+                Server.damageInstantly((LivingEntity) event.getEntity(), event.getDamager(), event.getDamage() * AMPLIFIER * level);
             });
         }
     }

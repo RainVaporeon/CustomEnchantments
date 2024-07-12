@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
+@SuppressWarnings("SuspiciousMethodCalls")
 public class TimedHashSet<E> implements Set<E> {
     private final long lifetime;
     private final Object2LongArrayMap<E> timer;

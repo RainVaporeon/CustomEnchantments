@@ -16,18 +16,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 
-public class RemoveInfusionCommand extends BaseCommand {
-    protected RemoveInfusionCommand() {
+public class RemoveStoredInfusionCommand extends BaseCommand {
+    protected RemoveStoredInfusionCommand() {
         super("removeinfusion");
     }
 
     public static BaseCommand getInstance() {
-        return new RemoveInfusionCommand();
+        return new RemoveStoredInfusionCommand();
     }
 
     @Override
     public @NotNull String getName() {
-        return "removeinfusion";
+        return "removestoredinfusion";
     }
 
     @Override
@@ -46,7 +46,6 @@ public class RemoveInfusionCommand extends BaseCommand {
         }
     }
 
-
     private static final int PLAYER_INDEX = 0;
     private static final int IDENTIFIER_INDEX = 1;
     private boolean execute0(CommandSender commandSender, String[] strings) {
@@ -61,7 +60,7 @@ public class RemoveInfusionCommand extends BaseCommand {
             return false;
         }
         ItemStack handItem = player.getInventory().getItemInMainHand();
-        if (InfusionUtils.removeInfusion(handItem, strings[IDENTIFIER_INDEX])) {
+        if (InfusionUtils.removeStoredInfusion(handItem, strings[IDENTIFIER_INDEX])) {
             commandSender.sendMessage("Successfully removed this infusion!");
             player.getInventory().setItemInMainHand(handItem);
             return true;
@@ -86,18 +85,17 @@ public class RemoveInfusionCommand extends BaseCommand {
         return Collections.emptyList();
     }
 
-
     @Override
     public @Nullable String getPermission() {
-        return Permission.of("removeinfusion");
+        return Permission.of("removestoredinfusion");
     }
 
     @Override
     public @NotNull List<String> getAliases() {
-        return Collections.singletonList("ri");
+        return Collections.singletonList("rsi");
     }
 
     private void sendHelp(CommandSender sender) {
-        sender.sendMessage("/removeinfusion <player> <type>");
+        sender.sendMessage("/removestoredinfusion <player> <type>");
     }
 }

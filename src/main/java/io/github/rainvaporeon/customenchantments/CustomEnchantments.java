@@ -35,6 +35,7 @@ public final class CustomEnchantments extends JavaPlugin {
         this.getServer().getCommandMap().register(FALLBACK_PREFIX, RemoveInfusionCommand.getInstance());
         this.getServer().getCommandMap().register(FALLBACK_PREFIX, UpdateItemCommand.getInstance());
         this.getServer().getCommandMap().register(FALLBACK_PREFIX, GiveStoredInfusionCommand.getInstance());
+        this.getServer().getCommandMap().register(FALLBACK_PREFIX, RemoveStoredInfusionCommand.getInstance());
 
         /* Buff-related defensive infusion */
         InfusionManager.registerInfusions(
@@ -58,6 +59,7 @@ public final class CustomEnchantments extends JavaPlugin {
 
         /* Unrelated buff */
         InfusionManager.registerInfusions(
+                new KillStreakInfusion(),
                 new BrutalizeInfusion(),
                 new EnlightenedInfusion(),
                 new KineticAbsorbInfusion(),
