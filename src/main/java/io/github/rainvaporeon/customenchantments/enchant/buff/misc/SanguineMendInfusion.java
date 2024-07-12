@@ -1,10 +1,8 @@
 package io.github.rainvaporeon.customenchantments.enchant.buff.misc;
 
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
-import io.github.rainvaporeon.customenchantments.util.enums.InfusionTarget;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
 import io.github.rainvaporeon.customenchantments.util.server.Server;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

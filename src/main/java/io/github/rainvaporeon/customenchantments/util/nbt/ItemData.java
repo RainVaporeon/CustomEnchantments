@@ -1,7 +1,6 @@
 package io.github.rainvaporeon.customenchantments.util.nbt;
 
 import de.tr7zw.nbtapi.NBTCompoundList;
-import de.tr7zw.nbtapi.NBTEntity;
 import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.nbtapi.iface.ReadWriteNBTCompoundList;
