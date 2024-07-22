@@ -21,7 +21,7 @@ public class Particles {
 
     public static void playBlockBreakEffect(Entity source, Material material) {
         Location halfHeight = source.getLocation().add(0, source.getHeight() / 2, 0);
-        source.getWorld().spawnParticle(Particle.ITEM_CRACK,
+        source.getWorld().spawnParticle(Particle.BLOCK,
                 halfHeight.x(),
                 halfHeight.y(),
                 halfHeight.z(),

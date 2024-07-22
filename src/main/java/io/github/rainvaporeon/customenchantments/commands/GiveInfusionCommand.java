@@ -97,9 +97,10 @@ public class GiveInfusionCommand extends BaseCommand {
                     return false;
                 }
 
-                if (InfusionUtils.applyInfusion(handItem, infusion.getIdentifier(), level)) {
+                ItemStack resultItem = InfusionUtils.applyInfusion(handItem, infusion.getIdentifier(), level);
+                if (resultItem != null) {
                     commandSender.sendMessage("Successfully applied this infusion!");
-                    player.getInventory().setItemInMainHand(handItem);
+                    player.getInventory().setItemInMainHand(resultItem);
                     return true;
                 } else {
                     commandSender.sendMessage("Failed to apply this infusion. Does the identifier " + infusion.getIdentifier() + " exist?");

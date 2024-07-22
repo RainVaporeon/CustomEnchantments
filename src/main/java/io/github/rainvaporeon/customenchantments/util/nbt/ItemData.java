@@ -1,17 +1,15 @@
 package io.github.rainvaporeon.customenchantments.util.nbt;
 
-import de.tr7zw.nbtapi.NBTCompoundList;
-import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.nbtapi.iface.ReadWriteNBTCompoundList;
 import io.github.rainvaporeon.customenchantments.util.SharedConstants;
 
 public class ItemData {
-    public static NBTCompoundList getInfusions(NBTItem item) {
+    public static ReadWriteNBTCompoundList getInfusions(ReadWriteNBT item) {
         return item.getCompoundList(SharedConstants.INFUSION_IDENTIFIER_KEY);
     }
 
-    public static NBTCompoundList getStoredInfusions(NBTItem item) {
+    public static ReadWriteNBTCompoundList getStoredInfusions(ReadWriteNBT item) {
         return item.getCompoundList(SharedConstants.STORED_INFUSION_IDENTIFIER_KEY);
     }
 

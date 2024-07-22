@@ -137,7 +137,7 @@ public abstract class Infusion {
     }
 
     public Set<EquipmentSlot> applicableSlots() {
-        return EnumSet.allOf(EquipmentSlot.class);
+        return EnumSet.complementOf(EnumSet.of(EquipmentSlot.BODY));
     }
 
     /**

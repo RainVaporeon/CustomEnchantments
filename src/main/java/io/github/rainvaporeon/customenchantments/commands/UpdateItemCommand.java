@@ -23,7 +23,7 @@ public class UpdateItemCommand extends BaseCommand {
             commandSender.sendMessage("Must be holding an item!");
             return false;
         }
-        InfusionLoreUtils.applySortedLoreNBT(stack);
+        ((Player) commandSender).getInventory().setItemInMainHand(InfusionLoreUtils.applySortedLoreNBT(stack));
         commandSender.sendMessage("Updated held item lore!");
         return true;
     }

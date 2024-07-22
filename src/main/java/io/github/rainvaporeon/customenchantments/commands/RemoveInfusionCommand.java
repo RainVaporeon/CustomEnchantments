@@ -61,9 +61,10 @@ public class RemoveInfusionCommand extends BaseCommand {
             return false;
         }
         ItemStack handItem = player.getInventory().getItemInMainHand();
-        if (InfusionUtils.removeInfusion(handItem, strings[IDENTIFIER_INDEX])) {
+        ItemStack resultItem = InfusionUtils.removeInfusion(handItem, strings[IDENTIFIER_INDEX]);
+        if (resultItem != null) {
             commandSender.sendMessage("Successfully removed this infusion!");
-            player.getInventory().setItemInMainHand(handItem);
+            player.getInventory().setItemInMainHand(resultItem);
             return true;
         } else {
             if (InfusionManager.getInfusionById(strings[IDENTIFIER_INDEX]) != null) {

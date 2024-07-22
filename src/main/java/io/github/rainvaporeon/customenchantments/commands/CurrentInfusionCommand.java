@@ -34,6 +34,7 @@ public class CurrentInfusionCommand extends BaseCommand {
         PlayerInventory inventory = player.getInventory();
         sender.sendMessage("Here's the individual infusion stat you have:");
         for (EquipmentSlot slot : EquipmentSlot.values()) {
+            if (slot == EquipmentSlot.BODY) continue;
             sender.sendMessage(Component.text()
                     .color(NamedTextColor.GRAY)
                     .content("Slot ")

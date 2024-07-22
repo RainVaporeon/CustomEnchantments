@@ -61,7 +61,7 @@ public class BloodRushInfusion extends SpecialInfusion {
             int level = InfusionUtils.accumulateInfusionLevelOf(killer, BloodRushInfusion.this);
             if (level == 0) return;
             killer.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200, 0));
-            killer.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, 200, 0));
+            killer.addPotionEffect(new PotionEffect(PotionEffectType.HASTE, 200, 0));
         }
     }
 }

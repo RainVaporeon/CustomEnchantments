@@ -1,8 +1,6 @@
 package io.github.rainvaporeon.customenchantments.util.infusions;
 
 import de.tr7zw.nbtapi.NBT;
-import de.tr7zw.nbtapi.NBTCompoundList;
-import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.nbtapi.iface.ReadWriteNBTCompoundList;
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
@@ -13,6 +11,7 @@ import io.github.rainvaporeon.customenchantments.util.enums.Result;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
 
+import javax.annotation.CheckReturnValue;
 import java.util.*;
 import java.util.stream.StreamSupport;
 
@@ -22,86 +21,100 @@ public final class InfusionUtils {
      * @param stack the item stack to apply to
      * @param identifier the infusion identifier
      * @param level the level
-     * @return whether this succeeds.
+     * @return the applied item stack, or {@code null} if fail
      */
-    public static boolean applyInfusion(ItemStack stack, String identifier, int level) {
-        if (stack == null || stack.isEmpty()) return false;
+    @CheckReturnValue
+    public static ItemStack applyInfusion(ItemStack stack, String identifier, int level) {
+        if (stack == null || stack.isEmpty()) return null;
         Infusion infusion = InfusionManager.getInfusionById(identifier);
-        if (infusion == null) return false;
+        if (infusion == null) return null;
         ReadWriteNBT item = NBT.itemStackToNBT(stack);
         if (InfusionUtils.getInfusion(stack, infusion) > 0) removeInfusionData(item, identifier);
         InfusionLoreUtils.removeLoreNBT(item, infusion);
         item.getCompoundList(SharedConstants.INFUSION_IDENTIFIER_KEY).addCompound().mergeCompound(infusion.getNBT(level));
         // item.applyNBT(stack);
-        InfusionLoreUtils.applySortedLoreNBT(stack);
-        return true;
+        InfusionLoreUtils.applySortedLoreNBT(item);
+        return NBT.itemStackFromNBT(item);
     }
 
     /**
      * Removes the infusion, changing the lore to adapt
      * @param stack the item stack to remove
      * @param identifier the infusion identifier
-     * @return whether this succeeds.
+     * @return the modified item stack, or {@code null} if failed
      */
-    public static boolean removeInfusion(ItemStack stack, String identifier) {
-        if (stack == null || stack.isEmpty()) return false;
+    @CheckReturnValue
+    public static ItemStack removeInfusion(ItemStack stack, String identifier) {
+        if (stack == null || stack.isEmpty()) return null;
         Infusion infusion = InfusionManager.getInfusionById(identifier);
-        if (infusion == null) return false;
+        if (infusion == null) return null;
         ReadWriteNBT item = NBT.itemStackToNBT(stack);
         // InfusionLoreUtils.removeLoreNBT(item, infusion);
-        boolean removed = removeInfusionData(item, identifier);
+        removeInfusionData(item, identifier);
         // item.applyNBT(stack);
-        InfusionLoreUtils.applySortedLoreNBT(stack);
-        return removed;
+        InfusionLoreUtils.applySortedLoreNBT(item);
+        return NBT.itemStackFromNBT(item);
     }
 
-    public static void removeAllInfusions(ItemStack stack) {
-        if (stack == null || stack.isEmpty()) return;
+    @CheckReturnValue
+    public static ItemStack removeAllInfusions(ItemStack stack) {
+        if (stack == null || stack.isEmpty()) return null;
         ReadWriteNBT item = NBT.itemStackToNBT(stack);
         item.removeKey(SharedConstants.INFUSION_IDENTIFIER_KEY);
-        // item.applyNBT(stack);
-        InfusionLoreUtils.applySortedLoreNBT(stack);
+        InfusionLoreUtils.applySortedLoreNBT(item);
+        return NBT.itemStackFromNBT(item);
     }
 
-    private static boolean removeInfusionData(ReadWriteNBT nbt, String identifier) {
-        return nbt.getCompoundList(SharedConstants.INFUSION_IDENTIFIER_KEY)
+    private static void removeInfusionData(ReadWriteNBT nbt, String identifier) {
+        nbt.getCompoundList(SharedConstants.INFUSION_IDENTIFIER_KEY)
                 .removeIf(rw -> rw.getString(SharedConstants.INFUSION_ID).equals(identifier));
     }
 
-    public static boolean applyStoredInfusion(ItemStack stack, String identifier, int level) {
-        if (stack == null || stack.isEmpty()) return false;
+    /**
+     * Applies these stored infusions to the item
+     * @param stack the stack
+     * @param identifier the infusion identifier
+     * @param level the level
+     * @return the modified item, or {@code null} if failed
+     */
+    @CheckReturnValue
+    public static ItemStack applyStoredInfusion(ItemStack stack, String identifier, int level) {
+        if (stack == null || stack.isEmpty()) return null;
         Infusion infusion = InfusionManager.getInfusionById(identifier);
-        if (infusion == null) return false;
+        if (infusion == null) return null;
         ReadWriteNBT item = NBT.itemStackToNBT(stack);
         if (InfusionUtils.getInfusion(stack, infusion) > 0) removeInfusionData(item, identifier);
         InfusionLoreUtils.removeLoreNBT(item, infusion);
         item.getCompoundList(SharedConstants.STORED_INFUSION_IDENTIFIER_KEY).addCompound().mergeCompound(infusion.getNBT(level));
         // item.applyNBT(stack);
-        InfusionLoreUtils.applySortedLoreNBT(stack);
-        return true;
+        InfusionLoreUtils.applySortedLoreNBT(item);
+        return NBT.itemStackFromNBT(item);
     }
 
-    public static boolean removeStoredInfusion(ItemStack stack, String identifier) {
-        if (stack == null || stack.isEmpty()) return false;
+    @CheckReturnValue
+    public static ItemStack removeStoredInfusion(ItemStack stack, String identifier) {
+        if (stack == null || stack.isEmpty()) return null;
         Infusion infusion = InfusionManager.getInfusionById(identifier);
-        if (infusion == null) return false;
+        if (infusion == null) return null;
         ReadWriteNBT item = NBT.itemStackToNBT(stack);
         // InfusionLoreUtils.removeLoreNBT(item, infusion);
-        boolean removed = removeStoredInfusionData(item, identifier);
+        removeStoredInfusionData(item, identifier);
         // item.applyNBT(stack);
-        InfusionLoreUtils.applySortedLoreNBT(stack);
-        return removed;
+        InfusionLoreUtils.applySortedLoreNBT(item);
+        return NBT.itemStackFromNBT(item);
     }
 
-    public static void removeAllStoredInfusions(ItemStack stack) {
-        if (stack == null || stack.isEmpty()) return;
+    @CheckReturnValue
+    public static ItemStack removeAllStoredInfusions(ItemStack stack) {
+        if (stack == null || stack.isEmpty()) return null;
         ReadWriteNBT item = NBT.itemStackToNBT(stack);
         item.removeKey(SharedConstants.STORED_INFUSION_IDENTIFIER_KEY);
         // item.applyNBT(stack);
+        return NBT.itemStackFromNBT(item);
     }
 
-    private static boolean removeStoredInfusionData(ReadWriteNBT nbt, String identifier) {
-        return nbt.getCompoundList(SharedConstants.STORED_INFUSION_IDENTIFIER_KEY)
+    private static void removeStoredInfusionData(ReadWriteNBT nbt, String identifier) {
+        nbt.getCompoundList(SharedConstants.STORED_INFUSION_IDENTIFIER_KEY)
                 .removeIf(rw -> rw.getString(SharedConstants.INFUSION_ID).equals(identifier));
     }
 
@@ -140,9 +153,27 @@ public final class InfusionUtils {
         return nbt == null ? 0 : nbt.getInteger(SharedConstants.INFUSION_LEVEL);
     }
 
+    public static int getInfusion(ReadWriteNBT item, Infusion type) {
+        if (item == null) return 0;
+        ReadWriteNBTCompoundList list = item.getCompoundList(SharedConstants.INFUSION_IDENTIFIER_KEY);
+        ReadWriteNBT nbt = StreamSupport.stream(list.spliterator(), false)
+                .filter(rw -> rw.getString(SharedConstants.INFUSION_ID).equals(type.getIdentifier()))
+                .findFirst().orElse(null);
+        return nbt == null ? 0 : nbt.getInteger(SharedConstants.INFUSION_LEVEL);
+    }
+
     public static int getStoredInfusion(ItemStack stack, Infusion type) {
         if (stack == null || stack.isEmpty()) return 0;
         ReadWriteNBT item = NBT.itemStackToNBT(stack);
+        ReadWriteNBTCompoundList list = item.getCompoundList(SharedConstants.STORED_INFUSION_IDENTIFIER_KEY);
+        ReadWriteNBT nbt = StreamSupport.stream(list.spliterator(), false)
+                .filter(rw -> rw.getString(SharedConstants.INFUSION_ID).equals(type.getIdentifier()))
+                .findFirst().orElse(null);
+        return nbt == null ? 0 : nbt.getInteger(SharedConstants.INFUSION_LEVEL);
+    }
+
+    public static int getStoredInfusion(ReadWriteNBT item, Infusion type) {
+        if (item == null) return 0;
         ReadWriteNBTCompoundList list = item.getCompoundList(SharedConstants.STORED_INFUSION_IDENTIFIER_KEY);
         ReadWriteNBT nbt = StreamSupport.stream(list.spliterator(), false)
                 .filter(rw -> rw.getString(SharedConstants.INFUSION_ID).equals(type.getIdentifier()))

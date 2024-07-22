@@ -15,7 +15,10 @@ public class PlayerInventoryUtils {
 
     public static List<ItemStack> collectFromSlot(PlayerInventory inventory, Iterable<EquipmentSlot> slots) {
         List<ItemStack> is = new ArrayList<>();
-        slots.forEach(slot -> is.add(inventory.getItem(slot)));
+        slots.forEach(slot -> {
+            if (slot == EquipmentSlot.BODY) return;
+            is.add(inventory.getItem(slot));
+        });
         return is;
     }
 }

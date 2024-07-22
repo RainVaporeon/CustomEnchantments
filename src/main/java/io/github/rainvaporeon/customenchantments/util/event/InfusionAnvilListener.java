@@ -12,6 +12,7 @@ import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class InfusionAnvilListener implements Listener {
 
@@ -38,7 +39,7 @@ public class InfusionAnvilListener implements Listener {
             // must copy here to prevent LHS from being modified
             delegateResult = left.clone();
         }
-        ItemStack result = delegateResult;
+        final AtomicReference<ItemStack> result = new AtomicReference<>(delegateResult);
 
         Set<InfusionInfo> presentLeft = InfusionUtils.getAllInfusions(left);
         Set<InfusionInfo> presentRight = InfusionUtils.getAllInfusions(right);
@@ -58,7 +59,7 @@ public class InfusionAnvilListener implements Listener {
                 SetCollection.addForced(storedLeft, merge(info, presentInfo));
             });
             // As we are storing something, we put LHS over in stored infusions
-            storedLeft.forEach(info -> InfusionUtils.applyStoredInfusion(result, info.getInfusion().getIdentifier(), info.getLevel()));
+            storedLeft.forEach(info -> result.set(InfusionUtils.applyStoredInfusion(result.get(), info.getInfusion().getIdentifier(), info.getLevel())));
         } else {
             // different type and not appending book, exit
             if (left.getType() != right.getType() && right.getType() != Material.ENCHANTED_BOOK) return;
@@ -80,12 +81,12 @@ public class InfusionAnvilListener implements Listener {
             SetCollection.addForced(presentLeft, merge(info, presentInfo));
         });
         // and then we apply
-        presentLeft.forEach(info -> InfusionUtils.applyInfusion(result, info.getInfusion().getIdentifier(), info.getLevel()));
+        presentLeft.forEach(info -> result.set(InfusionUtils.applyInfusion(result.get(), info.getInfusion().getIdentifier(), info.getLevel())));
 
-        if (left.equals(result)) return;
+        if (left.equals(result.get())) return;
 
         event.getInventory().setRepairCost(Math.max(event.getInventory().getRepairCost(), 1));
-        event.setResult(result);
+        event.setResult(result.get());
     }
 
     private static InfusionInfo merge(InfusionInfo left, InfusionInfo right) {
