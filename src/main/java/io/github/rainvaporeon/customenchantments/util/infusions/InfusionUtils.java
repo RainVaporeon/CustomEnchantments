@@ -128,6 +128,10 @@ public final class InfusionUtils {
     }
 
     public static int accumulateInfusionLevelOf(Player entity, Infusion infusion) {
+        return accumulateInfusionLevelOf(entity, infusion, false);
+    }
+
+    public static int accumulateInfusionLevelOf(Player entity, Infusion infusion, boolean strict) {
         if (infusion == null) return 0;
         PlayerInventory inventory = entity.getInventory();
         Set<InfusionTarget> targetSet = infusion.infusionTarget();
