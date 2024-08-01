@@ -7,8 +7,6 @@ import de.tr7zw.nbtapi.iface.ReadWriteNBTList;
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
 import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.CheckReturnValue;
-
 public final class InfusionLoreUtils {
     public static void applyLoreNBT(ReadWriteNBT item, Infusion infusion, int level) {
         ReadWriteNBTList<String> lore = item.getOrCreateCompound("display").getStringList("Lore");
@@ -36,7 +34,6 @@ public final class InfusionLoreUtils {
         });
     }
 
-    @CheckReturnValue
     public static ItemStack applySortedLoreNBT(ItemStack stack) {
         ReadWriteNBT item = NBT.itemStackToNBT(stack);
         removeAllLoreNBT(item);
@@ -52,7 +49,10 @@ public final class InfusionLoreUtils {
         }
         // is application needed here?
         // yes
-        return NBT.itemStackFromNBT(item);
+        NBT.modify(stack, nbt -> {
+            nbt.mergeCompound(item);
+        });
+        return stack;
     }
 
 

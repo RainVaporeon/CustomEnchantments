@@ -11,7 +11,6 @@ import io.github.rainvaporeon.customenchantments.util.enums.Result;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
 
-import javax.annotation.CheckReturnValue;
 import java.util.*;
 import java.util.stream.StreamSupport;
 
@@ -21,48 +20,53 @@ public final class InfusionUtils {
      * @param stack the item stack to apply to
      * @param identifier the infusion identifier
      * @param level the level
-     * @return the applied item stack, or {@code null} if fail
      */
-    @CheckReturnValue
-    public static ItemStack applyInfusion(ItemStack stack, String identifier, int level) {
-        if (stack == null || stack.isEmpty()) return null;
+
+    public static boolean applyInfusion(ItemStack stack, String identifier, int level) {
+        if (stack == null || stack.isEmpty()) return false;
         Infusion infusion = InfusionManager.getInfusionById(identifier);
-        if (infusion == null) return null;
+        if (infusion == null) return false;
         ReadWriteNBT item = NBT.itemStackToNBT(stack);
         if (InfusionUtils.getInfusion(stack, infusion) > 0) removeInfusionData(item, identifier);
         InfusionLoreUtils.removeLoreNBT(item, infusion);
         item.getCompoundList(SharedConstants.INFUSION_IDENTIFIER_KEY).addCompound().mergeCompound(infusion.getNBT(level));
         // item.applyNBT(stack);
         InfusionLoreUtils.applySortedLoreNBT(item);
-        return NBT.itemStackFromNBT(item);
+        NBT.modify(stack, nbt -> {
+            nbt.mergeCompound(item);
+        });
+        return true;
     }
 
     /**
      * Removes the infusion, changing the lore to adapt
      * @param stack the item stack to remove
      * @param identifier the infusion identifier
-     * @return the modified item stack, or {@code null} if failed
      */
-    @CheckReturnValue
-    public static ItemStack removeInfusion(ItemStack stack, String identifier) {
-        if (stack == null || stack.isEmpty()) return null;
+    public static boolean removeInfusion(ItemStack stack, String identifier) {
+        if (stack == null || stack.isEmpty()) return false;
         Infusion infusion = InfusionManager.getInfusionById(identifier);
-        if (infusion == null) return null;
+        if (infusion == null) return false;
         ReadWriteNBT item = NBT.itemStackToNBT(stack);
         // InfusionLoreUtils.removeLoreNBT(item, infusion);
         removeInfusionData(item, identifier);
         // item.applyNBT(stack);
         InfusionLoreUtils.applySortedLoreNBT(item);
-        return NBT.itemStackFromNBT(item);
+        NBT.modify(stack, nbt -> {
+            nbt.mergeCompound(item);
+        });
+        return true;
     }
 
-    @CheckReturnValue
-    public static ItemStack removeAllInfusions(ItemStack stack) {
-        if (stack == null || stack.isEmpty()) return null;
+    public static boolean removeAllInfusions(ItemStack stack) {
+        if (stack == null || stack.isEmpty()) return false;
         ReadWriteNBT item = NBT.itemStackToNBT(stack);
         item.removeKey(SharedConstants.INFUSION_IDENTIFIER_KEY);
         InfusionLoreUtils.applySortedLoreNBT(item);
-        return NBT.itemStackFromNBT(item);
+        NBT.modify(stack, nbt -> {
+            nbt.mergeCompound(item);
+        });
+        return true;
     }
 
     private static void removeInfusionData(ReadWriteNBT nbt, String identifier) {
@@ -75,42 +79,47 @@ public final class InfusionUtils {
      * @param stack the stack
      * @param identifier the infusion identifier
      * @param level the level
-     * @return the modified item, or {@code null} if failed
      */
-    @CheckReturnValue
-    public static ItemStack applyStoredInfusion(ItemStack stack, String identifier, int level) {
-        if (stack == null || stack.isEmpty()) return null;
+    public static boolean applyStoredInfusion(ItemStack stack, String identifier, int level) {
+        if (stack == null || stack.isEmpty()) return false;
         Infusion infusion = InfusionManager.getInfusionById(identifier);
-        if (infusion == null) return null;
+        if (infusion == null) return false;
         ReadWriteNBT item = NBT.itemStackToNBT(stack);
         if (InfusionUtils.getInfusion(stack, infusion) > 0) removeInfusionData(item, identifier);
         InfusionLoreUtils.removeLoreNBT(item, infusion);
         item.getCompoundList(SharedConstants.STORED_INFUSION_IDENTIFIER_KEY).addCompound().mergeCompound(infusion.getNBT(level));
         // item.applyNBT(stack);
         InfusionLoreUtils.applySortedLoreNBT(item);
-        return NBT.itemStackFromNBT(item);
+        NBT.modify(stack, nbt -> {
+            nbt.mergeCompound(item);
+        });
+        return true;
     }
 
-    @CheckReturnValue
-    public static ItemStack removeStoredInfusion(ItemStack stack, String identifier) {
-        if (stack == null || stack.isEmpty()) return null;
+    public static boolean removeStoredInfusion(ItemStack stack, String identifier) {
+        if (stack == null || stack.isEmpty()) return false;
         Infusion infusion = InfusionManager.getInfusionById(identifier);
-        if (infusion == null) return null;
+        if (infusion == null) return false;
         ReadWriteNBT item = NBT.itemStackToNBT(stack);
         // InfusionLoreUtils.removeLoreNBT(item, infusion);
         removeStoredInfusionData(item, identifier);
         // item.applyNBT(stack);
         InfusionLoreUtils.applySortedLoreNBT(item);
-        return NBT.itemStackFromNBT(item);
+        NBT.modify(stack, nbt -> {
+            nbt.mergeCompound(item);
+        });
+        return true;
     }
 
-    @CheckReturnValue
-    public static ItemStack removeAllStoredInfusions(ItemStack stack) {
-        if (stack == null || stack.isEmpty()) return null;
+    public static boolean removeAllStoredInfusions(ItemStack stack) {
+        if (stack == null || stack.isEmpty()) return false;
         ReadWriteNBT item = NBT.itemStackToNBT(stack);
         item.removeKey(SharedConstants.STORED_INFUSION_IDENTIFIER_KEY);
         // item.applyNBT(stack);
-        return NBT.itemStackFromNBT(item);
+        NBT.modify(stack, nbt -> {
+            nbt.mergeCompound(item);
+        });
+        return true;
     }
 
     private static void removeStoredInfusionData(ReadWriteNBT nbt, String identifier) {

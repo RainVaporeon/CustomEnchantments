@@ -96,11 +96,9 @@ public class GiveInfusionCommand extends BaseCommand {
                     commandSender.sendMessage("Use the force flag (arg3) to force add this infusion.");
                     return false;
                 }
-
-                ItemStack resultItem = InfusionUtils.applyInfusion(handItem, infusion.getIdentifier(), level);
-                if (resultItem != null) {
+                if (InfusionUtils.applyInfusion(handItem, infusion.getIdentifier(), level)) {
                     commandSender.sendMessage("Successfully applied this infusion!");
-                    player.getInventory().setItemInMainHand(resultItem);
+                    player.getInventory().setItemInMainHand(handItem);
                     return true;
                 } else {
                     commandSender.sendMessage("Failed to apply this infusion. Does the identifier " + infusion.getIdentifier() + " exist?");

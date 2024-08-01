@@ -94,10 +94,9 @@ public class GiveStoredInfusionCommand extends BaseCommand {
                     commandSender.sendMessage("The hand item is not an enchanted book!");
                     return false;
                 }
-                ItemStack resultItem = InfusionUtils.applyStoredInfusion(handItem, infusion.getIdentifier(), level);
-                if (resultItem != null) {
+                if (InfusionUtils.applyStoredInfusion(handItem, infusion.getIdentifier(), level)) {
                     commandSender.sendMessage("Successfully applied this infusion!");
-                    player.getInventory().setItemInMainHand(resultItem);
+                    player.getInventory().setItemInMainHand(handItem);
                     return true;
                 } else {
                     commandSender.sendMessage("Failed to apply this infusion. Does the identifier " + infusion.getIdentifier() + " exist?");

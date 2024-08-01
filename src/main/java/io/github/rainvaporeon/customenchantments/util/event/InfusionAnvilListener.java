@@ -59,7 +59,7 @@ public class InfusionAnvilListener implements Listener {
                 SetCollection.addForced(storedLeft, merge(info, presentInfo));
             });
             // As we are storing something, we put LHS over in stored infusions
-            storedLeft.forEach(info -> result.set(InfusionUtils.applyStoredInfusion(result.get(), info.getInfusion().getIdentifier(), info.getLevel())));
+            storedLeft.forEach(info -> InfusionUtils.applyStoredInfusion(result.get(), info.getInfusion().getIdentifier(), info.getLevel()));
         } else {
             // different type and not appending book, exit
             if (left.getType() != right.getType() && right.getType() != Material.ENCHANTED_BOOK) return;
@@ -81,7 +81,7 @@ public class InfusionAnvilListener implements Listener {
             SetCollection.addForced(presentLeft, merge(info, presentInfo));
         });
         // and then we apply
-        presentLeft.forEach(info -> result.set(InfusionUtils.applyInfusion(result.get(), info.getInfusion().getIdentifier(), info.getLevel())));
+        presentLeft.forEach(info -> InfusionUtils.applyInfusion(result.get(), info.getInfusion().getIdentifier(), info.getLevel()));
 
         if (left.equals(result.get())) return;
 

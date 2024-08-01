@@ -17,6 +17,9 @@ public final class InfusionManager {
     // making the lore ordered and for other display purposes.
     private static final LinkedHashSet<Infusion> infusions = new LinkedHashSet<>();
 
+    //
+    private static final Map<String, Infusion> queryMap = new HashMap<>();
+
     private static final Map<String, String> migrationMap = new HashMap<>();
 
     /**
@@ -34,6 +37,7 @@ public final class InfusionManager {
         }
         CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, "Registered infusion " + base);
         infusions.addLast(base);
+        queryMap.put(base.getIdentifier(), base);
     }
 
     /**
@@ -75,7 +79,7 @@ public final class InfusionManager {
      * @return the infusion, or null if absent
      */
     public static @Nullable Infusion getInfusionById(String identifier) {
-        return infusions.stream().filter(i -> i.getIdentifier().equals(identifier)).findFirst().orElse(null);
+        return queryMap.get(identifier);
     }
 
     /**
