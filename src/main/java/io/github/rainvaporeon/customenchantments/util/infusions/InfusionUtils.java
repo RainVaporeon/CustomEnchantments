@@ -3,6 +3,7 @@ package io.github.rainvaporeon.customenchantments.util.infusions;
 import de.tr7zw.nbtapi.NBT;
 import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.nbtapi.iface.ReadWriteNBTCompoundList;
+import de.tr7zw.nbtapi.iface.ReadableNBTList;
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
 import io.github.rainvaporeon.customenchantments.util.PlayerInventoryUtils;
 import io.github.rainvaporeon.customenchantments.util.SharedConstants;
@@ -134,36 +135,45 @@ public final class InfusionUtils {
     public static int accumulateInfusionLevelOf(Player entity, Infusion infusion, boolean strict) {
         if (infusion == null) return 0;
         PlayerInventory inventory = entity.getInventory();
-        Set<InfusionTarget> targetSet = infusion.infusionTarget();
-        Set<EquipmentSlot> allowedSlots = infusion.applicableSlots();
-        List<ItemStack> applicableList = PlayerInventoryUtils.collectFromSlot(inventory, allowedSlots);
-        applicableList.removeIf(item -> targetSet.stream().noneMatch(e -> e.includes(item)));
-        applicableList.removeIf(item -> item == null || item.isEmpty());
-        return applicableList.stream().mapToInt(is -> InfusionUtils.getInfusion(is, infusion)).sum();
+        if (strict) {
+            Set<InfusionTarget> targetSet = infusion.infusionTarget();
+            Set<EquipmentSlot> allowedSlots = infusion.applicableSlots();
+            List<ItemStack> applicableList = PlayerInventoryUtils.collectFromSlot(inventory, allowedSlots);
+            applicableList.removeIf(item -> targetSet.stream().noneMatch(e -> e.includes(item)));
+            applicableList.removeIf(item -> item == null || item.isEmpty());
+            return applicableList.stream().mapToInt(is -> InfusionUtils.getInfusion(is, infusion)).sum();
+        } else {
+            return PlayerInventoryUtils.collectFromSlot(inventory, SharedConstants.equipmentSlots())
+                    .stream()
+                    .mapToInt(is -> InfusionUtils.getInfusion(is, infusion))
+                    .sum();
+        }
     }
 
     public static Set<InfusionInfo> getAllInfusions(ItemStack stack) {
         if (stack == null || stack.isEmpty()) return Collections.emptySet();
-        ReadWriteNBT item = NBT.itemStackToNBT(stack);
-        ReadWriteNBTCompoundList list = item.getCompoundList(SharedConstants.INFUSION_IDENTIFIER_KEY);
-        Set<InfusionInfo> infusionMap = new HashSet<>();
-        list.forEach(rw -> {
-            String identifier = rw.getString(SharedConstants.INFUSION_ID);
-            Integer level = rw.getInteger(SharedConstants.INFUSION_LEVEL);
-            if (identifier == null || level == null) return;
-            infusionMap.add(new InfusionInfo(InfusionManager.getInfusionById(identifier), level));
+        return NBT.get(stack, nbt -> {
+            ReadableNBTList<ReadWriteNBT> list = nbt.getCompoundList(SharedConstants.INFUSION_IDENTIFIER_KEY);
+            Set<InfusionInfo> infusionMap = new HashSet<>();
+            list.forEach(rw -> {
+                String identifier = rw.getString(SharedConstants.INFUSION_ID);
+                Integer level = rw.getInteger(SharedConstants.INFUSION_LEVEL);
+                if (identifier == null || level == null) return;
+                infusionMap.add(new InfusionInfo(InfusionManager.getInfusionById(identifier), level));
+            });
+            return infusionMap;
         });
-        return infusionMap;
     }
 
     public static int getInfusion(ItemStack stack, Infusion type) {
         if (stack == null || stack.isEmpty()) return 0;
-        ReadWriteNBT item = NBT.itemStackToNBT(stack);
-        ReadWriteNBTCompoundList list = item.getCompoundList(SharedConstants.INFUSION_IDENTIFIER_KEY);
-        ReadWriteNBT nbt = StreamSupport.stream(list.spliterator(), false)
-                .filter(rw -> rw.getString(SharedConstants.INFUSION_ID).equals(type.getIdentifier()))
-                .findFirst().orElse(null);
-        return nbt == null ? 0 : nbt.getInteger(SharedConstants.INFUSION_LEVEL);
+        return NBT.get(stack, nbt -> {
+            ReadableNBTList<ReadWriteNBT> list = nbt.getCompoundList(SharedConstants.INFUSION_IDENTIFIER_KEY);
+            ReadWriteNBT data = StreamSupport.stream(list.spliterator(), false)
+                    .filter(rw -> rw.getString(SharedConstants.INFUSION_ID).equals(type.getIdentifier()))
+                    .findFirst().orElse(null);
+            return data == null ? 0 : data.getInteger(SharedConstants.INFUSION_LEVEL);
+        });
     }
 
     public static int getInfusion(ReadWriteNBT item, Infusion type) {
@@ -177,12 +187,13 @@ public final class InfusionUtils {
 
     public static int getStoredInfusion(ItemStack stack, Infusion type) {
         if (stack == null || stack.isEmpty()) return 0;
-        ReadWriteNBT item = NBT.itemStackToNBT(stack);
-        ReadWriteNBTCompoundList list = item.getCompoundList(SharedConstants.STORED_INFUSION_IDENTIFIER_KEY);
-        ReadWriteNBT nbt = StreamSupport.stream(list.spliterator(), false)
-                .filter(rw -> rw.getString(SharedConstants.INFUSION_ID).equals(type.getIdentifier()))
-                .findFirst().orElse(null);
-        return nbt == null ? 0 : nbt.getInteger(SharedConstants.INFUSION_LEVEL);
+        return NBT.get(stack, nbt -> {
+            ReadableNBTList<ReadWriteNBT> list = nbt.getCompoundList(SharedConstants.STORED_INFUSION_IDENTIFIER_KEY);
+            ReadWriteNBT data = StreamSupport.stream(list.spliterator(), false)
+                    .filter(rw -> rw.getString(SharedConstants.INFUSION_ID).equals(type.getIdentifier()))
+                    .findFirst().orElse(null);
+            return data == null ? 0 : data.getInteger(SharedConstants.INFUSION_LEVEL);
+        });
     }
 
     public static int getStoredInfusion(ReadWriteNBT item, Infusion type) {

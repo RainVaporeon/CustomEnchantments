@@ -1,6 +1,7 @@
 package io.github.rainvaporeon.customenchantments.commands;
 
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
+import io.github.rainvaporeon.customenchantments.util.SharedConstants;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionInfo;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionManager;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
@@ -33,8 +34,7 @@ public class CurrentInfusionCommand extends BaseCommand {
         Player player = (Player) sender;
         PlayerInventory inventory = player.getInventory();
         sender.sendMessage("Here's the individual infusion stat you have:");
-        for (EquipmentSlot slot : EquipmentSlot.values()) {
-            if (slot == EquipmentSlot.BODY) continue;
+        for (EquipmentSlot slot : SharedConstants.equipmentSlots()) {
             sender.sendMessage(Component.text()
                     .color(NamedTextColor.GRAY)
                     .content("Slot ")

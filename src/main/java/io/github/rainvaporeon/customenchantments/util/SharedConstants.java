@@ -4,6 +4,7 @@ import io.github.rainvaporeon.customenchantments.CustomEnchantments;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.inventory.EquipmentSlot;
 
 import java.util.EnumSet;
 
@@ -38,11 +39,22 @@ public class SharedConstants {
             WORLD_BORDER
     );
 
+    private static final EnumSet<EquipmentSlot> equippedSlots = EnumSet.of(
+            EquipmentSlot.HAND,
+            EquipmentSlot.OFF_HAND,
+            EquipmentSlot.FEET,
+            EquipmentSlot.LEGS,
+            EquipmentSlot.CHEST,
+            EquipmentSlot.HEAD
+    );
+
     private static final EnumSet<EntityDamageEvent.DamageCause> unnaturalCauses = EnumSet.complementOf(naturalCauses);
 
     public static Listener emptyListener() {
         return EMPTY;
     }
+
+    public static EnumSet<EquipmentSlot> equipmentSlots() { return equippedSlots; }
 
     public static EnumSet<EntityDamageEvent.DamageCause> naturalCauses() {
         return naturalCauses;
