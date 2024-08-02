@@ -2,6 +2,7 @@ package io.github.rainvaporeon.customenchantments.enchant.buff.misc;
 
 import io.github.rainvaporeon.customenchantments.enchant.SpecialInfusion;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -34,7 +35,7 @@ public class SoulTetherInfusion extends SpecialInfusion {
 
     @Override
     public String getDescription() {
-        return "Items with this enchantment does not drop on death.";
+        return "Items with this enchantment does not drop or vanish on death.";
     }
 
     @Override
@@ -51,11 +52,18 @@ public class SoulTetherInfusion extends SpecialInfusion {
         @EventHandler
         public void onPlayerDeath(PlayerDeathEvent event) {
             if (event.getKeepInventory()) return; // keep inv, this infusion is useless
+            for (ItemStack stx : event.getPlayer().getInventory()) {
+                if (InfusionUtils.getInfusion(stx, SoulTetherInfusion.this) == 0) continue;
+                if (stx.getEnchantmentLevel(Enchantment.VANISHING_CURSE) == 0) continue;
+                event.getItemsToKeep().add(stx);
+            }
             Iterator<ItemStack> it = event.getDrops().iterator();
             while (it.hasNext()) {
                 ItemStack stx = it.next();
                 if (InfusionUtils.getInfusion(stx, SoulTetherInfusion.this) == 0) continue;
                 it.remove();
+                // avoids duplicating identity identical items
+                if (event.getItemsToKeep().stream().anyMatch(stack -> stack == stx)) continue;
                 event.getItemsToKeep().add(stx);
             }
         }
