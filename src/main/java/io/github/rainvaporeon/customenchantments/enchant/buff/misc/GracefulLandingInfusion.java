@@ -45,7 +45,7 @@ public class GracefulLandingInfusion extends SpecialInfusion {
     @Nullable
     @Override
     public String getExtendedDescription(int level) {
-        return String.format("%d%% chance not to take fall damage.", 15 * level);
+        return String.format("%d%% chance not to take fall damage and gain Speed II for %d seconds.", 15 * level, 3 + level);
     }
 
     @Override
