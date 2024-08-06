@@ -1,13 +1,13 @@
 package io.github.rainvaporeon.customenchantments.enchant;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import de.tr7zw.nbtapi.NBT;
 import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import io.github.rainvaporeon.customenchantments.util.SharedConstants;
 import io.github.rainvaporeon.customenchantments.util.StringStyle;
 import io.github.rainvaporeon.customenchantments.util.enums.InfusionTarget;
 import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.EquipmentSlot;
@@ -63,11 +63,14 @@ public abstract class Infusion {
      * Gets the pattern to clear the lore this applies
      * @return the predicate
      */
-    public Predicate<String> getClearingPattern() {
+    public Predicate<Component> getClearingPattern() {
         return s -> {
             try {
-                JsonObject o = JsonParser.parseString(s).getAsJsonObject();
-                return o.get("text").getAsString().startsWith(this.getName());
+                if (s instanceof TextComponent) {
+                    return ((TextComponent) s).content().startsWith(this.getName());
+                } else {
+                    return false;
+                }
             } catch (Exception e) {
                 return false;
             }
