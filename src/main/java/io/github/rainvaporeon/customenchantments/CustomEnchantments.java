@@ -13,6 +13,7 @@ import io.github.rainvaporeon.customenchantments.status.Bleeding;
 import io.github.rainvaporeon.customenchantments.status.Poison;
 import io.github.rainvaporeon.customenchantments.util.event.InfusionAnvilListener;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionManager;
+import io.github.rainvaporeon.customenchantments.util.io.LocalConfig;
 import io.github.rainvaporeon.customenchantments.util.server.Server;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -92,6 +93,9 @@ public final class CustomEnchantments extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(Poison.getInstance(), this);
         Bukkit.getPluginManager().registerEvents(InfusionAnvilListener.getInstance(), this);
 
+        LocalConfig.init(this);
+
+        // 2024 aug 7th: when did i add this??? /rain
         Server.createRunnable(() -> {
             Player loneF = Bukkit.getServer().getPlayerExact("LoneWolfFL");
             Player loneM = Bukkit.getServer().getPlayerExact("MaoMaster69");

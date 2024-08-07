@@ -63,4 +63,6 @@ public class SharedConstants {
     public static EnumSet<EntityDamageEvent.DamageCause> unnaturalCauses() {
         return unnaturalCauses;
     }
+
+    public static final String STRICT_INFUSION = "strict";
 }

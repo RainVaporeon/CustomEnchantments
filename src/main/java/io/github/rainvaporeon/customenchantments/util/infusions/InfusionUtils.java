@@ -9,6 +9,7 @@ import io.github.rainvaporeon.customenchantments.util.PlayerInventoryUtils;
 import io.github.rainvaporeon.customenchantments.util.SharedConstants;
 import io.github.rainvaporeon.customenchantments.util.enums.InfusionTarget;
 import io.github.rainvaporeon.customenchantments.util.enums.Result;
+import io.github.rainvaporeon.customenchantments.util.io.LocalConfig;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
 
@@ -118,7 +119,7 @@ public final class InfusionUtils {
     }
 
     public static int accumulateInfusionLevelOf(Player entity, Infusion infusion) {
-        return accumulateInfusionLevelOf(entity, infusion, false);
+        return accumulateInfusionLevelOf(entity, infusion, LocalConfig.instance().readBoolean("strict", false));
     }
 
     public static int accumulateInfusionLevelOf(Player entity, Infusion infusion, boolean strict) {
