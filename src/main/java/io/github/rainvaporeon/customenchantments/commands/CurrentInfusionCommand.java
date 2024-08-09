@@ -5,6 +5,7 @@ import io.github.rainvaporeon.customenchantments.util.SharedConstants;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionInfo;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionManager;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
+import io.github.rainvaporeon.customenchantments.util.io.LocalConfig;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -33,6 +34,7 @@ public class CurrentInfusionCommand extends BaseCommand {
         }
         Player player = (Player) sender;
         PlayerInventory inventory = player.getInventory();
+        boolean restrictive = LocalConfig.instance().readBoolean("strict", false);
         sender.sendMessage("Here's the individual infusion stat you have:");
         for (EquipmentSlot slot : SharedConstants.equipmentSlots()) {
             sender.sendMessage(Component.text()
@@ -48,14 +50,14 @@ public class CurrentInfusionCommand extends BaseCommand {
                         .append(Component.text(" (" + infusionInfo.getInfusion().getIdentifier() + ")").color(NamedTextColor.GRAY))
                         .append(Component.text(" Level " + infusionInfo.getLevel()).color(NamedTextColor.GRAY));
 
-                if (!infusion.applicableSlots().contains(slot)) {
+                if (!infusion.applicableSlots().contains(slot) && restrictive) {
                     component.append(
                             Component.text(" (Not applicable for slot)")
                                     .color(NamedTextColor.RED)
                     );
                 }
 
-                if (infusion.infusionTarget().stream().noneMatch(inc -> inc.includes(inventory.getItem(slot)))) {
+                if (infusion.infusionTarget().stream().noneMatch(inc -> inc.includes(inventory.getItem(slot))) && restrictive) {
                     component.append(
                             Component.text(" (Not applicable for item)")
                                     .color(NamedTextColor.RED)
