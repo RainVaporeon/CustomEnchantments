@@ -17,7 +17,10 @@ public final class InfusionManager {
     // making the lore ordered and for other display purposes.
     private static final LinkedHashSet<Infusion> infusions = new LinkedHashSet<>();
 
-    //
+    // Convenient type lookup
+    private static final Map<Class<? extends Infusion>, Infusion> typeMap = new HashMap<>();
+
+    // Convenient name lookup
     private static final Map<String, Infusion> queryMap = new HashMap<>();
 
     private static final Map<String, String> migrationMap = new HashMap<>();
@@ -38,6 +41,7 @@ public final class InfusionManager {
         CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, "Registered infusion " + base);
         infusions.addLast(base);
         queryMap.put(base.getIdentifier(), base);
+        typeMap.put(base.getClass(), base);
     }
 
     /**
@@ -80,6 +84,15 @@ public final class InfusionManager {
      */
     public static @Nullable Infusion getInfusionById(String identifier) {
         return queryMap.get(identifier);
+    }
+
+    /**
+     * Gets an infusion by the type
+     * @param infusion the infusion type
+     * @return the registered infusion, or null if not registered
+     */
+    public static @Nullable Infusion getInfusionByType(Class<? extends Infusion> infusion) {
+        return typeMap.get(infusion);
     }
 
     /**
