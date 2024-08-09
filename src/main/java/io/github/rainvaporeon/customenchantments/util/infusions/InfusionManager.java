@@ -39,7 +39,7 @@ public final class InfusionManager {
             Bukkit.getPluginManager().registerEvents(listener, CustomEnchantments.PLUGIN);
         }
         CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, "Registered infusion " + base);
-        infusions.addLast(base);
+        infusions.add(base);
         queryMap.put(base.getIdentifier(), base);
         typeMap.put(base.getClass(), base);
     }

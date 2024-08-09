@@ -21,11 +21,7 @@ public final class InfusionLoreUtils {
         Style style = text.style().decoration(TextDecoration.ITALIC, false);
         Component result = text.style(style);
         List<Component> lore = item.hasLore() ? item.lore() : new ArrayList<>();
-        if (item.lore() == null) {
-            lore.add(result);
-        } else {
-            lore.addLast(result);
-        }
+        lore.add(result);
         item.lore(lore);
     }
 

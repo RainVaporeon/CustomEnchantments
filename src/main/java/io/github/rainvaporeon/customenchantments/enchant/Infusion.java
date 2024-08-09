@@ -140,7 +140,7 @@ public abstract class Infusion {
     }
 
     public Set<EquipmentSlot> applicableSlots() {
-        return EnumSet.complementOf(EnumSet.of(EquipmentSlot.BODY));
+        return SharedConstants.equipmentSlots();
     }
 
     /**
@@ -164,6 +164,6 @@ public abstract class Infusion {
 
     @Override
     public String toString() {
-        return this.getName() + "(" + this.getIdentifier() + ")";
+        return this.getName() + " (" + this.getIdentifier() + ")";
     }
 }
