@@ -1,6 +1,7 @@
 package io.github.rainvaporeon.customenchantments.util.internal.unstable;
 
 import com.google.common.annotations.Beta;
+import io.github.rainvaporeon.customenchantments.util.internal.Open;
 import io.github.rainvaporeon.customenchantments.util.internal.exceptions.InvocationException;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -8,7 +9,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
 
-public final class EnumFactory {
+public final class ClassTools {
     /**
      * Instantiates an enum class
      * @param type the enum type
@@ -19,7 +20,7 @@ public final class EnumFactory {
      * @throws InvocationException if an exception occurs whilst executing
      */
     @SuppressWarnings("unchecked") @ApiStatus.Internal @Beta
-    public static <T extends Enum<T>> T instantiateEnum(Class<T> type, Class<?>[] argt, Object... args) throws InvocationException {
+    public static <T extends Enum<T>> T instantiateClass(Class<T> type, Class<?>[] argt, Object... args) throws InvocationException {
         try {
             Constructor<T> constructor = type.getDeclaredConstructor(argt);
             constructor.setAccessible(true);
@@ -28,5 +29,12 @@ public final class EnumFactory {
         } catch (Throwable t) {
             throw new InvocationException(t);
         }
+    }
+
+    @Open
+    public static Class<?>[] mapToType(Object... arr) {
+        Class<?>[] c = new Class[arr.length];
+        for (int i = 0; i < c.length; i++) c[i] = arr[i].getClass();
+        return c;
     }
 }

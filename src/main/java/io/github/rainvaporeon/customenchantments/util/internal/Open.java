@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * ensured that there are no issues with using them in the
  * plugin.
  */
-@Target(ElementType.TYPE)
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.SOURCE)
 public @interface Open {
 }
