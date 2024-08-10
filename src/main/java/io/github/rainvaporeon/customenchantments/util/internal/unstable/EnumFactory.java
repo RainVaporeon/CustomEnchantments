@@ -7,7 +7,6 @@ import org.jetbrains.annotations.ApiStatus;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
-import java.util.Arrays;
 
 public final class EnumFactory {
     /**
