@@ -51,7 +51,8 @@ public class TranquilityAuraInfusion extends SpecialInfusion {
 
         @EventHandler
         public void onAngerLevelChange(WardenAngerChangeEvent event) {
-            if (!(event.getTarget() instanceof Player pl)) return;
+            if (!(event.getTarget() instanceof Player)) return;
+            Player pl = (Player) event.getTarget();
             int level = InfusionUtils.accumulateInfusionLevelOf(pl, TranquilityAuraInfusion.this);
             if (level == 0) return;
             if (Math.random() < 0.2 * level) event.setCancelled(true);
