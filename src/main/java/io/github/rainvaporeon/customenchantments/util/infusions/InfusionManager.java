@@ -38,6 +38,11 @@ public final class InfusionManager {
         if (listener != SharedConstants.emptyListener()) {
             Bukkit.getPluginManager().registerEvents(listener, CustomEnchantments.PLUGIN);
         }
+        if (infusions.contains(base)) {
+            CustomEnchantments.PLUGIN.getLogger().warning("Infusion " + base + " was already registered! Skipping this infusion...");
+            CustomEnchantments.PLUGIN.getLogger().log(Level.WARNING, "Traceback: " + new IllegalArgumentException().fillInStackTrace());
+            return;
+        }
         CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, "Registered infusion " + base);
         infusions.add(base);
         queryMap.put(base.getIdentifier(), base);
