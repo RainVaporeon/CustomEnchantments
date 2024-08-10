@@ -66,7 +66,8 @@ public final class CustomEnchantments extends JavaPlugin {
                 new KineticAbsorbInfusion(),
                 new StressTransferInfusion(),
                 new SplinterInfusion(),
-                new SanguineMendInfusion()
+                new SanguineMendInfusion(),
+                new AcrobaticsInfusion()
         );
 
         /* Special buff infusion */
@@ -78,7 +79,8 @@ public final class CustomEnchantments extends JavaPlugin {
                 new GracefulLandingInfusion(),
                 new TitanicInfusion(),
                 new LifeStealInfusion(),
-                new SoulTetherInfusion()
+                new SoulTetherInfusion(),
+                new TranquilityAuraInfusion()
         );
 
         /* Other debuff infusion */

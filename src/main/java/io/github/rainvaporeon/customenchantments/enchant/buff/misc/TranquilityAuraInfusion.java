@@ -1,6 +1,6 @@
 package io.github.rainvaporeon.customenchantments.enchant.buff.misc;
 
-import io.github.rainvaporeon.customenchantments.enchant.Infusion;
+import io.github.rainvaporeon.customenchantments.enchant.SpecialInfusion;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
 import io.papermc.paper.event.entity.WardenAngerChangeEvent;
 import org.bukkit.entity.Player;
@@ -9,7 +9,7 @@ import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class TranquilityAuraInfusion extends Infusion {
+public class TranquilityAuraInfusion extends SpecialInfusion {
     @Override
     public String getIdentifier() {
         return "tranquility_aura";
@@ -51,8 +51,7 @@ public class TranquilityAuraInfusion extends Infusion {
 
         @EventHandler
         public void onAngerLevelChange(WardenAngerChangeEvent event) {
-            if (!(event.getTarget() instanceof Player)) return;
-            Player pl = (Player) event.getTarget();
+            if (!(event.getTarget() instanceof Player pl)) return;
             int level = InfusionUtils.accumulateInfusionLevelOf(pl, TranquilityAuraInfusion.this);
             if (level == 0) return;
             if (Math.random() < 0.2 * level) event.setCancelled(true);
