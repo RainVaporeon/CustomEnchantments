@@ -140,6 +140,28 @@ public final class InfusionUtils {
         }
     }
 
+    public static int accumulateEquippedPiecesWithInfusion(Player player, Infusion infusion) {
+        return accumulateEquippedPiecesWithInfusion(player, infusion, LocalConfig.instance().readBoolean("strict", false));
+    }
+
+    public static int accumulateEquippedPiecesWithInfusion(Player player, Infusion infusion, boolean strict) {
+        if (infusion == null) return 0;
+        PlayerInventory inventory = player.getInventory();
+        if (strict) {
+            Set<InfusionTarget> targetSet = infusion.infusionTarget();
+            Set<EquipmentSlot> allowedSlots = infusion.applicableSlots();
+            List<ItemStack> applicableList = PlayerInventoryUtils.collectFromSlot(inventory, allowedSlots);
+            applicableList.removeIf(item -> targetSet.stream().noneMatch(e -> e.includes(item)));
+            applicableList.removeIf(item -> item == null || item.isEmpty());
+            return (int) applicableList.stream().filter(is -> InfusionUtils.getInfusion(is, infusion) != 0).count();
+        } else {
+            return (int) PlayerInventoryUtils.collectFromSlot(inventory, SharedConstants.equipmentSlots())
+                    .stream()
+                    .filter(is -> InfusionUtils.getInfusion(is, infusion) != 0)
+                    .count();
+        }
+    }
+
     public static Set<InfusionInfo> getAllInfusions(ItemStack stack) {
         if (stack == null || stack.isEmpty()) return Collections.emptySet();
         return NBT.get(stack, nbt -> {

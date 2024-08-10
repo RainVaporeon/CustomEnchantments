@@ -9,6 +9,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.EquipmentSlot;
 
@@ -55,7 +56,7 @@ public abstract class Infusion {
         return StringStyle::toRomanNumerals;
     }
 
-    public NamedTextColor getColor() {
+    public TextColor getColor() {
         return NamedTextColor.GRAY;
     }
 

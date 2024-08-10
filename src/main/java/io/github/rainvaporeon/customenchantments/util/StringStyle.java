@@ -8,7 +8,7 @@ import java.util.Iterator;
 public class StringStyle {
 
     public static String toRomanNumerals(int number) {
-        // highest representable is 3999 as the largest unit is M (1000)
+        // the highest representable is 3999 as the largest unit is M (1000)
         if (number >= 4000 || number <= 0) return String.valueOf(number);
         StringBuilder builder = new StringBuilder();
         Iterator<RomanNumeral> it = Arrays.stream(RomanNumeral.values()).iterator();
