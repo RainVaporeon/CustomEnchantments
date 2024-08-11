@@ -118,10 +118,19 @@ public final class InfusionUtils {
                 .removeIf(rw -> rw.getString(SharedConstants.INFUSION_ID).equals(identifier));
     }
 
+    /**
+     * Accumulates the total active infusion level for this infusion on the player
+     * @param entity the player
+     * @param infusion the infusion
+     * @return the total level active on this infusion on the player
+     */
     public static int accumulateInfusionLevelOf(Player entity, Infusion infusion) {
         return accumulateInfusionLevelOf(entity, infusion, LocalConfig.instance().readBoolean("strict", false));
     }
 
+    /**
+     * @see InfusionUtils#accumulateInfusionLevelOf(Player, Infusion)
+     */
     public static int accumulateInfusionLevelOf(Player entity, Infusion infusion, boolean strict) {
         if (infusion == null) return 0;
         PlayerInventory inventory = entity.getInventory();
@@ -140,11 +149,20 @@ public final class InfusionUtils {
         }
     }
 
-    public static int accumulateEquippedPiecesWithInfusion(Player player, Infusion infusion) {
-        return accumulateEquippedPiecesWithInfusion(player, infusion, LocalConfig.instance().readBoolean("strict", false));
+    /**
+     * Counts the player's equipped pieces containing this infusion
+     * @param player the player
+     * @param infusion the infusion
+     * @return the total amounts of pieces having this infusion
+     */
+    public static int countInfusionPieces(Player player, Infusion infusion) {
+        return countInfusionPieces(player, infusion, LocalConfig.instance().readBoolean("strict", false));
     }
 
-    public static int accumulateEquippedPiecesWithInfusion(Player player, Infusion infusion, boolean strict) {
+    /**
+     * @see InfusionUtils#countInfusionPieces(Player, Infusion)
+     */
+    public static int countInfusionPieces(Player player, Infusion infusion, boolean strict) {
         if (infusion == null) return 0;
         PlayerInventory inventory = player.getInventory();
         if (strict) {
@@ -163,6 +181,10 @@ public final class InfusionUtils {
     }
 
     public static Set<InfusionInfo> getAllInfusions(ItemStack stack) {
+        return getAllInfusions(stack, LocalConfig.instance().readBoolean("strict", false));
+    }
+
+    public static Set<InfusionInfo> getAllInfusions(ItemStack stack, boolean strict) {
         if (stack == null || stack.isEmpty()) return Collections.emptySet();
         return NBT.get(stack, nbt -> {
             ReadableNBTList<ReadWriteNBT> list = nbt.getCompoundList(SharedConstants.INFUSION_IDENTIFIER_KEY);
@@ -170,11 +192,57 @@ public final class InfusionUtils {
             list.forEach(rw -> {
                 String identifier = rw.getString(SharedConstants.INFUSION_ID);
                 Integer level = rw.getInteger(SharedConstants.INFUSION_LEVEL);
-                if (identifier == null || level == null) return;
-                infusionMap.add(new InfusionInfo(InfusionManager.getInfusionById(identifier), level));
+                Infusion infusion = InfusionManager.getInfusionById(identifier);
+                if (identifier == null || level == null || infusion == null) return;
+                if (strict && infusion.infusionTarget().stream().noneMatch(target -> target.includes(stack))) return;
+                infusionMap.add(new InfusionInfo(infusion, level));
             });
             return infusionMap;
         });
+    }
+
+    /**
+     * Fetches all active infusions on a player, the results are folded into
+     * one set containing all infusions that are active on the player.
+     * @param player the player
+     * @return a mutable container containing all active infusions on the player
+     * @apiNote the returned mutable container is not backed by the player.
+     */
+    // "One-liner" as they say...
+    public static Set<InfusionInfo> getAllActiveInfusions(Player player) {
+        return PlayerInventoryUtils.collectFromSlot(player.getInventory(), SharedConstants.equipmentSlots())
+                .stream()
+                .map(InfusionUtils::getAllInfusions)
+                .flatMap(Collection::stream)
+                .collect(
+                        HashSet::new,
+                        (set, info) -> {
+                            if (!set.contains(info)) {
+                                set.add(info);
+                            } else {
+                                for (InfusionInfo inf : set) {
+                                    if (inf.equals(info)) {
+                                        set.remove(inf);
+                                        set.add(inf.combine(info));
+                                    }
+                                }
+                            }
+                        },
+                        (left, right) -> {
+                            right.forEach(info -> {
+                                if (!left.contains(info)) {
+                                    left.add(info);
+                                } else {
+                                    for (InfusionInfo inf : left) {
+                                        if (inf.equals(info)) {
+                                            left.remove(inf);
+                                            left.add(inf.combine(info));
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                        );
     }
 
     public static int getInfusion(ItemStack stack, Infusion type) {

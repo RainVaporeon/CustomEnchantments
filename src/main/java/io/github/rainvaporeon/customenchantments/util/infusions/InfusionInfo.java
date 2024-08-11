@@ -24,6 +24,11 @@ public class InfusionInfo {
         return level;
     }
 
+    public InfusionInfo combine(InfusionInfo other) {
+        if (!this.equals(other)) throw new IllegalArgumentException("cannot combine different infusion type into one info");
+        return new InfusionInfo(this.infusion, this.level + other.level);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
