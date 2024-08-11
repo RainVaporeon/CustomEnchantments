@@ -12,6 +12,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.EquipmentSlot;
+import org.jetbrains.annotations.Unmodifiable;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -140,7 +141,7 @@ public abstract class Infusion {
         return compound;
     }
 
-    public Set<EquipmentSlot> applicableSlots() {
+    public @Unmodifiable Set<EquipmentSlot> applicableSlots() {
         return SharedConstants.equipmentSlots();
     }
 
@@ -148,9 +149,13 @@ public abstract class Infusion {
      * The target of this infusion
      * @return a set of target this infusion may be applied on
      */
-    public Set<InfusionTarget> infusionTarget() {
+    public @Unmodifiable Set<InfusionTarget> infusionTarget() {
         return EnumSet.allOf(InfusionTarget.class);
     }
+
+    public final boolean isDebuff() { return this instanceof DebuffInfusion; }
+    public final boolean isSpecial() { return this instanceof SpecialInfusion; }
+    public final boolean isSet() { return this instanceof SetInfusion; }
 
     @Override
     public boolean equals(Object obj) {

@@ -1,5 +1,8 @@
 package io.github.rainvaporeon.customenchantments.util;
 
+import io.github.rainvaporeon.customenchantments.util.infusions.InfusionInfo;
+
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -22,5 +25,38 @@ public class SetCollection {
             return;
         }
         set.add(object);
+    }
+
+    @SafeVarargs
+    public static Set<InfusionInfo> mergeInfo(Set<InfusionInfo>... infos) {
+        Set<InfusionInfo> ret = new HashSet<>();
+        for (Set<InfusionInfo> info : infos) {
+            info.forEach(i -> {
+                if (ret.contains(i)) {
+                    InfusionInfo replace = SetCollection.find(info, i).combine(i);
+                    ret.remove(i);
+                    ret.add(replace);
+                } else {
+                    ret.add(i);
+                }
+            });
+        }
+        return ret;
+    }
+
+    public static Set<InfusionInfo> mergeInfo(Iterable<Set<InfusionInfo>> infos) {
+        Set<InfusionInfo> ret = new HashSet<>();
+        for (Set<InfusionInfo> info : infos) {
+            info.forEach(i -> {
+                if (ret.contains(i)) {
+                    InfusionInfo replace = SetCollection.find(info, i).combine(i);
+                    ret.remove(i);
+                    ret.add(replace);
+                } else {
+                    ret.add(i);
+                }
+            });
+        }
+        return ret;
     }
 }
