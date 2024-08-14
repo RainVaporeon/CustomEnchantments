@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+// TODO Implement some other methods seen in InfusionUtils
+//  as set infusions are slightly more tricky to work with
+//  under the current code design.
 public final class SetInfusionUtils {
     public static Set<InfusionInfo> getActiveSetBonuses(Player player) {
         List<Set<InfusionInfo>> accumulator = new ArrayList<>();

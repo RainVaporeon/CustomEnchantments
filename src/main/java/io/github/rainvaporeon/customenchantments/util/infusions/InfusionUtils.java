@@ -209,8 +209,10 @@ public final class InfusionUtils {
      * @apiNote the returned mutable container is not backed by the player.
      */
     // "One-liner" as they say...
+    // TODO implicitly call to SetInfusionUtils#getActiveSetBonuses
     public static Set<InfusionInfo> getAllActiveInfusions(Player player) {
-        return PlayerInventoryUtils.collectFromSlot(player.getInventory(), SharedConstants.equipmentSlots())
+        return PlayerInventoryUtils
+                .collectFromSlot(player.getInventory(), SharedConstants.equipmentSlots())
                 .stream()
                 .map(InfusionUtils::getAllInfusions)
                 .flatMap(Collection::stream)
