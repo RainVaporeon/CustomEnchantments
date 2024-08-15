@@ -1,8 +1,11 @@
 package io.github.rainvaporeon.customenchantments.util.event;
 
+import io.github.rainvaporeon.customenchantments.CustomEnchantments;
 import io.github.rainvaporeon.customenchantments.util.SetCollection;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionInfo;
+import io.github.rainvaporeon.customenchantments.util.infusions.InfusionLoreUtils;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
+import io.github.rainvaporeon.customenchantments.util.io.LocalConfig;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -13,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
 
 public class InfusionAnvilListener implements Listener {
 
@@ -29,6 +33,7 @@ public class InfusionAnvilListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGH)
     public void onPrepareAnvil(PrepareAnvilEvent event) {
+        boolean shouldDebug = LocalConfig.instance().readBoolean(LocalConfig.DEBUG_LOGGING, false);
         AnvilInventory inventory = event.getInventory();
         ItemStack left = inventory.getFirstItem();
         ItemStack right = inventory.getSecondItem();
@@ -48,12 +53,25 @@ public class InfusionAnvilListener implements Listener {
         Set<InfusionInfo> storedLeft = InfusionUtils.getAllStoredInfusions(left);
         Set<InfusionInfo> storedRight = InfusionUtils.getAllStoredInfusions(right);
 
+        if (shouldDebug) {
+            CustomEnchantments.PLUGIN.getLogger().log(Level.INFO,
+                    "P1 >> pL, pR, sL, sR = " + presentLeft + ", " + presentRight + ", " + storedLeft + ", " + storedRight);
+        }
         // nothing has infusion, then it's not our business
-        if (presentRight.isEmpty() && storedRight.isEmpty()) return;
+        if (presentRight.isEmpty() && storedRight.isEmpty()) {
+            if (shouldDebug) {
+                CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, "QUIT:PR/R E");
+            }
+            return;
+        }
 
         // We start managing the case where we apply RHS infusions and stored ones to result
-        if (left.getType() == Material.ENCHANTED_BOOK && right.getType() == Material.ENCHANTED_BOOK) {
+        if ((left.getType() == Material.ENCHANTED_BOOK && right.getType() == Material.ENCHANTED_BOOK)
+                || (left.getType() == Material.BOOK && right.getType() == Material.BOOK)) {
             // target is book, maybe we are doing book operations (merging)
+            if (shouldDebug) {
+                CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, "TYPE BOOK");
+            }
             storedRight.forEach(info -> {
                 InfusionInfo presentInfo = SetCollection.find(storedLeft, info);
                 SetCollection.addForced(storedLeft, merge(info, presentInfo));
@@ -61,8 +79,16 @@ public class InfusionAnvilListener implements Listener {
             // As we are storing something, we put LHS over in stored infusions
             storedLeft.forEach(info -> InfusionUtils.applyStoredInfusion(result.get(), info.getInfusion().getIdentifier(), info.getLevel()));
         } else {
-            // different type and not appending book, exit
-            if (left.getType() != right.getType() && right.getType() != Material.ENCHANTED_BOOK) return;
+            if (shouldDebug) {
+                CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, "TYPE NORMAL");
+            }
+            // different type and not appending from book, exit
+            if (left.getType() != right.getType() && right.getType() != Material.ENCHANTED_BOOK && right.getType() != Material.BOOK) {
+                if (shouldDebug) {
+                    CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, "DIFF, NO BOOK, EXIT");
+                }
+                return;
+            }
             // first, ignore incompatible ones
             storedRight.removeIf(info -> info.getInfusion().infusionTarget().stream().noneMatch(target -> target.includes(left)));
             presentRight.removeIf(info -> info.getInfusion().infusionTarget().stream().noneMatch(target -> target.includes(left)));
@@ -74,6 +100,10 @@ public class InfusionAnvilListener implements Listener {
                 SetCollection.addForced(presentLeft, merge(info, presentInfo));
             });
         }
+        if (shouldDebug) {
+            CustomEnchantments.PLUGIN.getLogger().log(Level.INFO,
+                    "P2 >> pL, pR, sL, sR = " + presentLeft + ", " + presentRight + ", " + storedLeft + ", " + storedRight);
+        }
 
         // Mutual part: Merge right with left and map to left
         presentRight.forEach(info -> {
@@ -83,10 +113,22 @@ public class InfusionAnvilListener implements Listener {
         // and then we apply
         presentLeft.forEach(info -> InfusionUtils.applyInfusion(result.get(), info.getInfusion().getIdentifier(), info.getLevel()));
 
-        if (left.equals(result.get())) return;
+        if (shouldDebug) {
+            CustomEnchantments.PLUGIN.getLogger().log(Level.INFO,
+                    "P3 >> pL, pR, sL, sR = " + presentLeft + ", " + presentRight + ", " + storedLeft + ", " + storedRight);
+        }
 
-        event.getInventory().setRepairCost(Math.max(event.getInventory().getRepairCost(), 1));
-        event.setResult(result.get());
+        if (left.equals(result.get())) {
+            if (shouldDebug) {
+                CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, "L=RES, EXIT");
+            }
+            return;
+        }
+
+        if (shouldDebug) {
+            CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, "PASS, ITEM=" + result.get());
+        }
+        event.setResult(InfusionLoreUtils.applySortedLoreNBT(result.get()));
     }
 
     private static InfusionInfo merge(InfusionInfo left, InfusionInfo right) {

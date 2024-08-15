@@ -48,6 +48,14 @@ public final class InfusionLoreUtils {
         item.lore(lore);
     }
 
+    /**
+     * Applies the lore NBT to this item stack
+     * @param stack the stack to reference infusions from, and to apply
+     *              changes to
+     * @return the modified stack
+     * @apiNote when modifying the meta within NBT API's method, use
+     * {@link InfusionLoreUtils#applySortedLoreNBT(ItemStack, ItemMeta)} instead.
+     */
     public static ItemStack applySortedLoreNBT(ItemStack stack) {
         ItemMeta meta = stack.getItemMeta();
         removeAllLoreNBT(meta);
@@ -63,5 +71,26 @@ public final class InfusionLoreUtils {
         }
         stack.setItemMeta(meta);
         return stack;
+    }
+
+    /**
+     * Applies the lore NBT to this item meta
+     * @param stack the item stack to reference infusions from
+     * @param meta the meta to apply to
+     * @apiNote the stack is never modified during the process, only read from.
+     * <p>the meta will be modified during the time.</p>
+     */
+    public static void applySortedLoreNBT(ItemStack stack, ItemMeta meta) {
+        removeAllLoreNBT(meta);
+        for (Infusion infusion : InfusionManager.getInfusions()) {
+            int level = InfusionUtils.getInfusion(stack, infusion);
+            if (level != 0) {
+                applyLoreNBT(meta, infusion, level);
+            }
+            int storedLevel = InfusionUtils.getStoredInfusion(stack, infusion);
+            if (storedLevel != 0) {
+                applyLoreNBT(meta, infusion, storedLevel);
+            }
+        }
     }
 }

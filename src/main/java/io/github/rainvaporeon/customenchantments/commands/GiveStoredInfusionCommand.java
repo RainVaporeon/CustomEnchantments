@@ -4,6 +4,7 @@ import io.github.rainvaporeon.customenchantments.CustomEnchantments;
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
 import io.github.rainvaporeon.customenchantments.util.Permission;
 import io.github.rainvaporeon.customenchantments.util.TabCompletionUtils;
+import io.github.rainvaporeon.customenchantments.util.infusions.InfusionLoreUtils;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionManager;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
 import org.bukkit.Material;
@@ -90,13 +91,13 @@ public class GiveStoredInfusionCommand extends BaseCommand {
                 return false;
             } else {
                 ItemStack handItem = player.getInventory().getItemInMainHand();
-                if (handItem.getType() != Material.ENCHANTED_BOOK) {
+                if (handItem.getType() != Material.ENCHANTED_BOOK && handItem.getType() != Material.BOOK) {
                     commandSender.sendMessage("The hand item is not an enchanted book!");
                     return false;
                 }
                 if (InfusionUtils.applyStoredInfusion(handItem, infusion.getIdentifier(), level)) {
                     commandSender.sendMessage("Successfully applied this infusion!");
-                    player.getInventory().setItemInMainHand(handItem);
+                    player.getInventory().setItemInMainHand(InfusionLoreUtils.applySortedLoreNBT(handItem));
                     return true;
                 } else {
                     commandSender.sendMessage("Failed to apply this infusion. Does the identifier " + infusion.getIdentifier() + " exist?");

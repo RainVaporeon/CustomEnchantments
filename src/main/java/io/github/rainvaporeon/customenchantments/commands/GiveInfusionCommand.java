@@ -3,6 +3,7 @@ package io.github.rainvaporeon.customenchantments.commands;
 import io.github.rainvaporeon.customenchantments.CustomEnchantments;
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
 import io.github.rainvaporeon.customenchantments.util.enums.Result;
+import io.github.rainvaporeon.customenchantments.util.infusions.InfusionLoreUtils;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionManager;
 import io.github.rainvaporeon.customenchantments.util.Permission;
 import io.github.rainvaporeon.customenchantments.util.TabCompletionUtils;
@@ -98,7 +99,7 @@ public class GiveInfusionCommand extends BaseCommand {
                 }
                 if (InfusionUtils.applyInfusion(handItem, infusion.getIdentifier(), level)) {
                     commandSender.sendMessage("Successfully applied this infusion!");
-                    player.getInventory().setItemInMainHand(handItem);
+                    player.getInventory().setItemInMainHand(InfusionLoreUtils.applySortedLoreNBT(handItem));
                     return true;
                 } else {
                     commandSender.sendMessage("Failed to apply this infusion. Does the identifier " + infusion.getIdentifier() + " exist?");

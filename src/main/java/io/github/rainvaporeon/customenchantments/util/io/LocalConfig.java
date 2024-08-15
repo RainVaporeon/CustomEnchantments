@@ -4,9 +4,10 @@ import io.github.rainvaporeon.customenchantments.util.SharedConstants;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
-import java.sql.Struct;
-
 public class LocalConfig {
+    public static final String STRICT_INFUSIONS = "strict";
+    public static final String DEBUG_LOGGING = "debug_logging";
+
     private static LocalConfig theInstance;
     private final Plugin instance;
     private FileConfiguration config;
@@ -51,7 +52,7 @@ public class LocalConfig {
     }
 
     public void save() {
-        this.instance.saveConfig();
+        this.writeToDisk();
     }
 
     public void reload(boolean hard) {
@@ -69,9 +70,9 @@ public class LocalConfig {
     }
 
     private static void writeIfAbsent() {
-        doWrite(SharedConstants.STRICT_INFUSION, true, false);
-        theInstance.save();
-        theInstance.reload(false);
+        doWrite(STRICT_INFUSIONS, true, false);
+        doWrite(DEBUG_LOGGING, false, false);
+        theInstance.writeToDisk();
     }
 
     private static void doWrite(String key, Object value, boolean overwrite) {

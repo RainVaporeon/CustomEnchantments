@@ -150,7 +150,7 @@ public abstract class Infusion {
      * @return a set of target this infusion may be applied on
      */
     public @Unmodifiable Set<InfusionTarget> infusionTarget() {
-        return EnumSet.allOf(InfusionTarget.class);
+        return EnumSet.of(InfusionTarget.ALL);
     }
 
     public final boolean isDebuff() { return this instanceof DebuffInfusion; }
