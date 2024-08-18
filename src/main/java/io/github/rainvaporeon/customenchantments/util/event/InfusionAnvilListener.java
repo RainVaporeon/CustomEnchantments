@@ -13,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
@@ -89,16 +90,18 @@ public class InfusionAnvilListener implements Listener {
                 }
                 return;
             }
+            // if RHS is enchantment storage, do logic here
+            if (right.getItemMeta() instanceof EnchantmentStorageMeta) {
+                storedRight.removeIf(info -> info.getInfusion().infusionTarget().stream().noneMatch(target -> target.includes(left)));
+                storedRight.forEach(info -> {
+                    InfusionInfo presentInfo = SetCollection.find(presentLeft, info);
+                    SetCollection.addForced(presentLeft, merge(info, presentInfo));
+                });
+            }
             // first, ignore incompatible ones
-            storedRight.removeIf(info -> info.getInfusion().infusionTarget().stream().noneMatch(target -> target.includes(left)));
             presentRight.removeIf(info -> info.getInfusion().infusionTarget().stream().noneMatch(target -> target.includes(left)));
-            // well, everything's excluded, seeya then
+            // well, everything's excluded, see ya then
             if (storedRight.isEmpty() && presentRight.isEmpty()) return;
-            // then, append stored infusions to LHS
-            storedRight.forEach(info -> {
-                InfusionInfo presentInfo = SetCollection.find(presentLeft, info);
-                SetCollection.addForced(presentLeft, merge(info, presentInfo));
-            });
         }
         if (shouldDebug) {
             CustomEnchantments.PLUGIN.getLogger().log(Level.INFO,
