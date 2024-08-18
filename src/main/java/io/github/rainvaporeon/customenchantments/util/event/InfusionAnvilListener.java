@@ -128,6 +128,8 @@ public class InfusionAnvilListener implements Listener {
         if (shouldDebug) {
             CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, "PASS, ITEM=" + result.get());
         }
+
+        event.getInventory().setRepairCost(Math.max(0, event.getInventory().getRepairCost()));
         event.setResult(InfusionLoreUtils.applySortedLoreNBT(result.get()));
     }
 
