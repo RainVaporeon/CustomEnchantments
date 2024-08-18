@@ -65,7 +65,6 @@ public class InfusionAnvilListener implements Listener {
             }
             return;
         }
-
         // We start managing the case where we apply RHS infusions and stored ones to result
         if ((left.getType() == Material.ENCHANTED_BOOK && right.getType() == Material.ENCHANTED_BOOK)
                 || (left.getType() == Material.BOOK && right.getType() == Material.BOOK)) {
@@ -91,12 +90,15 @@ public class InfusionAnvilListener implements Listener {
                 return;
             }
             // if RHS is enchantment storage, do logic here
-            if (right.getItemMeta() instanceof EnchantmentStorageMeta) {
+            if (!InfusionUtils.getAllStoredInfusions(right).isEmpty()) {
+                // merging with a book, run storage logic
                 storedRight.removeIf(info -> info.getInfusion().infusionTarget().stream().noneMatch(target -> target.includes(left)));
                 storedRight.forEach(info -> {
                     InfusionInfo presentInfo = SetCollection.find(presentLeft, info);
                     SetCollection.addForced(presentLeft, merge(info, presentInfo));
                 });
+            } else if (left.getType() != right.getType()) {
+                presentRight.clear(); // not supposed to carry over on normal enchantments
             }
             // first, ignore incompatible ones
             presentRight.removeIf(info -> info.getInfusion().infusionTarget().stream().noneMatch(target -> target.includes(left)));
