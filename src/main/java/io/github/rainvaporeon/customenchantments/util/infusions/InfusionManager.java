@@ -59,6 +59,15 @@ public final class InfusionManager {
     }
 
     /**
+     * Updates the underlying cache for the infusion info.
+     * Should be called after finishing on registering all
+     * infusions (or for the moment)
+     */
+    public static void updateCache() {
+        InfusionInfo.Cache.fillInCache();
+    }
+
+    /**
      * Gets the currently registered infusions.
      * @return a copy of the infusions
      */

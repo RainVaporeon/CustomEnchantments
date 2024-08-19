@@ -1,7 +1,11 @@
 package io.github.rainvaporeon.customenchantments.util.infusions;
 
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
+import io.github.rainvaporeon.customenchantments.util.internal.accessors.CESecrets;
 
+import java.util.HashMap;
+import java.util.IdentityHashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -45,5 +49,19 @@ public class InfusionInfo {
     @Override
     public String toString() {
         return this.infusion.getIdentifier() + "@Lv." + level;
+    }
+
+    static class Cache {
+        private static final Map<Infusion, InfusionInfo> cache = new HashMap<>();
+
+        static {
+            CESecrets.setInfusionCacheAccessor(Cache::get);
+        }
+
+        static void fillInCache() {
+            InfusionManager.getInfusions().forEach(i -> cache.put(i, new InfusionInfo(i, 0)));
+        }
+
+        static InfusionInfo get(Infusion type) { return cache.get(type); }
     }
 }

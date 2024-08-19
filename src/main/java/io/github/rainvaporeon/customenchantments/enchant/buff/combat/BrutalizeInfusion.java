@@ -15,7 +15,7 @@ import java.util.EnumSet;
 import java.util.Set;
 
 public class BrutalizeInfusion extends Infusion {
-    public static final double AMPLIFIER = 0.07;
+    public static final double AMPLIFIER = 1.05;
 
     @Override
     public String getIdentifier() {
@@ -34,13 +34,13 @@ public class BrutalizeInfusion extends Infusion {
 
     @Override
     public String getDescription() {
-        return "Increases critical hit damage by 7% per level.";
+        return "Increases critical hit damage by (1.05)^level.";
     }
 
     @Nullable
     @Override
     public String getExtendedDescription(int level) {
-        return "Critical damage increased by " + 7 * level + "%.";
+        return String.format("Critical damage increased by %.1f%%", Math.pow(AMPLIFIER, level) - 1);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class BrutalizeInfusion extends Infusion {
             int cumbersome = InfusionUtils.accumulateInfusionLevelOf(damager, InfusionManager.getInfusionById("cumbersome"));
             if (cumbersome > 0) return; // Do not apply on cumbersome
             if (event.isCritical()) {
-                double multiplier = 1 + AMPLIFIER * totalLevel;
+                double multiplier = Math.pow(AMPLIFIER, totalLevel);
                 event.setDamage(event.getDamage() * multiplier);
             }
         }

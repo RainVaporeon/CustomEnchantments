@@ -1,8 +1,11 @@
 package io.github.rainvaporeon.customenchantments.enchant;
 
+import io.github.rainvaporeon.customenchantments.util.SetCollection;
 import io.github.rainvaporeon.customenchantments.util.SharedConstants;
 import io.github.rainvaporeon.customenchantments.util.enums.InfusionTarget;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionInfo;
+import io.github.rainvaporeon.customenchantments.util.internal.accessors.CESecrets;
+import io.github.rainvaporeon.customenchantments.util.internal.accessors.InfusionCacheAccessor;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
@@ -42,7 +45,7 @@ public abstract class SetInfusion extends Infusion {
 
     /**
      * Gets the total infusion bonus for given set pieces equipped
-     * @param level the pieces equipped that contain this set infusion
+     * @param level the number of pieces worn with this infusion
      * @return a set indicating all the infusions to apply
      */
     public Set<InfusionInfo> getInfusionBonuses(int level) {
@@ -50,11 +53,24 @@ public abstract class SetInfusion extends Infusion {
     }
 
     /**
-     * Applies the set bonuses to the player
+     * Gets the infusion bonus on this infusion type
+     * @param type the type
+     * @param level the number of pieces worn with this infusion
+     * @return the bonus levels on this infusion, or zero if absent or inapplicable.
+     */
+    public int getInfusionBonus(Infusion type, int level) {
+        return SetCollection.find(getInfusionBonuses(level), CESecrets.getInfusionCacheAccessor().get(type)).getLevel();
+    }
+
+    /**
+     * Applies the set bonuses to the player, this should only be
+     * related to non-infusion related bonuses!
      * @param player the player to apply to
      * @param level the level of infusion
      * @apiNote this method should only be called by the plugin logic
      * itself.
+     * @implNote one should use {@link SetInfusion#getInfusionBonuses(int)} for
+     * infusion-related bonuses.
      */
     public void applySetBonus(Player player, int level) {
 

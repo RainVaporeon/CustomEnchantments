@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.StreamSupport;
 
 public final class InfusionUtils {
@@ -56,6 +57,11 @@ public final class InfusionUtils {
         return true;
     }
 
+    /**
+     * Removes all infusions from this item
+     * @param stack the stack
+     * @return {@code true} if stack is not null nor empty
+     */
     public static boolean removeAllInfusions(ItemStack stack) {
         if (stack == null || stack.isEmpty()) return false;
         InfusionLoreUtils.applySortedLoreNBT(stack);
@@ -65,6 +71,11 @@ public final class InfusionUtils {
         return true;
     }
 
+    /**
+     * Removes the infusion data from this item
+     * @param item the item
+     * @param identifier the infusion identifier
+     */
     private static void removeInfusionData(ItemStack item, String identifier) {
         NBT.modify(item, nbt -> {
             nbt.getCompoundList(SharedConstants.INFUSION_IDENTIFIER_KEY)
@@ -94,6 +105,12 @@ public final class InfusionUtils {
         return true;
     }
 
+    /**
+     * Removes the stored infusion from this item stack
+     * @param stack the item stack to remove stored infusion from
+     * @param identifier the infusion identifier
+     * @return whether this operation succeeds
+     */
     public static boolean removeStoredInfusion(ItemStack stack, String identifier) {
         if (stack == null || stack.isEmpty()) return false;
         Infusion infusion = InfusionManager.getInfusionById(identifier);
@@ -105,6 +122,11 @@ public final class InfusionUtils {
         return true;
     }
 
+    /**
+     * Removes all stored infusions on this stack
+     * @param stack the item stack to remove from
+     * @return {@code true} if stack is not null nor empty
+     */
     public static boolean removeAllStoredInfusions(ItemStack stack) {
         if (stack == null || stack.isEmpty()) return false;
         NBT.modify(stack, nbt -> {
@@ -113,6 +135,12 @@ public final class InfusionUtils {
         return true;
     }
 
+    /**
+     * Removes the stored infusion data from this NBT
+     * @param nbt the nbt
+     * @param identifier the identifier
+     * @apiNote this should only be used on NBT supplied from {@link NBT#modify(ItemStack, Consumer)}
+     */
     private static void removeStoredInfusionData(ReadWriteNBT nbt, String identifier) {
         nbt.getCompoundList(SharedConstants.STORED_INFUSION_IDENTIFIER_KEY)
                 .removeIf(rw -> rw.getString(SharedConstants.INFUSION_ID).equals(identifier));
