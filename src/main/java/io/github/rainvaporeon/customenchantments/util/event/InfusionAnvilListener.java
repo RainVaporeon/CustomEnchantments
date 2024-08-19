@@ -13,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
@@ -64,7 +65,6 @@ public class InfusionAnvilListener implements Listener {
             }
             return;
         }
-
         // We start managing the case where we apply RHS infusions and stored ones to result
         if ((left.getType() == Material.ENCHANTED_BOOK && right.getType() == Material.ENCHANTED_BOOK)
                 || (left.getType() == Material.BOOK && right.getType() == Material.BOOK)) {
@@ -89,16 +89,21 @@ public class InfusionAnvilListener implements Listener {
                 }
                 return;
             }
+            // if RHS is enchantment storage, do logic here
+            if (!InfusionUtils.getAllStoredInfusions(right).isEmpty()) {
+                // merging with a book, run storage logic
+                storedRight.removeIf(info -> info.getInfusion().infusionTarget().stream().noneMatch(target -> target.includes(left)));
+                storedRight.forEach(info -> {
+                    InfusionInfo presentInfo = SetCollection.find(presentLeft, info);
+                    SetCollection.addForced(presentLeft, merge(info, presentInfo));
+                });
+            } else if (left.getType() != right.getType()) {
+                presentRight.clear(); // not supposed to carry over on normal enchantments
+            }
             // first, ignore incompatible ones
-            storedRight.removeIf(info -> info.getInfusion().infusionTarget().stream().noneMatch(target -> target.includes(left)));
             presentRight.removeIf(info -> info.getInfusion().infusionTarget().stream().noneMatch(target -> target.includes(left)));
-            // well, everything's excluded, seeya then
+            // well, everything's excluded, see ya then
             if (storedRight.isEmpty() && presentRight.isEmpty()) return;
-            // then, append stored infusions to LHS
-            storedRight.forEach(info -> {
-                InfusionInfo presentInfo = SetCollection.find(presentLeft, info);
-                SetCollection.addForced(presentLeft, merge(info, presentInfo));
-            });
         }
         if (shouldDebug) {
             CustomEnchantments.PLUGIN.getLogger().log(Level.INFO,
@@ -128,6 +133,8 @@ public class InfusionAnvilListener implements Listener {
         if (shouldDebug) {
             CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, "PASS, ITEM=" + result.get());
         }
+
+        event.getInventory().setRepairCost(Math.max(0, event.getInventory().getRepairCost()));
         event.setResult(InfusionLoreUtils.applySortedLoreNBT(result.get()));
     }
 
