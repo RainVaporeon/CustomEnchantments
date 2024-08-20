@@ -32,6 +32,7 @@ public class InfusionAnvilListener implements Listener {
      * Note: As left automatically carries over to result,
      * we do not really need to look at LHS at all.
      */
+    @SuppressWarnings("UnstableApiUsage") // 1.21 compat. w/ @deprecated rec.
     @EventHandler(priority = EventPriority.HIGH)
     public void onPrepareAnvil(PrepareAnvilEvent event) {
         boolean shouldDebug = LocalConfig.instance().readBoolean(LocalConfig.DEBUG_LOGGING, false);
@@ -131,10 +132,10 @@ public class InfusionAnvilListener implements Listener {
         }
 
         if (shouldDebug) {
-            CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, "PASS, ITEM=" + result.get());
+            CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, "PASS, ITEM=" + InfusionLoreUtils.applySortedLoreNBT(result.get()));
         }
 
-        event.getInventory().setRepairCost(Math.max(0, event.getInventory().getRepairCost()));
+        event.getView().setRepairCost(Math.max(0, event.getView().getRepairCost()));
         event.setResult(InfusionLoreUtils.applySortedLoreNBT(result.get()));
     }
 

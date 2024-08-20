@@ -93,7 +93,7 @@ public final class InfusionUtils {
         if (stack == null || stack.isEmpty()) return false;
         Infusion infusion = InfusionManager.getInfusionById(identifier);
         if (infusion == null) return false;
-        if (InfusionUtils.getInfusion(stack, infusion) > 0) removeInfusionData(stack, identifier);
+        if (InfusionUtils.getInfusion(stack, infusion) > 0) removeStoredInfusion(stack, identifier);
         NBT.modify(stack, nbt -> {
             nbt.modifyMeta((readonly, meta) -> {
                 InfusionLoreUtils.removeLoreNBT(meta, infusion);

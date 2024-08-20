@@ -31,10 +31,16 @@ public final class ClassTools {
         }
     }
 
+    /**
+     * Retrieves a sequence of {@link Class}es this array
+     * represents sequentially.
+     * @param arr the object array
+     * @return the type of each object
+     */
     @Open
     public static Class<?>[] mapToType(Object... arr) {
         Class<?>[] c = new Class[arr.length];
-        for (int i = 0; i < c.length; i++) c[i] = arr[i].getClass();
+        for (int i = 0; i < c.length; i++) c[i] = arr[i] == null ? null : arr[i].getClass();
         return c;
     }
 }
