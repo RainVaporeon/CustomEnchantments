@@ -93,8 +93,8 @@ public final class InfusionUtils {
         if (stack == null || stack.isEmpty()) return false;
         Infusion infusion = InfusionManager.getInfusionById(identifier);
         if (infusion == null) return false;
-        if (InfusionUtils.getInfusion(stack, infusion) > 0) removeStoredInfusion(stack, identifier);
         NBT.modify(stack, nbt -> {
+            removeStoredInfusionData(nbt, identifier);
             nbt.modifyMeta((readonly, meta) -> {
                 InfusionLoreUtils.removeLoreNBT(meta, infusion);
                 InfusionLoreUtils.applySortedLoreNBT(stack, meta);
@@ -115,10 +115,10 @@ public final class InfusionUtils {
         if (stack == null || stack.isEmpty()) return false;
         Infusion infusion = InfusionManager.getInfusionById(identifier);
         if (infusion == null) return false;
-        InfusionLoreUtils.applySortedLoreNBT(stack);
         NBT.modify(stack, nbt -> {
             removeStoredInfusionData(nbt, identifier);
         });
+        InfusionLoreUtils.applySortedLoreNBT(stack);
         return true;
     }
 
