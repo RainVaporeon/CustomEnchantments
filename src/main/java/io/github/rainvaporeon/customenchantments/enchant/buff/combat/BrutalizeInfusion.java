@@ -40,7 +40,7 @@ public class BrutalizeInfusion extends Infusion {
     @Nullable
     @Override
     public String getExtendedDescription(int level) {
-        return String.format("Critical damage increased by %.1f%%", Math.pow(AMPLIFIER, level) - 1);
+        return String.format("Critical damage increased by %.1f%%", 100 * (Math.pow(AMPLIFIER, level) - 1));
     }
 
     @Override
