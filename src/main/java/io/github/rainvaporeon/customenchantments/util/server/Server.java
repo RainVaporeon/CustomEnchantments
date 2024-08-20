@@ -16,12 +16,20 @@ public class Server {
         return CustomEnchantments.PLUGIN.getLogger();
     }
 
-    public static void log(String message) {
-        CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, message);
+    public static void log(Level severity, String message) {
+        getLogger().log(severity, message);
+    }
+
+    public static void log(Level severity, String message, Throwable thrown) {
+        getLogger().log(severity, message, thrown);
+    }
+
+    public static void info(String message) {
+        Server.log(Level.INFO, message);
     }
 
     public static void warn(String message) {
-        CustomEnchantments.PLUGIN.getLogger().log(Level.WARNING, message);
+        Server.log(Level.WARNING, message);
     }
 
     public static void warn(String message, Throwable t) {

@@ -1,6 +1,7 @@
 package io.github.rainvaporeon.customenchantments.util.enums;
 
 import io.github.rainvaporeon.customenchantments.CustomEnchantments;
+import io.github.rainvaporeon.customenchantments.util.server.Server;
 import org.bukkit.Material;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.inventory.ItemStack;
@@ -273,7 +274,7 @@ public enum InfusionTarget {
     public boolean includes(Material material) {
         if (target != null) return target.includes(material);
         if (materialPredicate != null) return materialPredicate.test(material);
-        CustomEnchantments.PLUGIN.getLogger().log(Level.WARNING, "Potential bug with InfusionTarget " + this + ": No predicate found");
+        Server.log(Level.WARNING, "Potential bug with InfusionTarget " + this + ": No predicate found");
         return true;
     }
 }

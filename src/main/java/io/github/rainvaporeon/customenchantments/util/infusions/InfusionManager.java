@@ -3,6 +3,7 @@ package io.github.rainvaporeon.customenchantments.util.infusions;
 import io.github.rainvaporeon.customenchantments.CustomEnchantments;
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
 import io.github.rainvaporeon.customenchantments.util.SharedConstants;
+import io.github.rainvaporeon.customenchantments.util.server.Server;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
@@ -40,10 +41,10 @@ public final class InfusionManager {
         }
         if (infusions.contains(base)) {
             CustomEnchantments.PLUGIN.getLogger().warning("Infusion " + base + " was already registered! Skipping this infusion...");
-            CustomEnchantments.PLUGIN.getLogger().log(Level.WARNING, "Traceback: " + new IllegalArgumentException().fillInStackTrace());
+            Server.log(Level.WARNING, "Traceback: " + new IllegalArgumentException().fillInStackTrace());
             return;
         }
-        CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, "Registered infusion " + base);
+        Server.log(Level.INFO, "Registered infusion " + base);
         infusions.add(base);
         queryMap.put(base.getIdentifier(), base);
         typeMap.put(base.getClass(), base);

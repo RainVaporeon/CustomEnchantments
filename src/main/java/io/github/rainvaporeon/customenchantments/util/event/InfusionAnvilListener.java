@@ -6,6 +6,7 @@ import io.github.rainvaporeon.customenchantments.util.infusions.InfusionInfo;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionLoreUtils;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
 import io.github.rainvaporeon.customenchantments.util.io.LocalConfig;
+import io.github.rainvaporeon.customenchantments.util.server.Server;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -56,13 +57,13 @@ public class InfusionAnvilListener implements Listener {
         Set<InfusionInfo> storedRight = InfusionUtils.getAllStoredInfusions(right);
 
         if (shouldDebug) {
-            CustomEnchantments.PLUGIN.getLogger().log(Level.INFO,
+            Server.log(Level.INFO,
                     "P1 >> pL, pR, sL, sR = " + presentLeft + ", " + presentRight + ", " + storedLeft + ", " + storedRight);
         }
         // nothing has infusion, then it's not our business
         if (presentRight.isEmpty() && storedRight.isEmpty()) {
             if (shouldDebug) {
-                CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, "QUIT:PR/R E");
+                Server.log(Level.INFO, "QUIT:PR/R E");
             }
             return;
         }
@@ -71,7 +72,7 @@ public class InfusionAnvilListener implements Listener {
                 || (left.getType() == Material.BOOK && right.getType() == Material.BOOK)) {
             // target is book, maybe we are doing book operations (merging)
             if (shouldDebug) {
-                CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, "TYPE BOOK");
+                Server.log(Level.INFO, "TYPE BOOK");
             }
             storedRight.forEach(info -> {
                 InfusionInfo presentInfo = SetCollection.find(storedLeft, info);
@@ -81,12 +82,12 @@ public class InfusionAnvilListener implements Listener {
             storedLeft.forEach(info -> InfusionUtils.applyStoredInfusion(result.get(), info.getInfusion().getIdentifier(), info.getLevel()));
         } else {
             if (shouldDebug) {
-                CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, "TYPE NORMAL");
+                Server.log(Level.INFO, "TYPE NORMAL");
             }
             // different type and not appending from book, exit
             if (left.getType() != right.getType() && right.getType() != Material.ENCHANTED_BOOK && right.getType() != Material.BOOK) {
                 if (shouldDebug) {
-                    CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, "DIFF, NO BOOK, EXIT");
+                    Server.log(Level.INFO, "DIFF, NO BOOK, EXIT");
                 }
                 return;
             }
@@ -107,7 +108,7 @@ public class InfusionAnvilListener implements Listener {
             if (storedRight.isEmpty() && presentRight.isEmpty()) return;
         }
         if (shouldDebug) {
-            CustomEnchantments.PLUGIN.getLogger().log(Level.INFO,
+            Server.log(Level.INFO,
                     "P2 >> pL, pR, sL, sR = " + presentLeft + ", " + presentRight + ", " + storedLeft + ", " + storedRight);
         }
 
@@ -120,19 +121,19 @@ public class InfusionAnvilListener implements Listener {
         presentLeft.forEach(info -> InfusionUtils.applyInfusion(result.get(), info.getInfusion().getIdentifier(), info.getLevel()));
 
         if (shouldDebug) {
-            CustomEnchantments.PLUGIN.getLogger().log(Level.INFO,
+            Server.log(Level.INFO,
                     "P3 >> pL, pR, sL, sR = " + presentLeft + ", " + presentRight + ", " + storedLeft + ", " + storedRight);
         }
 
         if (left.equals(result.get())) {
             if (shouldDebug) {
-                CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, "L=RES, EXIT");
+                Server.log(Level.INFO, "L=RES, EXIT");
             }
             return;
         }
 
         if (shouldDebug) {
-            CustomEnchantments.PLUGIN.getLogger().log(Level.INFO, "PASS, ITEM=" + InfusionLoreUtils.applySortedLoreNBT(result.get()));
+            Server.log(Level.INFO, "PASS, ITEM=" + InfusionLoreUtils.applySortedLoreNBT(result.get()));
         }
 
         event.getView().setRepairCost(Math.max(0, event.getView().getRepairCost()));

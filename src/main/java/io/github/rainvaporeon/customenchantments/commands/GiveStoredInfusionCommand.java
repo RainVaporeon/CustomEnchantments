@@ -7,6 +7,7 @@ import io.github.rainvaporeon.customenchantments.util.TabCompletionUtils;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionLoreUtils;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionManager;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
+import io.github.rainvaporeon.customenchantments.util.server.Server;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -49,7 +50,7 @@ public class GiveStoredInfusionCommand extends BaseCommand {
             return execute0(commandSender, strings);
         } catch (Exception ex) {
             commandSender.sendMessage("An internal error had occurred whilst executing this command.");
-            CustomEnchantments.PLUGIN.getLogger().log(Level.SEVERE, "Exception whilst using " + s + " with args " + Arrays.toString(strings) + ": ", ex);
+            Server.log(Level.SEVERE, "Exception whilst using " + s + " with args " + Arrays.toString(strings) + ": ", ex);
             return false;
         }
     }

@@ -2,6 +2,7 @@ package io.github.rainvaporeon.customenchantments.util.io;
 
 import io.github.rainvaporeon.customenchantments.CustomEnchantments;
 import io.github.rainvaporeon.customenchantments.util.SharedConstants;
+import io.github.rainvaporeon.customenchantments.util.server.Server;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
@@ -74,7 +75,7 @@ public class LocalConfig {
         try {
             this.config.save(new File(this.instance.getDataFolder(), "config.yml"));
         } catch (IOException ex) {
-            CustomEnchantments.PLUGIN.getLogger().log(Level.WARNING, "Failed to save to disk", ex);
+            Server.log(Level.WARNING, "Failed to save to disk", ex);
         }
     }
 
@@ -101,7 +102,7 @@ public class LocalConfig {
         try (FileWriter w = new FileWriter(new File(p.getDataFolder(), "config.yml"))) {
             w.write(data);
         } catch (IOException ex) {
-            CustomEnchantments.PLUGIN.getLogger().log(Level.WARNING, "Failed to save to disk", ex);
+            Server.log(Level.WARNING, "Failed to save to disk", ex);
         }
     }
 
