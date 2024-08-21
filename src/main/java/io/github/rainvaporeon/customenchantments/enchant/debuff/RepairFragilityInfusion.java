@@ -73,7 +73,7 @@ public class RepairFragilityInfusion extends DebuffInfusion {
             }
         }
 
-        @EventHandler
+        @EventHandler(priority = EventPriority.HIGH)
         public void onGrindstonePrepare(PrepareGrindstoneEvent event) {
             ItemStack left = event.getInventory().getUpperItem();
             ItemStack right = event.getInventory().getLowerItem();

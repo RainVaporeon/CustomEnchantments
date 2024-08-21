@@ -1,6 +1,7 @@
 package io.github.rainvaporeon.customenchantments.util.server;
 
 import io.github.rainvaporeon.customenchantments.CustomEnchantments;
+import io.github.rainvaporeon.customenchantments.util.io.LocalConfig;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -22,6 +23,16 @@ public class Server {
 
     public static void log(Level severity, String message, Throwable thrown) {
         getLogger().log(severity, message, thrown);
+    }
+
+    public static void debug(String message) {
+        debug(Level.INFO, message);
+    }
+
+    public static void debug(Level level, String message) {
+        if (LocalConfig.instance().readBoolean(LocalConfig.DEBUG_LOGGING, false)) {
+            getLogger().log(level, "Debug >> " + message);
+        }
     }
 
     public static void info(String message) {
@@ -54,6 +65,7 @@ public class Server {
     }
 
     public static void damageInstantly(LivingEntity entity, double damage) {
+        Server.debug(Level.INFO, "damageInstantly called");
         int invulTicks = entity.getNoDamageTicks();
         entity.setNoDamageTicks(0);
         entity.damage(damage);
@@ -61,6 +73,7 @@ public class Server {
     }
 
     public static void damageInstantly(LivingEntity entity, Entity cause, double damage) {
+        Server.debug(Level.INFO, "damageInstantly(e, c, d) called");
         int invulTicks = entity.getNoDamageTicks();
         entity.setNoDamageTicks(0);
         entity.damage(damage, cause);

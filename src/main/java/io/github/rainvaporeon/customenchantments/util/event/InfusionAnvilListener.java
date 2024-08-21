@@ -36,7 +36,6 @@ public class InfusionAnvilListener implements Listener {
     @SuppressWarnings("UnstableApiUsage") // 1.21 compat. w/ @deprecated rec.
     @EventHandler(priority = EventPriority.HIGH)
     public void onPrepareAnvil(PrepareAnvilEvent event) {
-        boolean shouldDebug = LocalConfig.instance().readBoolean(LocalConfig.DEBUG_LOGGING, false);
         AnvilInventory inventory = event.getInventory();
         ItemStack left = inventory.getFirstItem();
         ItemStack right = inventory.getSecondItem();
@@ -56,24 +55,20 @@ public class InfusionAnvilListener implements Listener {
         Set<InfusionInfo> storedLeft = InfusionUtils.getAllStoredInfusions(left);
         Set<InfusionInfo> storedRight = InfusionUtils.getAllStoredInfusions(right);
 
-        if (shouldDebug) {
-            Server.log(Level.INFO,
-                    "P1 >> pL, pR, sL, sR = " + presentLeft + ", " + presentRight + ", " + storedLeft + ", " + storedRight);
-        }
+        Server.debug(Level.INFO,
+                "P1 >> pL, pR, sL, sR = " + presentLeft + ", " + presentRight + ", " + storedLeft + ", " + storedRight);
+
         // nothing has infusion, then it's not our business
         if (presentRight.isEmpty() && storedRight.isEmpty()) {
-            if (shouldDebug) {
-                Server.log(Level.INFO, "QUIT:PR/R E");
-            }
+            Server.debug(Level.INFO, "QUIT:PR/R E");
+
             return;
         }
         // We start managing the case where we apply RHS infusions and stored ones to result
         if ((left.getType() == Material.ENCHANTED_BOOK && right.getType() == Material.ENCHANTED_BOOK)
                 || (left.getType() == Material.BOOK && right.getType() == Material.BOOK)) {
             // target is book, maybe we are doing book operations (merging)
-            if (shouldDebug) {
-                Server.log(Level.INFO, "TYPE BOOK");
-            }
+            Server.debug(Level.INFO, "TYPE BOOK");
             storedRight.forEach(info -> {
                 InfusionInfo presentInfo = SetCollection.find(storedLeft, info);
                 SetCollection.addForced(storedLeft, merge(info, presentInfo));
@@ -81,14 +76,11 @@ public class InfusionAnvilListener implements Listener {
             // As we are storing something, we put LHS over in stored infusions
             storedLeft.forEach(info -> InfusionUtils.applyStoredInfusion(result.get(), info.getInfusion().getIdentifier(), info.getLevel()));
         } else {
-            if (shouldDebug) {
-                Server.log(Level.INFO, "TYPE NORMAL");
-            }
+            Server.debug(Level.INFO, "TYPE NORMAL");
             // different type and not appending from book, exit
             if (left.getType() != right.getType() && right.getType() != Material.ENCHANTED_BOOK && right.getType() != Material.BOOK) {
-                if (shouldDebug) {
-                    Server.log(Level.INFO, "DIFF, NO BOOK, EXIT");
-                }
+
+                Server.debug(Level.INFO, "DIFF, NO BOOK, EXIT");
                 return;
             }
             // if RHS is enchantment storage, do logic here
@@ -107,10 +99,8 @@ public class InfusionAnvilListener implements Listener {
             // well, everything's excluded, see ya then
             if (storedRight.isEmpty() && presentRight.isEmpty()) return;
         }
-        if (shouldDebug) {
-            Server.log(Level.INFO,
-                    "P2 >> pL, pR, sL, sR = " + presentLeft + ", " + presentRight + ", " + storedLeft + ", " + storedRight);
-        }
+        Server.debug(Level.INFO,
+                "P2 >> pL, pR, sL, sR = " + presentLeft + ", " + presentRight + ", " + storedLeft + ", " + storedRight);
 
         // Mutual part: Merge right with left and map to left
         presentRight.forEach(info -> {
@@ -120,21 +110,17 @@ public class InfusionAnvilListener implements Listener {
         // and then we apply
         presentLeft.forEach(info -> InfusionUtils.applyInfusion(result.get(), info.getInfusion().getIdentifier(), info.getLevel()));
 
-        if (shouldDebug) {
-            Server.log(Level.INFO,
-                    "P3 >> pL, pR, sL, sR = " + presentLeft + ", " + presentRight + ", " + storedLeft + ", " + storedRight);
-        }
+        Server.debug(Level.INFO,
+                "P3 >> pL, pR, sL, sR = " + presentLeft + ", " + presentRight + ", " + storedLeft + ", " + storedRight);
+
 
         if (left.equals(result.get())) {
-            if (shouldDebug) {
-                Server.log(Level.INFO, "L=RES, EXIT");
-            }
+            Server.debug(Level.INFO, "L=RES, EXIT");
+
             return;
         }
 
-        if (shouldDebug) {
-            Server.log(Level.INFO, "PASS, ITEM=" + InfusionLoreUtils.applySortedLoreNBT(result.get()));
-        }
+        Server.debug(Level.INFO, "PASS, ITEM=" + InfusionLoreUtils.applySortedLoreNBT(result.get()));
 
         event.getView().setRepairCost(Math.max(0, event.getView().getRepairCost()));
         event.setResult(InfusionLoreUtils.applySortedLoreNBT(result.get()));
