@@ -11,6 +11,7 @@ import io.github.rainvaporeon.customenchantments.util.SetCollection;
 import io.github.rainvaporeon.customenchantments.util.SharedConstants;
 import io.github.rainvaporeon.customenchantments.util.enums.InfusionTarget;
 import io.github.rainvaporeon.customenchantments.util.enums.Result;
+import io.github.rainvaporeon.customenchantments.util.internal.accessors.CESecrets;
 import io.github.rainvaporeon.customenchantments.util.io.LocalConfig;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
@@ -236,7 +237,6 @@ public final class InfusionUtils {
      * @apiNote the returned mutable container is not backed by the player.
      */
     // "One-liner" as they say...
-    // TODO implicitly call to SetInfusionUtils#getActiveSetBonuses
     public static Set<InfusionInfo> getAllActiveInfusions(Player player) {
         return Stream.concat(
                         PlayerInventoryUtils
@@ -266,12 +266,7 @@ public final class InfusionUtils {
                                 if (!left.contains(info)) {
                                     left.add(info);
                                 } else {
-                                    for (InfusionInfo inf : left) {
-                                        if (inf.equals(info)) {
-                                            left.remove(inf);
-                                            left.add(inf.combine(info));
-                                        }
-                                    }
+                                    SetCollection.addForced(left, info.combine(SetCollection.find(left, info, CESecrets.getInfusionCacheAccessor().get(info.getInfusion()))));
                                 }
                             });
                         }

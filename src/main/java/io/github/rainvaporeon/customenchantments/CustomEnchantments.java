@@ -9,6 +9,7 @@ import io.github.rainvaporeon.customenchantments.enchant.debuff.RepairFragilityI
 import io.github.rainvaporeon.customenchantments.enchant.debuff.misc.BrittleInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.debuff.misc.ShatteringCurseInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.debuff.protection.*;
+import io.github.rainvaporeon.customenchantments.enchant.set.MorphSetInfusion;
 import io.github.rainvaporeon.customenchantments.status.Bleeding;
 import io.github.rainvaporeon.customenchantments.status.Poison;
 import io.github.rainvaporeon.customenchantments.util.event.InfusionAnvilListener;
@@ -89,6 +90,11 @@ public final class CustomEnchantments extends JavaPlugin {
                 new RepairFragilityInfusion(),
                 new ShatteringCurseInfusion(),
                 new BrittleInfusion()
+        );
+
+        /* Set infusions */
+        InfusionManager.registerInfusions(
+                new MorphSetInfusion()
         );
 
         Bukkit.getPluginManager().registerEvents(Bleeding.getInstance(), this);
