@@ -62,7 +62,9 @@ public final class SetInfusionUtils {
         for (SetInfusion set : InfusionManager.getSetInfusions()) {
             int level = countActiveSetPieces(player, set);
             if (level == 0) continue;
-            ret.put(set, set.getInfusionBonuses(level));
+            Set<InfusionInfo> infos = set.getInfusionBonuses(level);
+            if (infos.isEmpty()) continue;
+            ret.put(set, infos);
         }
         return ret;
     }

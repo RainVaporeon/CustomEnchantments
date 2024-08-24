@@ -6,6 +6,7 @@ import io.github.rainvaporeon.customenchantments.util.enums.InfusionTarget;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionInfo;
 import io.github.rainvaporeon.customenchantments.util.internal.accessors.CESecrets;
 import io.github.rainvaporeon.customenchantments.util.internal.accessors.InfusionCacheAccessor;
+import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
@@ -43,6 +44,11 @@ public abstract class SetInfusion extends Infusion {
         return 1;
     }
 
+    @Override
+    public final String getDisplayName(int level) {
+        return this.getName();
+    }
+
     /**
      * Gets the total infusion bonus for given set pieces equipped
      * @param level the number of pieces worn with this infusion
@@ -67,12 +73,15 @@ public abstract class SetInfusion extends Infusion {
      * related to non-infusion related bonuses!
      * @param player the player to apply to
      * @param level the level of infusion
+     * @param tick the tick, 1 to 20.
      * @apiNote this method should only be called by the plugin logic
-     * itself.
+     * itself. <p>
+     *     This method is called every tick.
+     * </p>
      * @implNote one should use {@link SetInfusion#getInfusionBonuses(int)} for
      * infusion-related bonuses.
      */
-    public void applySetBonus(Player player, int level) {
+    public void applySetBonus(Player player, int level, int tick) {
 
     }
 

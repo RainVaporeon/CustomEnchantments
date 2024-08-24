@@ -82,9 +82,17 @@ public class CurrentInfusionCommand extends BaseCommand {
             if (level == 0) continue;
             if (!infusion.showInSummary()) continue;
 
-            TextComponent.Builder builder = Component.text()
-                    .color(NamedTextColor.AQUA).content(infusion.getName())
-                    .append(Component.text(" (" + infusion.getIdentifier() + ") Level " + level).color(NamedTextColor.GRAY));
+            TextComponent.Builder builder;
+
+            if (infusion.isSet()) {
+                builder = Component.text()
+                        .color(NamedTextColor.GREEN).content(infusion.getName())
+                        .append(Component.text(" (" + infusion.getIdentifier() + ")").color(NamedTextColor.GRAY));
+            } else {
+                builder = Component.text()
+                        .color(NamedTextColor.AQUA).content(infusion.getName())
+                        .append(Component.text(" (" + infusion.getIdentifier() + ") Level " + level).color(NamedTextColor.GRAY));
+            }
 
             if (infusion.getMaxEffectiveLevel() != Integer.MAX_VALUE && level >= infusion.getMaxEffectiveLevel()) {
                 builder.append(
