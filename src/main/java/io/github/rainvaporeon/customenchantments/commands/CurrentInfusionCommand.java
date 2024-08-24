@@ -35,7 +35,6 @@ public class CurrentInfusionCommand extends BaseCommand {
         Player player = (Player) sender;
         PlayerInventory inventory = player.getInventory();
         boolean restrictive = LocalConfig.instance().readBoolean("strict", false);
-        boolean hasSet = false;
         sender.sendMessage("Here's the individual infusion stat you have:");
         for (EquipmentSlot slot : SharedConstants.equipmentSlots()) {
             sender.sendMessage(Component.text()
@@ -56,8 +55,6 @@ public class CurrentInfusionCommand extends BaseCommand {
                             Component.text(" (Not applicable for slot)")
                                     .color(NamedTextColor.RED)
                     );
-                } else {
-                    if (infusion.isSet()) hasSet = true;
                 }
 
                 if (infusion.infusionTarget().stream().noneMatch(inc -> inc.includes(inventory.getItem(slot))) && restrictive) {
@@ -109,9 +106,10 @@ public class CurrentInfusionCommand extends BaseCommand {
             }
             sender.sendMessage(builder);
         }
-        if (hasSet) {
+        Map<SetInfusion, Set<InfusionInfo>> map = SetInfusionUtils.getIndividualSetBonus(player);
+        if (!map.isEmpty()) {
             sender.sendMessage(Component.text().color(NamedTextColor.GRAY).content("You also have some set bonuses active, of which are:"));
-            for (Map.Entry<SetInfusion, Set<InfusionInfo>> entry : SetInfusionUtils.getIndividualSetBonus(player).entrySet()) {
+            for (Map.Entry<SetInfusion, Set<InfusionInfo>> entry : map.entrySet()) {
                 sender.sendMessage(Component.text().color(NamedTextColor.GREEN).content(entry.getKey().getSetName()).color(NamedTextColor.GRAY).content(" grants the following:"));
 
                 for (InfusionInfo info : entry.getValue()) {
