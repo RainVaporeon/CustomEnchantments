@@ -48,7 +48,7 @@ public abstract class SetInfusion extends Infusion {
      * @param level the number of pieces worn with this infusion
      * @return a set indicating all the infusions to apply
      */
-    public Set<InfusionInfo> getInfusionBonuses(int level) {
+    public @Unmodifiable Set<InfusionInfo> getInfusionBonuses(int level) {
         return Collections.emptySet();
     }
 

@@ -51,6 +51,34 @@ public class InfusionInfo {
         return this.infusion.getIdentifier() + "@Lv." + level;
     }
 
+    public static InfusionInfo of(Class<? extends Infusion> infusion, int level) {
+        return new InfusionInfo(InfusionManager.getInfusionByType(infusion), level);
+    }
+
+    public static InfusionInfo of(Infusion infusion, int level) {
+        return new InfusionInfo(infusion, level);
+    }
+
+    public static InfusionInfo one(Infusion infusion) {
+        return of(infusion, 1);
+    }
+
+    public static InfusionInfo two(Infusion infusion) {
+        return of(infusion, 2);
+    }
+
+    public static InfusionInfo three(Infusion infusion) {
+        return of(infusion, 3);
+    }
+
+    public static InfusionInfo four(Infusion infusion) {
+        return of(infusion, 4);
+    }
+
+    public static InfusionInfo five(Infusion infusion) {
+        return of(infusion, 5);
+    }
+
     static class Cache {
         private static final Map<Infusion, InfusionInfo> cache = new HashMap<>();
 

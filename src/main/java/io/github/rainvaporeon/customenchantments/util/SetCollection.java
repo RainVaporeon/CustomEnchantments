@@ -2,13 +2,19 @@ package io.github.rainvaporeon.customenchantments.util;
 
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionInfo;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class SetCollection {
     public static <T> T find(Set<T> set, T object) {
-        return set.stream().filter(t -> Objects.equals(t, object)).findFirst().orElse(null);
+        return find(set, object, null);
+    }
+
+    public static <T> T findOrSelf(Set<T> set, T self) {
+        return find(set, self, self);
+    }
+
+    public static <T> T find(Set<T> set, T object, T def) {
+        return set.stream().filter(t -> Objects.equals(t, object)).findFirst().orElse(def);
     }
 
     /**
@@ -58,5 +64,10 @@ public class SetCollection {
             });
         }
         return ret;
+    }
+
+    @SafeVarargs
+    public static <T> Set<T> of(T... t) {
+        return Collections.unmodifiableSet(new HashSet<>(Arrays.asList(t)));
     }
 }

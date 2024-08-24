@@ -2,6 +2,7 @@ package io.github.rainvaporeon.customenchantments.util.infusions;
 
 import io.github.rainvaporeon.customenchantments.CustomEnchantments;
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
+import io.github.rainvaporeon.customenchantments.enchant.SetInfusion;
 import io.github.rainvaporeon.customenchantments.util.SharedConstants;
 import io.github.rainvaporeon.customenchantments.util.server.Server;
 import org.bukkit.Bukkit;
@@ -17,6 +18,8 @@ public final class InfusionManager {
     // We use LinkedHashSet here as it's ordered, and we put the infusions in declaration order,
     // making the lore ordered and for other display purposes.
     private static final LinkedHashSet<Infusion> infusions = new LinkedHashSet<>();
+
+    private static final LinkedHashSet<SetInfusion> setInfusions = new LinkedHashSet<>();
 
     // Convenient type lookup
     private static final Map<Class<? extends Infusion>, Infusion> typeMap = new HashMap<>();
@@ -48,6 +51,9 @@ public final class InfusionManager {
         infusions.add(base);
         queryMap.put(base.getIdentifier(), base);
         typeMap.put(base.getClass(), base);
+        if (base instanceof SetInfusion) {
+            setInfusions.addLast((SetInfusion) base);
+        }
     }
 
     /**
@@ -74,6 +80,10 @@ public final class InfusionManager {
      */
     public static Set<Infusion> getInfusions() {
         return new LinkedHashSet<>(infusions);
+    }
+
+    public static Set<SetInfusion> getSetInfusions() {
+        return new LinkedHashSet<>(setInfusions);
     }
 
     public static void registerMigrationMapping(String from, String to) {

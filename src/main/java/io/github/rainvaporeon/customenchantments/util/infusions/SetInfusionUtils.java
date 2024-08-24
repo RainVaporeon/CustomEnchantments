@@ -4,10 +4,9 @@ import io.github.rainvaporeon.customenchantments.enchant.Infusion;
 import io.github.rainvaporeon.customenchantments.enchant.SetInfusion;
 import io.github.rainvaporeon.customenchantments.util.SetCollection;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Unmodifiable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 // TODO Implement some other methods seen in InfusionUtils
 //  as set infusions are slightly more tricky to work with
@@ -56,5 +55,15 @@ public final class SetInfusionUtils {
             level += set.getInfusionBonus(type, count);
         }
         return level;
+    }
+
+    public static Map<SetInfusion, @Unmodifiable Set<InfusionInfo>> getIndividualSetBonus(Player player) {
+        Map<SetInfusion, Set<InfusionInfo>> ret = new HashMap<>();
+        for (SetInfusion set : InfusionManager.getSetInfusions()) {
+            int level = countActiveSetPieces(player, set);
+            if (level == 0) continue;
+            ret.put(set, set.getInfusionBonuses(level));
+        }
+        return ret;
     }
 }

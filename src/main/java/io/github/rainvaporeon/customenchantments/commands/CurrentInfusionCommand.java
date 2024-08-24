@@ -1,10 +1,12 @@
 package io.github.rainvaporeon.customenchantments.commands;
 
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
+import io.github.rainvaporeon.customenchantments.enchant.SetInfusion;
 import io.github.rainvaporeon.customenchantments.util.SharedConstants;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionInfo;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionManager;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionUtils;
+import io.github.rainvaporeon.customenchantments.util.infusions.SetInfusionUtils;
 import io.github.rainvaporeon.customenchantments.util.io.LocalConfig;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -17,9 +19,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class CurrentInfusionCommand extends BaseCommand {
     public CurrentInfusionCommand() {
@@ -35,6 +35,7 @@ public class CurrentInfusionCommand extends BaseCommand {
         Player player = (Player) sender;
         PlayerInventory inventory = player.getInventory();
         boolean restrictive = LocalConfig.instance().readBoolean("strict", false);
+        boolean hasSet = false;
         sender.sendMessage("Here's the individual infusion stat you have:");
         for (EquipmentSlot slot : SharedConstants.equipmentSlots()) {
             sender.sendMessage(Component.text()
@@ -44,7 +45,7 @@ public class CurrentInfusionCommand extends BaseCommand {
                     .append(Component.text(":").color(NamedTextColor.GRAY)));
             for (InfusionInfo infusionInfo : InfusionUtils.getAllInfusions(inventory.getItem(slot))) {
                 Infusion infusion = infusionInfo.getInfusion();
-                int level = infusionInfo.getLevel();
+                int level = infusion.isSet() ? 1 : infusionInfo.getLevel();
                 TextComponent.Builder component = Component.text()
                         .color(NamedTextColor.AQUA).content(infusionInfo.getInfusion().getName())
                         .append(Component.text(" (" + infusionInfo.getInfusion().getIdentifier() + ")").color(NamedTextColor.GRAY))
@@ -55,6 +56,8 @@ public class CurrentInfusionCommand extends BaseCommand {
                             Component.text(" (Not applicable for slot)")
                                     .color(NamedTextColor.RED)
                     );
+                } else {
+                    if (infusion.isSet()) hasSet = true;
                 }
 
                 if (infusion.infusionTarget().stream().noneMatch(inc -> inc.includes(inventory.getItem(slot))) && restrictive) {
@@ -97,6 +100,21 @@ public class CurrentInfusionCommand extends BaseCommand {
                         .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(extendedDescription))).build());
             }
             sender.sendMessage(builder);
+        }
+        if (hasSet) {
+            sender.sendMessage(Component.text().color(NamedTextColor.GRAY).content("You also have some set bonuses active, of which are:"));
+            for (Map.Entry<SetInfusion, Set<InfusionInfo>> entry : SetInfusionUtils.getIndividualSetBonus(player).entrySet()) {
+                sender.sendMessage(Component.text().color(NamedTextColor.GREEN).content(entry.getKey().getSetName()).color(NamedTextColor.GRAY).content(" grants the following:"));
+
+                for (InfusionInfo info : entry.getValue()) {
+                    Infusion infusion = info.getInfusion();
+                    int level = info.getLevel();
+                    TextComponent.Builder builder = Component.text()
+                            .color(NamedTextColor.AQUA).content(infusion.getName())
+                            .append(Component.text(" (" + infusion.getIdentifier() + ") Level " + level).color(NamedTextColor.GRAY));
+                    sender.sendMessage(builder.build());
+                }
+            }
         }
         sender.sendMessage(Component.text().color(NamedTextColor.YELLOW).content("You can hover over the infusion name to see their effects."));
         return true;

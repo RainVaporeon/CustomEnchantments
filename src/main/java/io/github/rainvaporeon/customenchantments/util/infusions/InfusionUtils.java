@@ -7,6 +7,7 @@ import de.tr7zw.nbtapi.iface.ReadWriteNBTCompoundList;
 import de.tr7zw.nbtapi.iface.ReadableNBTList;
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
 import io.github.rainvaporeon.customenchantments.util.PlayerInventoryUtils;
+import io.github.rainvaporeon.customenchantments.util.SetCollection;
 import io.github.rainvaporeon.customenchantments.util.SharedConstants;
 import io.github.rainvaporeon.customenchantments.util.enums.InfusionTarget;
 import io.github.rainvaporeon.customenchantments.util.enums.Result;
@@ -16,6 +17,7 @@ import org.bukkit.inventory.*;
 
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public final class InfusionUtils {
@@ -170,10 +172,7 @@ public final class InfusionUtils {
             applicableList.removeIf(item -> item == null || item.isEmpty());
             return applicableList.stream().mapToInt(is -> InfusionUtils.getInfusion(is, infusion)).sum();
         } else {
-            return PlayerInventoryUtils.collectFromSlot(inventory, SharedConstants.equipmentSlots())
-                    .stream()
-                    .mapToInt(is -> InfusionUtils.getInfusion(is, infusion))
-                    .sum();
+            return SetCollection.findOrSelf(getAllActiveInfusions(entity), InfusionInfo.Cache.get(infusion)).getLevel();
         }
     }
 
@@ -239,11 +238,15 @@ public final class InfusionUtils {
     // "One-liner" as they say...
     // TODO implicitly call to SetInfusionUtils#getActiveSetBonuses
     public static Set<InfusionInfo> getAllActiveInfusions(Player player) {
-        return PlayerInventoryUtils
-                .collectFromSlot(player.getInventory(), SharedConstants.equipmentSlots())
-                .stream()
-                .map(InfusionUtils::getAllInfusions)
-                .flatMap(Collection::stream)
+        return Stream.concat(
+                        PlayerInventoryUtils
+                                .collectFromSlot(player.getInventory(), SharedConstants.equipmentSlots())
+                                .stream()
+                                .map(InfusionUtils::getAllInfusions)
+                                .flatMap(Collection::stream),
+                        SetInfusionUtils
+                                .getActiveSetBonuses(player)
+                                .stream())
                 .collect(
                         HashSet::new,
                         (set, info) -> {
@@ -272,7 +275,7 @@ public final class InfusionUtils {
                                 }
                             });
                         }
-                        );
+                );
     }
 
     public static int getInfusion(ItemStack stack, Infusion type) {
