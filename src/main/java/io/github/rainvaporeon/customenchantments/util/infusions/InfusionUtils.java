@@ -253,12 +253,7 @@ public final class InfusionUtils {
                             if (!set.contains(info)) {
                                 set.add(info);
                             } else {
-                                for (InfusionInfo inf : set) {
-                                    if (inf.equals(info)) {
-                                        set.remove(inf);
-                                        set.add(inf.combine(info));
-                                    }
-                                }
+                                SetCollection.addForced(set, info.combine(SetCollection.find(set, info, CESecrets.getInfusionCacheAccessor().get(info.getInfusion()))));
                             }
                         },
                         (left, right) -> {

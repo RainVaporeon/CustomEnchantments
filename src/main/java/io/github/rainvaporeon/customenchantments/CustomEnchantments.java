@@ -102,6 +102,7 @@ public final class CustomEnchantments extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(InfusionAnvilListener.getInstance(), this);
 
         LocalConfig.init(this);
+        InfusionManager.updateCache();
 
         // 2024 aug 7th: when did i add this??? /rain
         Server.createRunnable(() -> {

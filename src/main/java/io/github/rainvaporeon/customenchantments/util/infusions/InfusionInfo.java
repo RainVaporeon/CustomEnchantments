@@ -12,6 +12,10 @@ import java.util.Objects;
  * @apiNote The equality method in this class ignores the level.
  */
 public class InfusionInfo {
+    static {
+        CESecrets.setInfusionCacheAccessor(Cache::get);
+    }
+
     private final Infusion infusion;
     private final int level;
 
@@ -81,10 +85,6 @@ public class InfusionInfo {
 
     static class Cache {
         private static final Map<Infusion, InfusionInfo> cache = new HashMap<>();
-
-        static {
-            CESecrets.setInfusionCacheAccessor(Cache::get);
-        }
 
         static void fillInCache() {
             InfusionManager.getInfusions().forEach(i -> cache.put(i, new InfusionInfo(i, 0)));

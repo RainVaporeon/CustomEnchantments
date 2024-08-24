@@ -112,6 +112,12 @@ public class CurrentInfusionCommand extends BaseCommand {
                     TextComponent.Builder builder = Component.text()
                             .color(NamedTextColor.AQUA).content(infusion.getName())
                             .append(Component.text(" (" + infusion.getIdentifier() + ") Level " + level).color(NamedTextColor.GRAY));
+                    String extendedDescription = infusion.getExtendedDescription(level);
+                    if (extendedDescription != null) {
+                        builder.style(Style
+                                .style()
+                                .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(extendedDescription))).build());
+                    }
                     sender.sendMessage(builder.build());
                 }
             }
