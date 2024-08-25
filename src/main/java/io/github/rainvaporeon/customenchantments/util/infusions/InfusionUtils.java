@@ -307,4 +307,9 @@ public final class InfusionUtils {
         if (infusion.infusionTarget().stream().anyMatch(target -> target.includes(stack))) return Result.SUCCESSFUL;
         return Result.INCOMPATIBLE_TARGET;
     }
+
+    public static boolean hasInfusion(Player player, Infusion infusion) {
+        return PlayerInventoryUtils.collectFromSlot(player.getInventory(), SharedConstants.equipmentSlots())
+                .stream().anyMatch(is -> getInfusion(is, infusion) != 0);
+    }
 }

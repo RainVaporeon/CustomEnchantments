@@ -103,6 +103,8 @@ public final class CustomEnchantments extends JavaPlugin {
 
         LocalConfig.init(this);
         InfusionManager.updateCache();
+        Server.timerLoop();
+        InfusionManager.activeCycle();
 
         // 2024 aug 7th: when did i add this??? /rain
         Server.createRunnable(() -> {

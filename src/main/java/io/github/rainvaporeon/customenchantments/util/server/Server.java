@@ -4,15 +4,23 @@ import io.github.rainvaporeon.customenchantments.CustomEnchantments;
 import io.github.rainvaporeon.customenchantments.util.io.LocalConfig;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * A collection of convenience methods for interacting with the server
  */
 public class Server {
+    private static final AtomicInteger epoch = new AtomicInteger();
+
     public static Logger getLogger() {
         return CustomEnchantments.PLUGIN.getLogger();
     }
@@ -51,8 +59,25 @@ public class Server {
         Server.createRunnable(runnable).runTask(CustomEnchantments.PLUGIN);
     }
 
-    public static void runTaskLater(Runnable runnable, int delayTicks) {
-        Server.createRunnable(runnable).runTaskLater(CustomEnchantments.PLUGIN, delayTicks);
+    /**
+     * Runs the given task after some time
+     * @param runnable the runnable
+     * @param delayTicks the delay in ticks
+     * @return the task
+     */
+    public static BukkitTask runTaskLater(Runnable runnable, int delayTicks) {
+        return Server.createRunnable(runnable).runTaskLater(CustomEnchantments.PLUGIN, delayTicks);
+    }
+
+    /**
+     * Runs the given task repeatedly
+     * @param runnable the runnable
+     * @param initialDelay the initial delay in ticks
+     * @param thenDelay then loop every x ticks
+     * @return the task
+     */
+    public static BukkitTask runTaskRepeated(Runnable runnable, int initialDelay, int thenDelay) {
+        return Server.createRunnable(runnable).runTaskTimer(CustomEnchantments.PLUGIN, initialDelay, thenDelay);
     }
 
     public static BukkitRunnable createRunnable(Runnable runnable) {
@@ -62,6 +87,28 @@ public class Server {
                 runnable.run();
             }
         };
+    }
+
+    public static List<Player> collectPlayers(Predicate<Player> p) {
+        return CustomEnchantments.PLUGIN.getServer()
+                .getOnlinePlayers()
+                .stream().filter(p)
+                .collect(Collectors.toList());
+    }
+
+    public static int getTimer() {
+        return epoch.get();
+    }
+
+    private static boolean timerEnabled = false;
+    public static void timerLoop() {
+        if (timerEnabled) throw new IllegalStateException("internal method timerLoop called twice");
+        timerEnabled = true;
+
+        Server.runTaskRepeated(() -> {
+            int current = epoch.get();
+            epoch.set((current + 1) % 20);
+        }, 1, 1);
     }
 
     public static void damageInstantly(LivingEntity entity, double damage) {

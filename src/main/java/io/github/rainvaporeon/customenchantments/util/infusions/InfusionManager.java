@@ -4,6 +4,7 @@ import io.github.rainvaporeon.customenchantments.CustomEnchantments;
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
 import io.github.rainvaporeon.customenchantments.enchant.SetInfusion;
 import io.github.rainvaporeon.customenchantments.util.SharedConstants;
+import io.github.rainvaporeon.customenchantments.util.collections.Pair;
 import io.github.rainvaporeon.customenchantments.util.server.Server;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -118,6 +119,28 @@ public final class InfusionManager {
      */
     public static @Nullable Infusion getInfusionByType(Class<? extends Infusion> infusion) {
         return typeMap.get(infusion);
+    }
+
+    private static void callSetEffectHandlers(int tick) {
+        for (SetInfusion infusion : setInfusions) {
+            Server.collectPlayers(p -> InfusionUtils.hasInfusion(p, infusion))
+                    .stream().map(p -> Pair.of(p, SetInfusionUtils.countActiveSetPieces(p, infusion)))
+                    .forEach(p -> infusion.applySetBonus(p.key(), p.value(), tick));
+        }
+    }
+
+    private static boolean enabled = false;
+    public static void activeCycle() {
+        if (enabled) {
+            Server.warn("activeCycle() called twice");
+            return;
+        }
+        enabled = true;
+        activeCycle0();
+    }
+
+    private static void activeCycle0() {
+        Server.runTaskRepeated(() -> callSetEffectHandlers(Server.getTimer()), 0, 1);
     }
 
     /**
