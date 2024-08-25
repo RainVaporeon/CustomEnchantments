@@ -110,7 +110,8 @@ public class CurrentInfusionCommand extends BaseCommand {
         if (!map.isEmpty()) {
             sender.sendMessage(Component.text().color(NamedTextColor.GRAY).content("You also have some set bonuses active, of which are:"));
             for (Map.Entry<SetInfusion, Set<InfusionInfo>> entry : map.entrySet()) {
-                sender.sendMessage(Component.text().color(NamedTextColor.GREEN).content(entry.getKey().getSetName()).color(NamedTextColor.GRAY).content(" grants the following:"));
+                sender.sendMessage(Component.text().color(NamedTextColor.GREEN).content(entry.getKey().getName())
+                        .append(Component.text().color(NamedTextColor.GRAY).content(" grants the following:")));
 
                 for (InfusionInfo info : entry.getValue()) {
                     Infusion infusion = info.getInfusion();

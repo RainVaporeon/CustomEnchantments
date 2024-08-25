@@ -1,6 +1,5 @@
 package io.github.rainvaporeon.customenchantments.util.enums;
 
-import io.github.rainvaporeon.customenchantments.CustomEnchantments;
 import io.github.rainvaporeon.customenchantments.util.server.Server;
 import org.bukkit.Material;
 import org.bukkit.enchantments.EnchantmentTarget;

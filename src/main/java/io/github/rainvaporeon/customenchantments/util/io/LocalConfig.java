@@ -1,7 +1,5 @@
 package io.github.rainvaporeon.customenchantments.util.io;
 
-import io.github.rainvaporeon.customenchantments.CustomEnchantments;
-import io.github.rainvaporeon.customenchantments.util.SharedConstants;
 import io.github.rainvaporeon.customenchantments.util.server.Server;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;

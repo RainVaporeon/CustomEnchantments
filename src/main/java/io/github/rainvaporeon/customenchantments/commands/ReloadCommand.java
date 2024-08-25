@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class ReloadCommand extends PermissibleCommand {
-    protected ReloadCommand(String name) {
+    protected ReloadCommand() {
         super("reload");
     }
 
@@ -34,7 +34,7 @@ public class ReloadCommand extends PermissibleCommand {
     }
 
     public static ReloadCommand getInstance() {
-        return new ReloadCommand("reload");
+        return new ReloadCommand();
     }
 
     @Override

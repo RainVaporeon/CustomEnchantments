@@ -1,6 +1,5 @@
 package io.github.rainvaporeon.customenchantments.enchant.set;
 
-import io.github.rainvaporeon.customenchantments.enchant.Infusion;
 import io.github.rainvaporeon.customenchantments.enchant.SetInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.buff.combat.KillStreakInfusion;
 import io.github.rainvaporeon.customenchantments.enchant.buff.misc.AcrobaticsInfusion;
@@ -9,7 +8,6 @@ import io.github.rainvaporeon.customenchantments.enchant.buff.protection.DamageR
 import io.github.rainvaporeon.customenchantments.util.SetCollection;
 import io.github.rainvaporeon.customenchantments.util.SharedConstants;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionInfo;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +16,6 @@ import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.Collections;
 import java.util.EnumSet;
-import java.util.HashSet;
 import java.util.Set;
 
 // holy scallops is that a wynncraft reference???

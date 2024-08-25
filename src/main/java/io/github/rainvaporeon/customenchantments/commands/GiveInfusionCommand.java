@@ -1,6 +1,5 @@
 package io.github.rainvaporeon.customenchantments.commands;
 
-import io.github.rainvaporeon.customenchantments.CustomEnchantments;
 import io.github.rainvaporeon.customenchantments.enchant.Infusion;
 import io.github.rainvaporeon.customenchantments.util.enums.Result;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionLoreUtils;

@@ -1,20 +1,14 @@
 package io.github.rainvaporeon.customenchantments.enchant;
 
 import io.github.rainvaporeon.customenchantments.util.SetCollection;
-import io.github.rainvaporeon.customenchantments.util.SharedConstants;
-import io.github.rainvaporeon.customenchantments.util.enums.InfusionTarget;
 import io.github.rainvaporeon.customenchantments.util.infusions.InfusionInfo;
 import io.github.rainvaporeon.customenchantments.util.internal.accessors.CESecrets;
-import io.github.rainvaporeon.customenchantments.util.internal.accessors.InfusionCacheAccessor;
-import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.Collections;
 import java.util.Set;
-import java.util.function.Consumer;
 
 /**
  * Base class denoting an infusion triggered with
